@@ -30,6 +30,7 @@ The owner asked for a simple interim starter site and set the brief's build phas
   - When the owner pastes an article, keep their wording and lowercase voice. You may add links, short `##` subheadings and a `<p class="event-callout">` for event details; tell them what you added. If the post mentions a dated event, offer to add it to `events.json`. Deleting a `.md` does not delete its old `blog/*.html`; remove that by hand.
   - The nav (Events, Mail Club, Blog, About) is duplicated in the four hand-written pages *and* in `header()` in the build script. Keep them in sync.
 - To preview locally, run `python3 -m http.server` from the repo root. `fetch` does not work over `file://`.
+- **Deploys** use GitHub's automatic "pages build and deployment" workflow (no workflow file in the repo). If a run fails at the deploy step with `No artifacts named "github-pages" were found` while the build step succeeded, that's a temporary GitHub glitch, not a code problem. Re-run the workflow (Actions tab → the failed run → Re-run all jobs) or push any new commit.
 
 The Astro plan below has not started yet. Once it does, add the real build, dev, lint and test commands here.
 
