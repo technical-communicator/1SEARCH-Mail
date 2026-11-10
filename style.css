@@ -211,6 +211,11 @@ main {
   font-size: 1.15rem;
 }
 
+/* A little space between paragraphs in the hero panel. */
+.hero .panel p + p {
+  margin-top: 0.75rem;
+}
+
 .buttons {
   display: flex;
   flex-wrap: wrap;
@@ -323,6 +328,277 @@ main {
   transform: rotate(8deg);
 }
 
+/* ---------- Mail club page ---------- */
+/* Each section of the mail club page gets space above it. */
+.mail-section {
+  margin-top: 3rem;
+}
+
+/* Section headings: a red cut-out label, tilted the other way from h1. */
+.section-title {
+  display: inline-block;
+  margin: 0 0 1.25rem;
+  padding: 0.25rem 0.75rem;
+  background: var(--red);
+  color: #ffffff;
+  border: var(--border);
+  box-shadow: var(--shadow);
+  font-size: 1.4rem;
+  transform: rotate(1deg);
+}
+
+/* The stamp drawing is black ink, so on a coloured page we put it on a
+   round cream "sticker" so it stands out. */
+.stamp-on-paper {
+  width: min(50vw, 280px);  /* smaller on phones so the Join button shows sooner */
+  padding: 0.75rem;
+  background: var(--cream);
+  border: var(--border);
+  border-radius: 50%;
+  box-shadow: var(--shadow);
+}
+
+/* Two things side by side on wide screens (stacked on phones). */
+.split {
+  display: grid;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+/* The "$450" callout, styled like a big postage stamp with a dashed edge. */
+.big-stamp {
+  justify-self: center;
+  max-width: 16rem;
+  margin: 0;
+  padding: 1.25rem;
+  background: var(--yellow);
+  border: 3px dashed var(--ink);
+  outline: 6px solid var(--yellow);  /* the solid colour outside the dashes */
+  box-shadow: 0 0 0 9px var(--ink);  /* thin ink line around the outside */
+  font-family: var(--font-type);
+  font-weight: bold;
+  text-align: center;
+  transform: rotate(-3deg);
+}
+
+.big-stamp-number {
+  display: block;
+  font-family: var(--font-grunge);
+  font-size: 3.5rem;
+  font-weight: normal;
+  line-height: 1;
+  color: var(--red);
+}
+
+/* The list of businesses, shown as little stickers in a row. */
+.sticker-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 1rem 0;
+  padding: 0;
+  list-style: none;  /* hides the bullet points */
+}
+
+.sticker-list li {
+  padding: 0.25rem 0.75rem;
+  background: var(--blue);
+  border: 2px solid var(--ink);
+  border-radius: 999px;  /* fully rounded ends */
+  font-family: var(--font-type);
+  font-weight: bold;
+}
+
+/* Give every other sticker a different colour and tilt, so it looks hand-placed. */
+.sticker-list li:nth-child(odd) {
+  background: var(--yellow);
+  transform: rotate(-2deg);
+}
+
+.sticker-list li:nth-child(3n) {
+  background: var(--pink);
+  transform: rotate(2deg);
+}
+
+/* How it works: numbered postcards. We hide the normal numbers and draw
+   our own with a CSS "counter" so we can style them as round badges. */
+.steps {
+  display: grid;
+  gap: 1rem;
+  margin: 0 0 1.5rem;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+
+.steps li {
+  position: relative;
+  padding: 1rem 1rem 1rem 4rem;
+  background: var(--cream);
+  border: var(--border);
+  box-shadow: var(--shadow);
+  counter-increment: step;
+}
+
+.steps li::before {
+  content: counter(step);
+  position: absolute;
+  left: 1rem;
+  top: 1rem;
+  width: 2.25rem;
+  height: 2.25rem;
+  display: grid;
+  place-items: center;
+  background: var(--red);
+  color: #ffffff;
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  font-family: var(--font-type);
+  font-weight: bold;
+}
+
+/* Tiers: three postcards with "airmail" stripes along the top. */
+.tiers {
+  display: grid;
+  gap: 2rem;
+}
+
+.tier {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 1.75rem 1.25rem 1.25rem;
+  background: var(--cream);
+  border: var(--border);
+  box-shadow: var(--shadow);
+}
+
+/* The red and blue diagonal stripes of an airmail envelope. */
+.tier::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 10px;
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--red) 0 12px,
+    var(--cream) 12px 18px,
+    #1f4e8c 18px 30px,
+    var(--cream) 30px 36px
+  );
+  border-bottom: 2px solid var(--ink);
+}
+
+.tier h3 {
+  margin: 0 0 0.5rem;
+  font-family: var(--font-type);
+  font-size: 1.35rem;
+}
+
+.tier ul {
+  flex: 1;  /* pushes the button to the bottom so all three line up */
+  margin: 0 0 1.25rem;
+  padding-left: 1.25rem;
+}
+
+.tier li {
+  margin-bottom: 0.4rem;
+}
+
+/* The price, styled like a little stamp in the corner. */
+.tier-price {
+  align-self: flex-end;
+  margin: 0 0 0.5rem;
+  padding: 0.25rem 0.6rem;
+  background: var(--yellow);
+  border: 2px dashed var(--ink);
+  font-family: var(--font-type);
+  transform: rotate(3deg);
+}
+
+.tier-price span {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.tier .button {
+  text-align: center;
+}
+
+/* The top tier gets a pink background and a label on top. */
+.tier-featured {
+  background: #ffe1ea;
+}
+
+.tier-flag {
+  position: absolute;
+  top: -1rem;
+  left: 1rem;
+  margin: 0;
+  padding: 0.1rem 0.6rem;
+  background: var(--purple);
+  color: #ffffff;
+  border: 2px solid var(--ink);
+  font-family: var(--font-type);
+  font-size: 0.85rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  transform: rotate(-2deg);
+}
+
+/* The founders' note, set like a letter. */
+.letter {
+  font-size: 1.1rem;
+}
+
+.signature {
+  font-family: var(--font-type);
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: var(--red);
+  transform: rotate(-2deg);
+}
+
+/* FAQ: tap a question to open it. */
+.faq {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.faq details {
+  background: var(--cream);
+  border: var(--border);
+  box-shadow: var(--shadow);
+}
+
+.faq summary {
+  padding: 0.75rem 1rem;
+  font-family: var(--font-type);
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.faq summary:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 3px;
+}
+
+.faq details p {
+  margin: 0;
+  padding: 0 1rem 1rem;
+}
+
+.final-cta {
+  text-align: center;
+}
+
+.final-cta .lede {
+  margin-left: auto;
+  margin-right: auto;
+}
+
 /* ---------- Footer ---------- */
 .site-footer {
   display: flex;
@@ -371,6 +647,11 @@ main {
     justify-content: flex-start;
   }
 
+  /* Mail club: the $450 stamp sits beside the text. */
+  .split {
+    grid-template-columns: 1fr auto;
+  }
+
   /* About: stamp beside the text. */
   .blue-section {
     grid-template-columns: 1fr auto;
@@ -378,9 +659,10 @@ main {
   }
 }
 
-/* Three columns of event cards on big screens. */
+/* Big screens: three columns of event cards and three tier postcards. */
 @media (min-width: 64rem) {
-  .event-list {
+  .event-list,
+  .tiers {
     grid-template-columns: 1fr 1fr 1fr;
   }
 }

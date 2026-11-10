@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<!-- mailclub.html: the SEARCH snail mail club page.
+     Its job is to get visitors to join on Patreon.
+
+     TO DO: replace every "https://www.patreon.com/" link below with the
+     real SEARCH Patreon page. (Search this file for "patreon.com".) -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Title and description use phrases people search for,
+       like "snail mail club" and "Orlando art subscription". -->
+  <title>SEARCH: a snail mail club | Orlando art subscription box | Search Central Florida</title>
+  <meta name="description" content="A monthly snail mail club and Orlando art subscription. Get prints and stickers from a different Central Florida artist every month, plus perks from local businesses. From $6.99 a month.">
+
+  <link rel="icon" type="image/png" href="images/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Rubik+Dirt&display=swap">
+  <link rel="stylesheet" href="style.css">
+</head>
+<!-- "page-pink" gives this page the pink halftone background (see style.css). -->
+<body class="page-pink">
+  <header class="site-header">
+    <a class="logo" href="index.html"><img src="images/wordmark-white.webp" alt="SEARCH Central Florida, home" width="700" height="245"></a>
+    <nav>
+      <a href="events.html">Events</a>
+      <a href="mailclub.html" aria-current="page">Mail Club</a>
+      <a href="about.html">About</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- ===== HERO: the first thing people see, with the big sign-up button ===== -->
+    <section class="hero">
+      <img class="stamp stamp-on-paper" src="images/stamp.png" width="600" height="600"
+           alt="SEARCH: a snail mail club stamp featuring the mascot">
+
+      <div>
+        <h1>SEARCH: a snail mail club</h1>
+        <div class="panel">
+          <p>hi everyone! welcome to SEARCH: a snail mail club by <a href="https://www.instagram.com/searchcentralfl/">@searchcentralfl</a>.</p>
+          <p>interested in supporting local artists and creative businesses in central florida? get original art from a different local artist in your mailbox every month.</p>
+        </div>
+        <div class="buttons">
+          <a class="button" href="https://www.patreon.com/">Join on Patreon</a>
+          <!-- "#tiers" jumps down to the part of this page with id="tiers". -->
+          <a class="button button-outline" href="#tiers">See the tiers</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== THE ARTISTS ===== -->
+    <section class="mail-section">
+      <h2 class="section-title">A new local artist every month</h2>
+      <div class="split">
+        <div class="panel">
+          <p>every month we feature a different central florida artist. we spotlight their work, their story, and their place in the community.</p>
+          <p>each artist receives a stipend to support their creative journey.</p>
+        </div>
+
+        <!-- The big number, styled like a postage stamp. -->
+        <p class="big-stamp">
+          <span class="big-stamp-number">$450</span>
+          given directly to local artists so far, and counting!
+        </p>
+      </div>
+    </section>
+
+    <!-- ===== LOCAL BUSINESS PERKS ===== -->
+    <section class="mail-section">
+      <h2 class="section-title">Perks from local businesses</h2>
+      <div class="panel">
+        <p>alongside local art, we include discounts from local creative businesses we love, so shopping local becomes part of your monthly routine. businesses who have graciously given special perks to our members so far:</p>
+        <!-- Each business shows as a little sticker. Add new ones as more <li> lines. -->
+        <ul class="sticker-list">
+          <li>Diablicos Coffee</li>
+          <li>Funk's Vintage</li>
+          <li>Timucua Arts</li>
+          <li>Mead Botanical Garden</li>
+          <li>Authentic Books</li>
+        </ul>
+        <p>with more added every month.</p>
+      </div>
+    </section>
+
+    <!-- ===== HOW IT WORKS: numbered steps ===== -->
+    <section class="mail-section">
+      <h2 class="section-title">How the snail mail club works</h2>
+      <!-- <ol> is a numbered list; the CSS turns each item into a little postcard. -->
+      <ol class="steps">
+        <li><strong>sign up</strong> by the last sunday of the month.</li>
+        <li><strong>your first package ships</strong> during the first week of the following month.</li>
+        <li><strong>check your mailbox.</strong> everything travels via USPS in untracked envelopes, so expect it within 5 to 7 business days and keep an eye on your mail during that window.</li>
+        <li><strong>keep collecting.</strong> you're billed monthly and your package arrives regularly. cancel any time, no questions asked.</li>
+      </ol>
+      <p class="lede">build your art collection with the talent right here in central florida.</p>
+    </section>
+
+    <!-- ===== TIERS: three postcards. id="tiers" is where "See the tiers" jumps to. ===== -->
+    <section class="mail-section" id="tiers">
+      <h2 class="section-title">Choose your tier</h2>
+      <div class="tiers">
+
+        <!-- Tier 1 -->
+        <article class="tier">
+          <p class="tier-price"><span>$6.99</span> /month</p>
+          <h3>sticker supporter</h3>
+          <ul>
+            <li>vinyl sticker or sticker sheet by the featured artist</li>
+            <li>a discount to one of our favorite local businesses</li>
+            <li>the @searchcentralfl newsletter</li>
+          </ul>
+          <a class="button" href="https://www.patreon.com/">Join as a sticker supporter</a>
+        </article>
+
+        <!-- Tier 2 -->
+        <article class="tier">
+          <p class="tier-price"><span>$8.99</span> /month</p>
+          <h3>print collector</h3>
+          <ul>
+            <li>4x6 art print by the featured artist</li>
+            <li>a discount to one of our favorite local businesses</li>
+            <li>the @searchcentralfl newsletter</li>
+          </ul>
+          <a class="button" href="https://www.patreon.com/">Join as a print collector</a>
+        </article>
+
+        <!-- Tier 3: "tier-featured" adds the "complete drop" label. -->
+        <article class="tier tier-featured">
+          <p class="tier-flag">the complete monthly drop</p>
+          <p class="tier-price"><span>$12.99</span> /month</p>
+          <h3>print &amp; sticker curator</h3>
+          <ul>
+            <li>art print AND sticker from the featured artist</li>
+            <li>a discount to one of our favorite local businesses</li>
+            <li>the @searchcentralfl newsletter</li>
+            <li>first dibs on any future curator-tier perks we roll out</li>
+          </ul>
+          <a class="button" href="https://www.patreon.com/">Join as a curator</a>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ===== WHY: a little letter from the founders ===== -->
+    <section class="mail-section">
+      <h2 class="section-title">Why a snail mail club?</h2>
+      <div class="panel letter">
+        <p>the best things don't live on a screen. we created SEARCH: a snail mail club for people who believe in supporting local artists directly, who want to discover central florida beyond the tourist traps, and who still think there's something special about receiving snail mail.</p>
+        <p>see you in your mailbox!</p>
+        <p class="signature">halley &amp; zach &lt;3</p>
+      </div>
+    </section>
+
+    <!-- ===== FAQ =====
+         <details> and <summary> make a question you can tap to open,
+         with no JavaScript needed. Copy one block to add a new question. -->
+    <section class="mail-section">
+      <h2 class="section-title">Questions</h2>
+      <div class="faq">
+        <details>
+          <summary>What's in each mailer?</summary>
+          <p>it depends on your tier: a sticker, a 4x6 art print, or both, from that month's featured central florida artist. every tier also gets a discount to a local business and the @searchcentralfl newsletter.</p>
+        </details>
+        <details>
+          <summary>How much does it cost?</summary>
+          <p>$6.99, $8.99 or $12.99 a month, depending on your tier.</p>
+        </details>
+        <details>
+          <summary>When will my first package arrive?</summary>
+          <p>sign up by the last sunday of the month and your first package ships during the first week of the following month. it usually arrives within 5 to 7 business days after that.</p>
+        </details>
+        <details>
+          <summary>Can I track my package?</summary>
+          <p>no. everything travels via USPS in untracked envelopes, so keep an eye on your mailbox during the delivery window.</p>
+        </details>
+        <details>
+          <summary>How do I cancel?</summary>
+          <p>you can cancel any time on Patreon, no questions asked.</p>
+        </details>
+      </div>
+    </section>
+
+    <!-- ===== Final call to action at the bottom ===== -->
+    <section class="mail-section final-cta">
+      <p class="lede">ready to get art in your mailbox?</p>
+      <a class="button" href="https://www.patreon.com/">Join SEARCH on Patreon</a>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <img src="images/stamp.png" alt="" width="600" height="600">
+    <p>Follow us on Instagram: <a href="https://www.instagram.com/searchcentralfl/">@searchcentralfl</a></p>
+  </footer>
+</body>
+</html>
