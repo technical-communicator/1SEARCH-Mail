@@ -81,6 +81,13 @@
         <!-- The card shown over the map. Filled in by the script. -->
         <div id="map-card" class="map-card" hidden></div>
       </div>
+
+      <!-- Every event on the map, as small buttons. Tapping one flies the
+           map to its pin and opens its card. Filled in by the script. -->
+      <div class="map-list" id="map-list" role="group" aria-label="Events on the map"></div>
+
+      <!-- The days again, so you can change day without scrolling back up. -->
+      <div class="map-days" id="map-days" role="group" aria-label="Choose a day"></div>
     </section>
   </main>
 
@@ -298,6 +305,42 @@
 
         strip.append(button);
       });
+
+      buildMapDays(days, chosenDay);
+    }
+
+    // The smaller row of days under the map. Same days, same counts.
+    function buildMapDays(days, chosenDay) {
+      const row = document.getElementById("map-days");
+      row.innerHTML = "";
+      days.forEach(function (day, index) {
+        const count = allEvents.filter(function (event) {
+          return event.date === day && matchesFilter(event);
+        }).length;
+        const button = make("button", "map-day");
+        button.type = "button";
+        button.dataset.day = day;
+        button.setAttribute("aria-pressed", day === chosenDay ? "true" : "false");
+        button.setAttribute("aria-label", formatDate(day, { weekday: "long", month: "long", day: "numeric" }) + ", " +
+          (count === 1 ? "1 event" : count + " events"));
+        button.append(
+          make("span", "map-day-name", index === 0 ? "Today" : formatDate(day, { weekday: "short" })),
+          make("span", "map-day-number", formatDate(day, { day: "numeric" }))
+        );
+        button.addEventListener("click", function () { showDayKeepingMapInPlace(day); });
+        row.append(button);
+      });
+    }
+
+    // Change day from the buttons under the map. The list of cards above
+    // the map changes height, which would push the map up or down the page,
+    // so we scroll by the same amount to keep the map where it was.
+    function showDayKeepingMapInPlace(day) {
+      const mapBox = document.querySelector(".map-wrap");
+      const before = mapBox.getBoundingClientRect().top;
+      showDay(day);
+      const after = mapBox.getBoundingClientRect().top;
+      window.scrollBy(0, after - before);
     }
 
     // ---------- The category filter ----------
@@ -395,13 +438,19 @@
     function showDay(day) {
       currentDay = day;
 
+      // Light up the chosen day under the map too.
+      document.querySelectorAll(".map-day").forEach(function (button) {
+        button.setAttribute("aria-pressed", button.dataset.day === day ? "true" : "false");
+      });
+
       // Update the day strip so the chosen day looks selected.
       strip.querySelectorAll(".day").forEach(function (button) {
         const isChosen = button.dataset.day === day;
         button.setAttribute("aria-pressed", isChosen ? "true" : "false");
 
         // On phones the strip scrolls sideways; make sure the chosen day is visible.
-        if (isChosen) button.scrollIntoView({ block: "nearest", inline: "nearest" });
+        // (We only slide the strip sideways, so the page itself doesn't jump.)
+        if (isChosen) strip.scrollTo({ left: button.offsetLeft - strip.offsetLeft - 8, behavior: "smooth" });
       });
 
       // Put the day in the web address (e.g. events.html?day=2026-11-14)
@@ -503,12 +552,16 @@
       // The map pictures ("tiles"). Both of these are free and need no
       // API key. We use OpenStreetMap's own tiles, and if they ever fail
       // to load, we switch to Esri's light grey map instead.
+      // "opacity" lets our paper colour show through, which fades the map
+      // into the site's look so the coloured pins stand out.
       const mainTiles = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
         maxZoom: 19,
+        opacity: 0.55,
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       });
       const backupTiles = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}", {
         maxZoom: 16,
+        opacity: 0.8,
         attribution: "Tiles &copy; Esri",
       });
 
@@ -587,7 +640,8 @@
         spot.addEventListener("pointerup", function (e) {
           e.stopPropagation();  // don't let the map's own click hide it again
           clearTimeout(hideTimer);
-          showMapCard(event, true);
+          if (e.pointerType === "mouse") showMapCard(event, true);
+          else focusPin(event);  // finger: also move the pin above the card
         });
         spot.addEventListener("keydown", function (e) {
           if (e.key === "Enter" || e.key === " ") {
@@ -606,13 +660,36 @@
         map.setView(ORLANDO, 12);
       }
 
+      // The buttons under the map: one per event on the map.
+      const mapList = document.getElementById("map-list");
+      mapList.innerHTML = "";
+      onMap.forEach(function (event) {
+        const chip = make("button", "map-chip " + categoryClass(event.category));
+        chip.type = "button";
+        chip.append(make("span", "map-chip-time", shortTime(event.start_time)), make("span", "", event.title));
+        chip.addEventListener("click", function () { focusPin(event); });
+        chip.dataset.title = event.title;
+        mapList.append(chip);
+      });
+
       // A short note above the map.
       if (events.length === 0) {
         mapNote.textContent = "No events to show on the map for this day.";
       } else {
-        mapNote.textContent = "Hover or tap a pin to see the event." +
+        mapNote.textContent = "Tap a pin, or an event under the map, to see it." +
           (offMap ? " (" + offMap + (offMap === 1 ? " event isn't" : " events aren't") + " on the map yet: no address.)" : "");
       }
+    }
+
+    // Move the map to an event's pin and open its card.
+    function focusPin(event) {
+      const pin = pinsByEvent.get(event);
+      if (!pin) return;
+      map.setView(pin.getLatLng(), Math.max(map.getZoom(), 14), { animate: false });
+      // On phones the card covers the bottom of the map, so nudge the map
+      // so the pin sits in the top part, above the card.
+      if (window.innerWidth < 768) map.panBy([0, document.getElementById("event-map").offsetHeight * 0.22], { animate: false });
+      showMapCard(event, true);
     }
 
     // Show an event's card over the map. "pinned" means it stays until closed.
@@ -640,6 +717,10 @@
       const pin = pinsByEvent.get(event);
       if (!pin || !pin.getElement()) return;
       pin.getElement().classList.toggle("is-active", on);
+      // ...and its button under the map.
+      document.querySelectorAll(".map-chip").forEach(function (chip) {
+        if (chip.dataset.title === event.title) chip.classList.toggle("is-active", on);
+      });
       pin.setZIndexOffset(on ? 1000 : 0);
     }
 

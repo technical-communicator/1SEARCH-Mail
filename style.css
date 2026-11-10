@@ -1119,11 +1119,12 @@ main {
   font-family: var(--font-type);
 }
 
-/* Tint the map pictures to match the site: the colours are taken out,
-   then a warm paper tone is added back, and it's lightened a touch so the
-   coloured pins stand out. */
-.event-map .leaflet-tile-pane {
-  filter: grayscale(1) sepia(0.35) brightness(1.06) contrast(0.92);
+/* The map pictures are see-through (set in the script), so this paper
+   colour shows through and gives the map our faded, warm look.
+   (We don't use a CSS "filter" here: Safari on iPhone can draw filtered
+   map pictures on top of the pins and hide them.) */
+.event-map {
+  background: #efe6d2;
 }
 
 /* Zoom buttons in our style. */
@@ -1261,6 +1262,92 @@ main {
   font-size: 1.3rem;
   line-height: 1;
   cursor: pointer;
+}
+
+/* ---- Under the map: the events on it, then the days ---- */
+/* One row of event buttons that scrolls sideways. */
+.map-list {
+  display: flex;
+  gap: 0.4rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+  margin: 0.9rem 0 0;
+  padding: 2px 2px 4px;
+}
+
+.map-list::-webkit-scrollbar {
+  display: none;
+}
+
+.map-chip {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0.25rem 0.8rem 0.25rem 0.3rem;
+  background: var(--cream);
+  color: var(--ink);
+  border: var(--border);
+  font-family: var(--font-type);
+  font-size: 0.85rem;
+  font-weight: bold;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+/* The time, on the category colour, like the pin itself. */
+.map-chip-time {
+  padding: 0.1rem 0.4rem;
+  background: var(--cat-colour, #5c5c5c);
+  color: #ffffff;
+}
+
+.map-chip:hover,
+.map-chip.is-active {
+  background: var(--yellow);
+}
+
+/* The seven days, small, in one row. */
+.map-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.3rem;
+  margin: 0.75rem 0 0;
+}
+
+.map-day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.3rem 0;
+  min-height: 2.9rem;
+  background: var(--ink);
+  color: #ffffff;
+  border: var(--border);
+  font-family: var(--font-type);
+  cursor: pointer;
+}
+
+.map-day:hover {
+  background: #333333;
+}
+
+.map-day[aria-pressed="true"] {
+  background: var(--blue);
+  color: var(--ink);
+}
+
+.map-day-name {
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.map-day-number {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  line-height: 1.1;
 }
 
 /* Wider screens: a taller map, and the card in the top-left corner. */
