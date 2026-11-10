@@ -10,7 +10,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 The owner asked for a simple interim starter site and set the brief's build phases aside for now. It is plain HTML, CSS and JS with **no build step**, served by GitHub Pages from `main` at the repo root (`.nojekyll` turns off Jekyll processing).
 
-- Brand artwork lives in `images/` (resized web copies of the owner's files). The palette tokens at the top of `style.css` come from it: cherry red, yellow and pink halftone, hood purple, cream paper and black ink.
+- Brand artwork lives in `images/` (resized web copies of the owner's files). The palette tokens at the top of `style.css` come from it: cherry red, yellow, pink and blue halftone, hood purple, cream paper and black ink. Each page picks its halftone background with a `<body>` class (`page-blue`, `page-pink`; yellow is the default).
 - `index.html`, `about.html` and `events.html` share one `style.css` and repeat the same header, nav and footer markup by hand. If you change the nav, change it in all three files.
 - `events.html` has an inline script that `fetch`es `events.json`, sorts by `date` + `start_time` (string compare on `YYYY-MM-DD` / `HH:MM`), and builds the cards with `textContent`. Each event's `category` becomes a CSS class (`"Food and Drink"` → `.cat-food-and-drink`) that sets `--cat-colour` in `style.css`.
 - The `events.json` fields are `title`, `date`, `start_time`, optional `end_time`, `venue`, `category` and `description`. The owner edits this file by hand.

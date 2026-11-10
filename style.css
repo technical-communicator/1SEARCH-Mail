@@ -3,7 +3,7 @@
    @media rules near the bottom add tweaks for wider screens.
 
    The look comes from the SCF artwork in the images/ folder:
-   cherry red, sunny yellow and bubblegum pink halftone, the purple of
+   cherry red, sunny yellow, bubblegum pink and sky blue halftone, the purple of
    the mascot's hood, and thick black "ink" outlines like a cut-out zine. */
 
 /* ---------- Colours and fonts ----------
@@ -14,6 +14,7 @@
   --red-dark: #5e0a1a;
   --yellow: #fdd94c;     /* yellow halftone */
   --pink: #f3769b;       /* pink halftone */
+  --blue: #87d1ff;       /* blue halftone */
   --purple: #4f4c7a;     /* the mascot's hood */
   --cream: #fff6e6;      /* paper colour for cards and boxes */
   --ink: #141414;        /* outlines and main text */
@@ -44,20 +45,38 @@ body {
   min-height: 100vh;
   margin: 0;
   color: var(--ink);
-  background-color: var(--yellow); /* shows while the texture loads */
+  background-color: var(--page-colour); /* shows while the texture loads */
   font-family: var(--font-body);
   line-height: 1.6;
 }
 
-/* The yellow halftone texture behind every page.
-   We put it on a fixed layer behind everything (z-index: -1) and use
-   "cover" so the dots stay the same size no matter how long the page is. */
+/* Each page gets its own halftone colour, like different coloured pages
+   in a zine. Yellow is the default (the home page). A page picks another
+   colour with a class on its <body> tag, e.g. <body class="page-blue">. */
+body {
+  --page-colour: var(--yellow);
+  --page-texture: url("images/bg-yellow.webp");
+}
+
+.page-blue {
+  --page-colour: var(--blue);
+  --page-texture: url("images/bg-blue.webp");
+}
+
+.page-pink {
+  --page-colour: var(--pink);
+  --page-texture: url("images/bg-pink.webp");
+}
+
+/* The halftone texture sits on a fixed layer behind everything
+   (z-index: -1). "cover" keeps the dots the same size no matter how
+   long the page is. */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
   z-index: -1;
-  background: url("images/bg-yellow.webp") center / cover;
+  background: var(--page-colour) var(--page-texture) center / cover;
 }
 
 img {
@@ -287,14 +306,14 @@ main {
 .cat-workshops      { --cat-colour: #6b4e16; }
 
 /* ---------- About page ---------- */
-/* A pink halftone section, like a different coloured page in a zine. */
-.pink-section {
+/* A blue halftone panel, pasted onto the pink About page. */
+.blue-section {
   display: grid;
   gap: 1.5rem;
   align-items: center;
   justify-items: center;
   padding: 1.5rem;
-  background: var(--pink) url("images/bg-pink.webp") center / cover;
+  background: var(--blue) url("images/bg-blue.webp") center / cover;
   border: var(--border);
   box-shadow: var(--shadow);
 }
@@ -353,7 +372,7 @@ main {
   }
 
   /* About: stamp beside the text. */
-  .pink-section {
+  .blue-section {
     grid-template-columns: 1fr auto;
     padding: 2rem;
   }
