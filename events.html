@@ -462,8 +462,8 @@
     }
 
     // ---------- The map ----------
-    // We use Leaflet (vendor/leaflet/) for the map, with a light map style
-    // from CARTO. CSS in style.css tints it to match our paper colour.
+    // We use Leaflet (vendor/leaflet/) for the map, with free OpenStreetMap
+    // tiles. CSS in style.css tints them grey-brown to match our paper colour.
 
     const mapNote = document.getElementById("map-note");
     const mapCard = document.getElementById("map-card");
@@ -500,10 +500,29 @@
         zoomControl: true,
       }).setView(ORLANDO, 12);
 
-      L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
+      // The map pictures ("tiles"). Both of these are free and need no
+      // API key. We use OpenStreetMap's own tiles, and if they ever fail
+      // to load, we switch to Esri's light grey map instead.
+      const mainTiles = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
         maxZoom: 19,
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-      }).addTo(map);
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      });
+      const backupTiles = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}", {
+        maxZoom: 16,
+        attribution: "Tiles &copy; Esri",
+      });
+
+      let failedTiles = 0;
+      mainTiles.on("tileerror", function () {
+        failedTiles++;
+        // A few failures in a row means the main tiles aren't working.
+        if (failedTiles === 4) {
+          map.removeLayer(mainTiles);
+          backupTiles.addTo(map);
+        }
+      });
+      mainTiles.on("tileload", function () { failedTiles = 0; });
+      mainTiles.addTo(map);
 
       pinLayer = L.layerGroup().addTo(map);
 

@@ -1119,9 +1119,11 @@ main {
   font-family: var(--font-type);
 }
 
-/* Tint the map pictures warm, like old paper. */
+/* Tint the map pictures to match the site: the colours are taken out,
+   then a warm paper tone is added back, and it's lightened a touch so the
+   coloured pins stand out. */
 .event-map .leaflet-tile-pane {
-  filter: sepia(0.35) saturate(0.85) brightness(1.02);
+  filter: grayscale(1) sepia(0.35) brightness(1.06) contrast(0.92);
 }
 
 /* Zoom buttons in our style. */
