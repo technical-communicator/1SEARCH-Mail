@@ -1,0 +1,193 @@
+/* style.css: one shared stylesheet for every page.
+   "Mobile-first" means the basic styles are for small screens, and the
+   @media rule near the bottom adds tweaks for wider screens. */
+
+/* ---------- Colours and fonts ----------
+   Custom properties (the --names) are reusable values.
+   Change a colour here and it updates everywhere it's used. */
+:root {
+  --paper: #f6f1e7;      /* page background, a warm off-white like paper */
+  --ink: #1d1d1b;        /* main text colour */
+  --muted: #5a5750;      /* softer text for details */
+  --accent: #c8341e;     /* brand red for buttons and links */
+  --card: #ffffff;       /* card background */
+  --font-body: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-heading: "Courier New", Courier, monospace;
+}
+
+/* Make width and padding add up the way you'd expect. */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  line-height: 1.6;
+}
+
+a {
+  color: var(--accent);
+}
+
+/* A visible outline when tabbing with the keyboard (good for accessibility). */
+a:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 2px;
+}
+
+h1,
+h2 {
+  font-family: var(--font-heading);
+  line-height: 1.2;
+}
+
+/* ---------- Header and navigation ---------- */
+.site-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: var(--ink);
+}
+
+.logo {
+  color: var(--paper);
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-decoration: none;
+  letter-spacing: 0.1em;
+}
+
+.site-header nav a {
+  color: var(--paper);
+  margin-left: 1rem;
+  text-decoration: none;
+}
+
+/* Underline the link for the page you're currently on. */
+.site-header nav a[aria-current="page"] {
+  text-decoration: underline;
+}
+
+/* ---------- Main content ---------- */
+main {
+  max-width: 48rem;  /* keeps lines a comfortable reading length */
+  margin: 0 auto;    /* centres the content */
+  padding: 1.5rem 1rem;
+}
+
+/* ---------- Home page hero ---------- */
+.hero {
+  padding: 2rem 0;
+}
+
+.hero h1 {
+  font-size: 2.25rem;
+  margin-top: 0;
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.button {
+  display: inline-block;
+  padding: 0.75rem 1.25rem;
+  background: var(--accent);
+  color: #ffffff;
+  border: 2px solid var(--accent);
+  border-radius: 4px;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.button-outline {
+  background: transparent;
+  color: var(--accent);
+}
+
+/* ---------- Event cards ---------- */
+.event-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.event-card {
+  /* Each category sets --cat-colour below; grey is the fallback. */
+  --cat-colour: #6b6b6b;
+  background: var(--card);
+  border-left: 6px solid var(--cat-colour);
+  border-radius: 4px;
+  padding: 1rem 1.25rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.event-card h2 {
+  font-size: 1.25rem;
+  margin: 0.5rem 0;
+}
+
+.event-card p {
+  margin: 0.25rem 0;
+}
+
+/* The small coloured label at the top of each card. */
+.event-category {
+  display: inline-block;
+  background: var(--cat-colour);
+  color: #ffffff;
+  font-size: 0.8rem;
+  font-weight: bold;
+  padding: 0.15rem 0.5rem;
+  border-radius: 3px;
+}
+
+.event-when {
+  font-weight: bold;
+}
+
+.event-venue {
+  color: var(--muted);
+}
+
+/* One colour per category. The class names come from the JavaScript in
+   events.html (for example "Food and Drink" becomes .cat-food-and-drink).
+   All of these are dark enough for white text to be readable. */
+.cat-music          { --cat-colour: #7b2d8e; }
+.cat-art            { --cat-colour: #c8341e; }
+.cat-markets        { --cat-colour: #2e6b3a; }
+.cat-food-and-drink { --cat-colour: #b04a00; }
+.cat-film           { --cat-colour: #1f4e8c; }
+.cat-comedy         { --cat-colour: #a3326a; }
+.cat-community      { --cat-colour: #00727a; }
+.cat-workshops      { --cat-colour: #5c4a1e; }
+
+/* ---------- Footer ---------- */
+.site-footer {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+/* ---------- Wider screens ----------
+   On tablets and desktops, show the event cards in two columns
+   and make the big heading larger. */
+@media (min-width: 40rem) {
+  .event-list {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .hero h1 {
+    font-size: 3rem;
+  }
+}

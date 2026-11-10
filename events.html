@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<!-- events.html: lists the events from events.json as cards.
+     The HTML here is just an empty container. The JavaScript at the bottom
+     loads the events and builds the cards. -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Events in Orlando | Search Central Florida</title>
+  <meta name="description" content="Upcoming arts, music, food and community events in Orlando, curated by Search Central Florida.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="logo" href="index.html">SEARCH</a>
+    <nav>
+      <a href="events.html" aria-current="page">Events</a>
+      <a href="about.html">About</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Events</h1>
+    <p>Hand-picked things to do around Orlando.</p>
+
+    <!-- The cards get added inside this element by the script below.
+         aria-live makes screen readers announce it when the cards appear. -->
+    <div id="event-list" class="event-list" aria-live="polite">
+      <p>Loading events...</p>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p>Follow us on Instagram: <a href="https://www.instagram.com/searchcentralfl/">@searchcentralfl</a></p>
+  </footer>
+
+  <script>
+    // Find the empty container where the cards will go.
+    const list = document.getElementById("event-list");
+
+    // Turn "2026-11-14" into something friendly like "Saturday, November 14".
+    // We add "T00:00" so the browser reads it as local time, not UTC.
+    // (Without it, the date can show up one day early in Florida.)
+    function formatDate(dateText) {
+      const date = new Date(dateText + "T00:00");
+      return date.toLocaleDateString("en-US", {
+        weekday: "long",
+        month: "long",
+        day: "numeric",
+      });
+    }
+
+    // Turn "19:30" (24-hour time) into "7:30 PM".
+    function formatTime(timeText) {
+      const [hours, minutes] = timeText.split(":").map(Number);
+      const suffix = hours >= 12 ? "PM" : "AM";
+      const hours12 = hours % 12 || 12; // 0 becomes 12, 13 becomes 1, and so on
+      return hours12 + ":" + String(minutes).padStart(2, "0") + " " + suffix;
+    }
+
+    // Build one card for one event and return it.
+    // We use textContent (not innerHTML) so any text in events.json is
+    // shown as plain text and can never break the page.
+    function makeCard(event) {
+      const card = document.createElement("article");
+      card.className = "event-card";
+      // The category becomes a CSS class like "cat-food-and-drink",
+      // which style.css uses to colour the card.
+      card.classList.add("cat-" + event.category.toLowerCase().replace(/\s+/g, "-"));
+
+      const category = document.createElement("span");
+      category.className = "event-category";
+      category.textContent = event.category;
+
+      const title = document.createElement("h2");
+      title.textContent = event.title;
+
+      // Show "7:30 PM" or "7:30 PM to 10:00 PM" if there's an end time.
+      let timeText = formatTime(event.start_time);
+      if (event.end_time) {
+        timeText += " to " + formatTime(event.end_time);
+      }
+
+      const when = document.createElement("p");
+      when.className = "event-when";
+      when.textContent = formatDate(event.date) + " · " + timeText;
+
+      const venue = document.createElement("p");
+      venue.className = "event-venue";
+      venue.textContent = event.venue;
+
+      const description = document.createElement("p");
+      description.textContent = event.description;
+
+      card.append(category, title, when, venue, description);
+      return card;
+    }
+
+    // Load events.json, sort it, and draw the cards.
+    // "async" lets us use "await", which waits for the file to download.
+    async function loadEvents() {
+      try {
+        const response = await fetch("events.json");
+        if (!response.ok) {
+          throw new Error("Could not load events.json (status " + response.status + ")");
+        }
+        const events = await response.json();
+
+        // Sort by date, then by start time for events on the same day.
+        // Dates like "2026-11-14" and times like "19:30" sort correctly as text.
+        events.sort(function (a, b) {
+          return (a.date + a.start_time).localeCompare(b.date + b.start_time);
+        });
+
+        // Clear the "Loading..." message.
+        list.innerHTML = "";
+
+        if (events.length === 0) {
+          list.textContent = "No events yet. Check back soon!";
+          return;
+        }
+
+        for (const event of events) {
+          list.appendChild(makeCard(event));
+        }
+      } catch (error) {
+        // If something goes wrong (a typo in events.json, for example),
+        // show a message on the page and the details in the browser console.
+        console.error(error);
+        list.textContent = "Sorry, the events couldn't be loaded right now.";
+      }
+    }
+
+    loadEvents();
+  </script>
+</body>
+</html>

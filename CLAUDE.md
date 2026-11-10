@@ -4,9 +4,19 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Current state
 
-The repo has no code yet. The only file is `SCF_WEBSITE_BRIEF.md`, the full project brief for the Search Central Florida (SCF) website. Read the whole brief before writing code. It is the source of truth for the schema, page specs and validation rules. This file only summarizes it.
+`SCF_WEBSITE_BRIEF.md` is the full project brief for the Search Central Florida (SCF) website. It is the source of truth for the schema, page specs and validation rules. This file only summarizes it.
 
-Once Phase 1 scaffolds the Astro project, add the real build, dev, lint and test commands here.
+### Starter site (what exists today)
+
+The owner asked for a simple interim starter site and set the brief's build phases aside for now. It is plain HTML, CSS and JS with **no build step**, served by GitHub Pages from `main` at the repo root (`.nojekyll` turns off Jekyll processing).
+
+- `index.html`, `about.html` and `events.html` share one `style.css` and repeat the same header, nav and footer markup by hand. If you change the nav, change it in all three files.
+- `events.html` has an inline script that `fetch`es `events.json`, sorts by `date` + `start_time` (string compare on `YYYY-MM-DD` / `HH:MM`), and builds the cards with `textContent`. Each event's `category` becomes a CSS class (`"Food and Drink"` → `.cat-food-and-drink`) that sets `--cat-colour` in `style.css`.
+- The `events.json` fields are `title`, `date`, `start_time`, optional `end_time`, `venue`, `category` and `description`. The owner edits this file by hand.
+- The owner is learning from this code. Keep it simple and well commented.
+- To preview locally, run `python3 -m http.server` from the repo root. `fetch` does not work over `file://`.
+
+The Astro plan below has not started yet. Once it does, add the real build, dev, lint and test commands here.
 
 ## Workflow rules from the brief
 
