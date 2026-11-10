@@ -51,6 +51,7 @@ Until you finish these steps, the calendar keeps working from
 1. Sign up at [cloudflare.com](https://dash.cloudflare.com/sign-up) (free) and
    open **Turnstile** in the menu. Click **Add widget**.
 2. Name it `SCF submit form`. Under hostnames, add
+   `www.searchcentralfl.com`, `searchcentralfl.com` and
    `technical-communicator.github.io` (and `localhost` if you want to test
    on your own computer). Leave the widget mode as **Managed**.
 3. You'll get two keys:
@@ -93,7 +94,7 @@ In **Edge Functions → Secrets**, add:
 | --- | --- |
 | `TURNSTILE_SECRET_KEY` | the Turnstile **Secret Key** from Step 3 |
 | `GEOCODIO_API_KEY` | your Geocodio key from Step 4 |
-| `ALLOWED_ORIGIN` | `https://technical-communicator.github.io` (optional: only lets your own site use the functions) |
+| `ALLOWED_ORIGIN` | `https://www.searchcentralfl.com` (optional: only lets your own site use the functions) |
 
 **These keys never go in the website's files.**
 

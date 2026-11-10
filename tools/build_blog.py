@@ -44,7 +44,7 @@ ROOT = Path(__file__).resolve().parent.parent
 POSTS_DIR = ROOT / "posts"
 BLOG_DIR = ROOT / "blog"
 SERIES_DIR = BLOG_DIR / "series"
-SITE_URL = "https://technical-communicator.github.io/SEARCH-Mail/"
+SITE_URL = "https://www.searchcentralfl.com/"
 MAIL_SERIES = "Monthly Mail"
 REQUIRED = ["title", "date", "description", "tags"]
 
