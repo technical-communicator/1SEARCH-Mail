@@ -138,7 +138,7 @@ def header(prefix, current):
     <!-- The logo (mascot head + name) links back to the home page. -->
     <a class="logo" href="{prefix}index.html">
       <!-- alt="" because the words next to it already name the link. -->
-      <img src="{prefix}images/mascot-head-white.webp" alt="" width="178" height="200">
+      <img src="{prefix}images/mascot-head-color.webp" alt="" width="213" height="240">
       <span class="logo-text">
         <span class="logo-name">SEARCH</span>
         <span class="logo-sub">Central Florida</span>

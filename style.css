@@ -511,25 +511,145 @@ main {
 /* =========================================================
    6. Home page
    ========================================================= */
-/* The welcome: words on one side, the mascot on the other. */
-.home-lead {
+/* ---- The hero: headline, mascot, and three feature tiles ---- */
+.home-hero {
+  padding-bottom: 0.5rem;
+}
+
+/* Headline on the left, mascot on the right, even on phones
+   (the mascot is small there so the tiles still fit on screen). */
+.home-hero-head {
   display: grid;
-  gap: 1.5rem;
+  grid-template-columns: 1fr auto;
+  gap: 0.75rem;
   align-items: center;
 }
 
-.home-lead .mascot {
-  width: min(70vw, 320px);
-  justify-self: center;
-  border: var(--border);
-  box-shadow: var(--soft-shadow);
-  transform: rotate(-3deg);
+.home-hero h1 {
+  margin: 0.4rem 0 0.6rem;
+  font-size: clamp(2.6rem, 11vw, 6.5rem);
+  line-height: 0.95;
 }
 
-.home-lead h1 {
-  margin: 0.5rem 0 1rem;
-  font-size: clamp(3rem, 11vw, 6rem);
-  line-height: 0.95;
+.home-hero .masthead-intro {
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.home-hero-mascot {
+  width: clamp(5.5rem, 24vw, 17rem);
+  transform: rotate(6deg);
+  filter: drop-shadow(3px 4px 0 rgba(0, 0, 0, 0.18));
+}
+
+/* The three feature tiles. On phones they're three compact squares in
+   a row, like app shortcuts, so all three show without scrolling.
+   On wider screens they grow and show a description too. */
+.feature-tiles {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.6rem;
+  margin-top: 1.25rem;
+}
+
+.feature-tile {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  align-content: space-between;
+  gap: 0.5rem;
+  min-height: 6.5rem;
+  padding: 0.7rem 0.6rem;
+  color: var(--ink);
+  border: var(--border);
+  box-shadow: 4px 4px 0 var(--ink);
+  text-decoration: none;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.feature-tile.series-red {
+  color: #ffffff;
+}
+
+/* Press down into the shadow on hover. */
+.feature-tile:hover {
+  color: inherit;
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 var(--ink);
+}
+
+.feature-tile.series-red:hover {
+  color: #ffffff;
+}
+
+.feature-name {
+  font-family: var(--font-display);
+  font-size: clamp(1.2rem, 6vw, 2rem);
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+/* The description only shows on wider screens. */
+.feature-text {
+  display: none;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.feature-detail {
+  font-size: 0.75rem;
+  line-height: 1.3;
+  font-weight: bold;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+/* ---- Today in Orlando ---- */
+.today-list {
+  margin: 0 0 1.5rem;
+  padding: 0;
+  list-style: none;
+  border-top: var(--rule);
+}
+
+.today-list li {
+  border-bottom: var(--rule);
+}
+
+/* One event: time on the left, title and venue on the right. */
+.today-item {
+  display: grid;
+  grid-template-columns: 5.5rem 1fr;
+  gap: 0 1rem;
+  padding: 0.9rem 0;
+  text-decoration: none;
+}
+
+.today-item:hover .today-title {
+  text-decoration: underline;
+  text-decoration-color: var(--red);
+}
+
+.today-time {
+  grid-row: span 2;
+  font-weight: bold;
+}
+
+.today-title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  line-height: 1.1;
+}
+
+.today-venue {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.today-empty {
+  padding: 0.9rem 0;
+  color: var(--muted);
 }
 
 
@@ -1659,8 +1779,35 @@ body:has(.event-dialog[open]) {
     border-left: var(--rule);
   }
 
+  /* Home: three feature tiles side by side. */
+  .feature-tiles {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    margin-top: 2rem;
+  }
+
+  .feature-tile {
+    min-height: 11rem;
+    padding: 1.25rem;
+  }
+
+  .feature-name {
+    font-size: 2.6rem;
+  }
+
+  .feature-text {
+    display: block;
+  }
+
+  .feature-detail {
+    font-size: 0.9rem;
+  }
+
+  .home-hero .masthead-intro {
+    font-size: 1.15rem;
+  }
+
   /* Words on the left, picture on the right. */
-  .home-lead,
   .mc-lead {
     grid-template-columns: 3fr 2fr;
     gap: 2rem;
@@ -1739,7 +1886,8 @@ body:has(.event-dialog[open]) {
    People who turn on "reduce motion" don't get movement effects.
    ========================================================= */
 @media (prefers-reduced-motion: reduce) {
-  .event-card:hover {
+  .event-card:hover,
+  .feature-tile:hover {
     transform: none;
   }
 

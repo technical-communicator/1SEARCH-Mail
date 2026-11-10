@@ -28,7 +28,7 @@
     <!-- The logo (mascot head + name) links back to the home page. -->
     <a class="logo" href="index.html">
       <!-- alt="" because the words next to it already name the link. -->
-      <img src="images/mascot-head-white.webp" alt="" width="178" height="200">
+      <img src="images/mascot-head-color.webp" alt="" width="213" height="240">
       <span class="logo-text">
         <span class="logo-name">SEARCH</span>
         <span class="logo-sub">Central Florida</span>
@@ -43,59 +43,53 @@
   </header>
 
   <main>
-    <!-- The masthead: words on the left, the mascot on the right
-         (on phones the mascot drops below the words). -->
-    <section class="masthead home-lead">
-      <div>
-        <p class="section-chip">Orlando arts &amp; culture</p>
-        <h1>Search Central Florida</h1>
-        <p class="masthead-intro">Your guide to the best local art, music, markets and events in Orlando, so you can get off your phone and out the door.</p>
-
-        <!-- Big buttons linking to the other pages. -->
-        <div class="buttons">
-          <a class="button" href="events.html">See events</a>
-          <a class="button button-outline" href="mailclub.html">Join the mail club</a>
+    <!-- ===== THE HERO =====
+         The first thing people see. Its job: get visitors straight to the
+         three main parts of the site. On phones the words, the mascot and
+         all three feature tiles fit on the first screen. -->
+    <section class="home-hero">
+      <div class="home-hero-head">
+        <div>
+          <p class="section-chip">Orlando arts &amp; culture</p>
+          <h1>Search Central Florida</h1>
+          <p class="masthead-intro">Your guide to the best local art, music, markets and events in Orlando, so you can get off your phone and out the door.</p>
         </div>
+        <img class="home-hero-mascot" src="images/mascot-head-color-large.webp" width="391" height="440"
+             alt="The SEARCH mascot: a girl in a purple cat-ear hood with silver ear rings">
       </div>
-      <img class="mascot" src="images/mascot.webp" width="800" height="800"
-           alt="The SEARCH mascot: a girl in a purple cat-ear hood with silver ear rings, on a red halftone background">
+
+      <!-- The three main features as big coloured tiles.
+           The little line at the bottom of each ("feature-detail") is the
+           live part: the Events one is filled in by the script below. -->
+      <nav class="feature-tiles" aria-label="Start here">
+        <a class="feature-tile series-blue" href="events.html">
+          <span class="feature-name">Events</span>
+          <span class="feature-text">Hand-picked things to do in Orlando this week.</span>
+          <span class="feature-detail" id="today-count">See what's on today &rarr;</span>
+        </a>
+        <a class="feature-tile series-pink" href="mailclub.html">
+          <span class="feature-name">Mail Club</span>
+          <span class="feature-text">Art from a local artist in your mailbox every month.</span>
+          <span class="feature-detail">From $6.99/month &rarr;</span>
+        </a>
+        <a class="feature-tile series-red" href="blog.html">
+          <span class="feature-name">Blog</span>
+          <span class="feature-text">Local artist spotlights and Orlando guides.</span>
+          <span class="feature-detail">Read the latest &rarr;</span>
+        </a>
+      </nav>
     </section>
 
-    <!-- Three cards, built just like the blog's cards: picture, big
-         headline with an arrow, a dashed rule, then a short summary.
-         The whole card is a link (see "Cards" in style.css). -->
-    <h2 class="section-head">Start here</h2>
-    <div class="post-grid">
-      <article class="post-card">
-        <div class="card-image card-image-blank series-blue"><img src="images/stamp.webp" alt=""></div>
-        <h3 class="card-title">
-          <a href="events.html">Events this week</a>
-          <span class="card-arrow" aria-hidden="true">&rarr;</span>
-        </h3>
-        <p class="card-summary">Hand-picked shows, markets, workshops and parties happening around Orlando in the next seven days.</p>
-        <p class="card-meta"><span class="series-label series-blue">Events</span></p>
-      </article>
-
-      <article class="post-card">
-        <img loading="lazy" decoding="async" class="card-image" src="images/mascot.webp" alt="">
-        <h3 class="card-title">
-          <a href="mailclub.html">SEARCH: a snail mail club</a>
-          <span class="card-arrow" aria-hidden="true">&rarr;</span>
-        </h3>
-        <p class="card-summary">Art from a different Central Florida artist in your mailbox every month, plus perks from local businesses.</p>
-        <p class="card-meta"><span class="series-label series-pink">Mail Club</span></p>
-      </article>
-
-      <article class="post-card">
-        <img loading="lazy" decoding="async" class="card-image" src="images/blog/xine-hann-collage.webp" alt="">
-        <h3 class="card-title">
-          <a href="blog.html">From the blog</a>
-          <span class="card-arrow" aria-hidden="true">&rarr;</span>
-        </h3>
-        <p class="card-summary">Local artist spotlights, Orlando guides and news from the mail club.</p>
-        <p class="card-meta"><span class="series-label series-red">Blog</span></p>
-      </article>
-    </div>
+    <!-- ===== TODAY IN ORLANDO =====
+         A short preview of today's events, read from events.json by the
+         script at the bottom of this page. -->
+    <section class="today">
+      <h2 class="section-head">Today in Orlando</h2>
+      <ol class="today-list" id="today-list">
+        <li class="today-empty">Loading today's events...</li>
+      </ol>
+      <a class="button button-outline" href="events.html">See the full week</a>
+    </section>
   </main>
 
   <!-- The full-width mail club banner. banner.js fills in this empty spot.
@@ -108,5 +102,70 @@
     <img loading="lazy" decoding="async" src="images/stamp.webp" alt="" width="600" height="600">
     <p>Follow us on Instagram: <a href="https://www.instagram.com/searchcentralfl/">@searchcentralfl</a></p>
   </footer>
+
+  <script>
+    // ------------------------------------------------------------------
+    // TODAY'S EVENTS ON THE HOME PAGE
+    // Reads events.json, finds today's events (Orlando time), and shows up
+    // to four of them, sorted by start time. It also puts today's count
+    // on the Events tile in the hero.
+    // ------------------------------------------------------------------
+    const MAX_SHOWN = 4;
+    const todayList = document.getElementById("today-list");
+    const todayCount = document.getElementById("today-count");
+
+    // Today's date in Orlando as "YYYY-MM-DD" ("en-CA" writes dates that way).
+    const today = new Intl.DateTimeFormat("en-CA", { timeZone: "America/New_York" }).format(new Date());
+
+    // "19:30" becomes "7:30 PM".
+    function formatTime(timeText) {
+      const [hours, minutes] = timeText.split(":").map(Number);
+      return (hours % 12 || 12) + ":" + String(minutes).padStart(2, "0") + (hours >= 12 ? " PM" : " AM");
+    }
+
+    // Make an element with a class and some text (textContent keeps it safe).
+    function make(tag, className, text) {
+      const element = document.createElement(tag);
+      element.className = className;
+      element.textContent = text;
+      return element;
+    }
+
+    fetch("events.json")
+      .then(function (response) { return response.json(); })
+      .then(function (events) {
+        const todays = events
+          .filter(function (event) { return event.date === today; })
+          .sort(function (a, b) { return a.start_time.localeCompare(b.start_time); });
+
+        todayList.innerHTML = "";
+
+        if (todays.length === 0) {
+          todayList.append(make("li", "today-empty", "Nothing on the calendar for today yet. Check the rest of the week!"));
+          return;
+        }
+
+        todayCount.innerHTML = "";
+        todayCount.textContent = (todays.length === 1 ? "1 event" : todays.length + " events") + " today \u2192";
+
+        todays.slice(0, MAX_SHOWN).forEach(function (event) {
+          // Each row links to the events page, opened on today.
+          const item = document.createElement("li");
+          const link = make("a", "today-item", "");
+          link.href = "events.html?day=" + today;
+          link.append(
+            make("span", "today-time", formatTime(event.start_time)),
+            make("span", "today-title", event.title),
+            make("span", "today-venue", event.venue)
+          );
+          item.append(link);
+          todayList.append(item);
+        });
+      })
+      .catch(function () {
+        todayList.innerHTML = "";
+        todayList.append(make("li", "today-empty", "Couldn't load today's events. See the events page."));
+      });
+  </script>
 </body>
 </html>
