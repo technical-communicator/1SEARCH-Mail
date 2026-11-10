@@ -3,8 +3,8 @@
      Its job is to get visitors to join on Patreon.
 
      It opens with the pink mail club banner (from banner.js), then the
-     tiers as envelopes you can open, then the details: what's inside,
-     how it works, the artists and perks, a letter, past mailers and FAQ.
+     tiers, what's inside, the artists and perks, how it works, past
+     features and the FAQ.
      The styles are in style.css, section "9. Mail club page".
 
      THE PATREON LINK: every "Join" button gets its address from
@@ -55,94 +55,99 @@
   <script src="banner.js"></script>
 
   <main>
-    <!-- ===== CHOOSE YOUR TIER: envelopes you can open =====
-         Each envelope is a tab. Tapping one "pulls out" its letter below with
-         the details and a Join button. The script at the bottom of this page
-         makes the tabs work. Without JavaScript, all three letters simply
-         show one after another. -->
+    <!-- ===== CHOOSE YOUR TIER =====
+         Three cards in the same style as the blog's cards, each with a
+         coloured price block on top so they stand out as the tiers.
+         A link like mailclub.html?tier=print highlights that card (the
+         tier tiles in the banner do this). -->
     <section id="tiers">
       <h2 class="section-head">Choose your subscription</h2>
-      <p class="reading">hi everyone! welcome to SEARCH: a snail mail club by <a href="https://www.instagram.com/searchcentralfl/">@searchcentralfl</a>. pick an envelope to see what's inside each tier.</p>
+      <p class="reading">hi everyone! welcome to SEARCH: a snail mail club by <a href="https://www.instagram.com/searchcentralfl/">@searchcentralfl</a>. pick the tier that's right for you. you can cancel any time.</p>
 
-      <div class="envelope-tabs" role="tablist" aria-label="Subscription tiers">
-        <button class="env-tab" type="button" role="tab" id="tab-sticker"
-                aria-controls="panel-sticker" aria-selected="true">
-          <span class="env-card"><span class="env-name">sticker supporter</span><span class="env-price">$6.99</span></span>
-        </button>
-        <button class="env-tab" type="button" role="tab" id="tab-print"
-                aria-controls="panel-print" aria-selected="false">
-          <span class="env-card"><span class="env-name">print collector</span><span class="env-price">$8.99</span></span>
-        </button>
-        <button class="env-tab" type="button" role="tab" id="tab-curator"
-                aria-controls="panel-curator" aria-selected="false">
-          <span class="env-card"><span class="env-name">print &amp; sticker curator</span><span class="env-price">$12.99</span></span>
-        </button>
-      </div>
+      <div class="tier-grid">
+        <article class="tier-card" id="tier-sticker">
+          <div class="tier-top series-pink">
+            <span class="tier-price">$6.99</span><span class="tier-per">/ month</span>
+          </div>
+          <h3 class="card-title">Sticker supporter</h3>
+          <ul class="tier-includes">
+            <li>vinyl sticker or sticker sheet by the featured artist</li>
+            <li>a discount to one of our favorite local businesses</li>
+            <li>the @searchcentralfl newsletter</li>
+          </ul>
+          <a class="button tier-join" href="https://patreon.com/SearchCentralFlorida?utm_medium=unknown&amp;utm_source=join_link&amp;utm_campaign=creatorshare_creator&amp;utm_content=copyLink" data-patreon>Join as a sticker supporter</a>
+        </article>
 
-      <!-- The three letters. Only the chosen one shows (the others get "hidden"). -->
-      <div class="tier-letter" role="tabpanel" id="panel-sticker" aria-labelledby="tab-sticker">
-        <h3>sticker supporter <span>$6.99/month</span></h3>
-        <ul>
-          <li>vinyl sticker or sticker sheet by the featured artist</li>
-          <li>a discount to one of our favorite local businesses</li>
-          <li>the @searchcentralfl newsletter</li>
-        </ul>
-        <a class="button" href="https://www.patreon.com/" data-patreon>Join as a sticker supporter</a>
-      </div>
+        <article class="tier-card" id="tier-print">
+          <div class="tier-top series-blue">
+            <span class="tier-price">$8.99</span><span class="tier-per">/ month</span>
+          </div>
+          <h3 class="card-title">Print collector</h3>
+          <ul class="tier-includes">
+            <li>4x6 art print by the featured artist</li>
+            <li>a discount to one of our favorite local businesses</li>
+            <li>the @searchcentralfl newsletter</li>
+          </ul>
+          <a class="button tier-join" href="https://patreon.com/SearchCentralFlorida?utm_medium=unknown&amp;utm_source=join_link&amp;utm_campaign=creatorshare_creator&amp;utm_content=copyLink" data-patreon>Join as a print collector</a>
+        </article>
 
-      <div class="tier-letter" role="tabpanel" id="panel-print" aria-labelledby="tab-print">
-        <h3>print collector <span>$8.99/month</span></h3>
-        <ul>
-          <li>4x6 art print by the featured artist</li>
-          <li>a discount to one of our favorite local businesses</li>
-          <li>the @searchcentralfl newsletter</li>
-        </ul>
-        <a class="button" href="https://www.patreon.com/" data-patreon>Join as a print collector</a>
-      </div>
-
-      <div class="tier-letter" role="tabpanel" id="panel-curator" aria-labelledby="tab-curator">
-        <p class="tier-flag">the complete monthly drop</p>
-        <h3>print &amp; sticker curator <span>$12.99/month</span></h3>
-        <ul>
-          <li>art print AND sticker from the featured artist</li>
-          <li>a discount to one of our favorite local businesses</li>
-          <li>the @searchcentralfl newsletter</li>
-          <li>first dibs on any future curator-tier perks we roll out</li>
-        </ul>
-        <a class="button" href="https://www.patreon.com/" data-patreon>Join as a curator</a>
+        <article class="tier-card" id="tier-curator">
+          <div class="tier-top series-yellow">
+            <span class="tier-flag">the complete monthly drop</span>
+            <span class="tier-price">$12.99</span><span class="tier-per">/ month</span>
+          </div>
+          <h3 class="card-title">Print &amp; sticker curator</h3>
+          <ul class="tier-includes">
+            <li>art print AND sticker from the featured artist</li>
+            <li>a discount to one of our favorite local businesses</li>
+            <li>the @searchcentralfl newsletter</li>
+            <li>first dibs on any future curator-tier perks we roll out</li>
+          </ul>
+          <a class="button tier-join" href="https://patreon.com/SearchCentralFlorida?utm_medium=unknown&amp;utm_source=join_link&amp;utm_campaign=creatorshare_creator&amp;utm_content=copyLink" data-patreon>Join as a curator</a>
+        </article>
       </div>
     </section>
 
-    <!-- ===== WHAT'S INSIDE: the back of a red polka-dot envelope ===== -->
-    <section class="mc-envelope">
-      <div class="letter-card">
+    <!-- ===== WHAT'S INSIDE =====
+         One card per thing in the mailer, in the same card style as the
+         blog. The pictures are this month's real mailer (images/mailer/).
+         EACH MONTH: swap the pictures and the "november's..." lines. -->
+    <section aria-labelledby="inside-heading">
+      <h2 class="section-head" id="inside-heading">What's inside</h2>
+      <p class="reading">every mailer is built around one local artist and one local business. here's what came in november's, featuring <a href="blog/featured-artist-xine-hann.html">Xine Hann</a> and <a href="blog/featured-business-florida-coffee-festival.html">Florida Coffee Festival</a>:</p>
 
-        <!-- A collage of this month's real mailer, laid out like it just came
-             out of the envelope. The pictures live in images/mailer/.
-             EACH MONTH: swap in the new month's pictures (same file names
-             or change the src="..." below). -->
-        <div class="collage" role="img"
-             aria-label="November's mailer: a collage art print and two stickers by Xine Hann, a Florida Coffee Festival perk card, and a letter from SEARCH">
-          <div class="c-envelope"></div>
-          <img loading="lazy" decoding="async" class="c-letter" src="images/mailer/november-letter.webp" alt="" width="500" height="917">
-          <img loading="lazy" decoding="async" class="c-print" src="images/mailer/xine-print.webp" alt="" width="700" height="990">
-          <img loading="lazy" decoding="async" class="c-perk" src="images/mailer/coffee-fest-card.webp" alt="" width="500" height="750">
-          <img loading="lazy" decoding="async" class="c-sticker c-sticker-1" src="images/mailer/xine-sticker-rose.webp" alt="" width="400" height="555">
-          <img loading="lazy" decoding="async" class="c-sticker c-sticker-2" src="images/mailer/xine-sticker-flowers.webp" alt="" width="400" height="474">
-        </div>
+      <div class="inside-grid">
+        <article class="post-card inside-card">
+          <div class="inside-photo"><img loading="lazy" src="images/mailer/xine-print-small.webp" width="460" height="651"
+               alt="A 4x6 collage print by Xine Hann: an eye made of a Central Florida street map"></div>
+          <h3 class="card-title">A 4x6 art print</h3>
+          <p class="card-summary">an original print from the month's featured artist. november's is a collage by xine hann.</p>
+          <p class="card-meta"><span class="series-label series-blue">Print collector</span><span class="series-label series-yellow">Curator</span></p>
+        </article>
 
-        <div>
-          <h2>What's inside?</h2>
-          <ul class="inside-list">
-            <li>a 4x6 art print by the month's featured artist</li>
-            <li>a vinyl sticker or sticker sheet by the featured artist</li>
-            <li>a discount to one of our favorite local businesses</li>
-            <li>the @searchcentralfl newsletter</li>
-            <li>first dibs on future perks, for curators</li>
-          </ul>
-          <p class="inside-note">pictured: november's mailer, with art by <a href="blog/featured-artist-xine-hann.html">Xine Hann</a> and a perk from <a href="blog/featured-business-florida-coffee-festival.html">Florida Coffee Festival</a>. what you get depends on your tier. <a href="#tiers">compare the tiers</a></p>
-        </div>
+        <article class="post-card inside-card">
+          <div class="inside-photo"><img loading="lazy" src="images/mailer/xine-sticker-flowers-small.webp" width="280" height="332"
+               alt="A die-cut sticker by Xine Hann: halftone flowers in pink, yellow and blue"></div>
+          <h3 class="card-title">A vinyl sticker</h3>
+          <p class="card-summary">a sticker or sticker sheet by the featured artist, for your journal, water bottle or wherever it fits.</p>
+          <p class="card-meta"><span class="series-label series-pink">Sticker supporter</span><span class="series-label series-yellow">Curator</span></p>
+        </article>
 
+        <article class="post-card inside-card">
+          <div class="inside-photo"><img loading="lazy" src="images/mailer/coffee-fest-card.webp" width="500" height="750"
+               alt="The Florida Coffee Festival perk card: Drink Local Coffee, November 15th"></div>
+          <h3 class="card-title">A local perk</h3>
+          <p class="card-summary">a discount at one of our favorite local businesses. november's: 20% off florida coffee festival tickets.</p>
+          <p class="card-meta"><span class="series-label series-red">Every tier</span></p>
+        </article>
+
+        <article class="post-card inside-card">
+          <div class="inside-photo"><img loading="lazy" src="images/mailer/november-letter.webp" width="500" height="917"
+               alt="November's letter from SEARCH, typed on pink paper"></div>
+          <h3 class="card-title">The newsletter</h3>
+          <p class="card-summary">a letter from us about the month's artist, the business and what's happening around central florida.</p>
+          <p class="card-meta"><span class="series-label series-red">Every tier</span></p>
+        </article>
       </div>
     </section>
 
@@ -185,14 +190,6 @@
       <p>build your art collection with the talent right here in central florida.</p>
     </div>
 
-
-    <!-- ===== WHY: a letter from the founders ===== -->
-    <h2 class="section-head">Why a snail mail club?</h2>
-    <div class="founders-letter taped">
-      <p>the best things don't live on a screen. we created SEARCH: a snail mail club for people who believe in supporting local artists directly, who want to discover central florida beyond the tourist traps, and who still think there's something special about receiving snail mail.</p>
-      <p>see you in your mailbox!</p>
-      <p class="signature">halley &amp; zach &lt;3</p>
-    </div>
 
     <!-- ===== PAST FEATURES =====
          Browse each month's featured artist and business. The months come
@@ -245,7 +242,7 @@
       </details>
       <details>
         <summary>How do I cancel?</summary>
-        <p>you can cancel any time on Patreon, no questions asked.</p>
+        <p>you can cancel any time on <a href="https://patreon.com/SearchCentralFlorida?utm_medium=unknown&amp;utm_source=join_link&amp;utm_campaign=creatorshare_creator&amp;utm_content=copyLink" data-patreon>Patreon</a>, no questions asked.</p>
       </details>
     </div>
 
@@ -309,45 +306,10 @@
     // Put the SEARCH Patreon page address here. Every link on this page
     // with "data-patreon" will use it.
     // ------------------------------------------------------------------
-    const PATREON_URL = "https://www.patreon.com/";
+    const PATREON_URL = "https://patreon.com/SearchCentralFlorida?utm_medium=unknown&utm_source=join_link&utm_campaign=creatorshare_creator&utm_content=copyLink";
 
     document.querySelectorAll("[data-patreon]").forEach(function (link) {
       link.href = PATREON_URL;
-    });
-
-    // ------------------------------------------------------------------
-    // THE ENVELOPE TABS
-    // Tapping an envelope shows that tier's letter and hides the others.
-    // The left and right arrow keys move between envelopes, which is how
-    // tabs normally work for keyboard users.
-    // ------------------------------------------------------------------
-    const tabs = Array.from(document.querySelectorAll(".env-tab"));
-
-    function chooseTab(chosen) {
-      tabs.forEach(function (tab) {
-        const isChosen = tab === chosen;
-        tab.setAttribute("aria-selected", isChosen ? "true" : "false");
-        // Only the chosen tab is reachable with Tab; arrows reach the others.
-        tab.tabIndex = isChosen ? 0 : -1;
-        // aria-controls holds the id of the letter that goes with this tab.
-        document.getElementById(tab.getAttribute("aria-controls")).hidden = !isChosen;
-      });
-    }
-
-    tabs.forEach(function (tab, index) {
-      tab.addEventListener("click", function () {
-        chooseTab(tab);
-      });
-
-      tab.addEventListener("keydown", function (event) {
-        let next = null;
-        if (event.key === "ArrowRight") next = tabs[(index + 1) % tabs.length];
-        if (event.key === "ArrowLeft") next = tabs[(index - 1 + tabs.length) % tabs.length];
-        if (next) {
-          chooseTab(next);
-          next.focus();
-        }
-      });
     });
 
     // ------------------------------------------------------------------
@@ -435,12 +397,13 @@
         featurePair.textContent = "Couldn't load the past features right now.";
       });
 
-    // Which envelope starts open? Links can ask for one, like
-    // mailclub.html?tier=print (the tier tiles in the banner do this).
-    // Otherwise, start with the first envelope.
+    // ------------------------------------------------------------------
+    // A link like mailclub.html?tier=print (from the banner's tier tiles)
+    // highlights that tier's card.
+    // ------------------------------------------------------------------
     const askedFor = new URLSearchParams(location.search).get("tier");
-    const startTab = document.getElementById("tab-" + askedFor) || tabs[0];
-    chooseTab(startTab);
+    const chosenCard = askedFor && document.getElementById("tier-" + askedFor);
+    if (chosenCard) chosenCard.classList.add("is-chosen");
   </script>
 </body>
 </html>

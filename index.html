@@ -46,13 +46,15 @@
     <!-- ===== THE HERO: a short intro, then three slides =====
          One slide for each main part of the site. They sit side by side
          in a row you can swipe, and the script at the bottom of this page
-         moves to the next one every 6 seconds. -->
+         moves to the next one every 3 seconds. -->
     <section class="home-hero">
       <p class="section-chip">Orlando arts &amp; culture</p>
       <h1>Search Central Florida</h1>
       <p class="masthead-intro">Your guide to local art, music, markets and events, so you can get off your phone and out the door.</p>
 
-      <!-- aria-roledescription tells screen readers this is a carousel. -->
+      <!-- aria-roledescription tells screen readers this is a carousel.
+           The script adds hidden copies of the first and last slides so
+           the slides can loop forever in one direction. -->
       <div class="slider" aria-roledescription="carousel" aria-label="Start here">
         <div class="slides" id="slides">
 
@@ -96,10 +98,8 @@
 
         </div>
 
-        <!-- The controls: a dot for each slide, and a pause button
-             (anything that moves on its own needs a way to stop it). -->
+        <!-- A dot for each slide, showing which one is up. Tap to jump. -->
         <div class="slider-controls">
-          <button class="slider-pause" type="button" id="slider-pause" aria-label="Pause the slides">&#10074;&#10074;</button>
           <div class="slider-dots" id="slider-dots">
             <button type="button" class="slider-dot" aria-label="Show slide 1: Events"></button>
             <button type="button" class="slider-dot" aria-label="Show slide 2: Mail club"></button>
@@ -237,81 +237,109 @@
   <script>
     // ------------------------------------------------------------------
     // THE HERO SLIDES
-    // The slides sit side by side in a row that scrolls sideways (CSS
-    // "scroll-snap" makes each one click into place when you swipe).
-    // Every 6 seconds we scroll to the next one. It pauses when someone
-    // touches, hovers over or tabs into the slides, or presses Pause.
-    // People who turn on "reduce motion" start paused.
+    // The slides sit side by side in a row you can swipe (CSS "scroll-snap"
+    // makes each one click into place). Every 3 seconds the row glides to
+    // the next slide, always from right to left, in a never-ending loop.
+    //
+    // How the loop works: we add a copy of the LAST slide before the first
+    // one, and a copy of the FIRST slide after the last one:
+    //     [copy of 3] [1] [2] [3] [copy of 1]
+    // After slide 3, the row glides on to "copy of 1", which looks exactly
+    // like slide 1, then instantly (invisibly) jumps back to the real
+    // slide 1. Swiping backwards past slide 1 works the same way.
+    //
+    // It holds still while someone is touching, hovering over or tabbing
+    // through the slides, and for people who turn on "reduce motion".
     // ------------------------------------------------------------------
-    const SECONDS_PER_SLIDE = 6;
+    const SECONDS_PER_SLIDE = 3;
     const slideRow = document.getElementById("slides");
-    const slides = Array.from(slideRow.children);
+    const realSlides = Array.from(slideRow.children);
+    const COUNT = realSlides.length;
     const dots = Array.from(document.querySelectorAll(".slider-dot"));
-    const pauseButton = document.getElementById("slider-pause");
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    let current = 0;          // which slide is showing (0, 1 or 2)
-    let paused = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    let userIsHere = false;   // true while a finger, mouse or keyboard is on the slides
+    // Make a copy of a slide that screen readers and the keyboard skip.
+    function copyOf(slide) {
+      const copy = slide.cloneNode(true);
+      copy.setAttribute("aria-hidden", "true");
+      copy.querySelectorAll("a, button").forEach(function (el) { el.tabIndex = -1; });
+      copy.querySelectorAll("[id]").forEach(function (el) { el.removeAttribute("id"); });
+      return copy;
+    }
+    slideRow.prepend(copyOf(realSlides[COUNT - 1]));
+    slideRow.append(copyOf(realSlides[0]));
+    const allSlides = Array.from(slideRow.children);  // real slide 1 is now at position 1
 
-    // Scroll the row so slide number "index" is showing.
-    function goTo(index) {
-      current = (index + slides.length) % slides.length;  // wrap 3 back to 0
-      slideRow.scrollTo({ left: slides[current].offsetLeft - slideRow.offsetLeft, behavior: "smooth" });
+    let position = 1;        // which slide in allSlides is showing
+    let userIsHere = false;  // true while a finger, mouse or keyboard is on the slides
+
+    // How far the row must scroll to show the slide at a position.
+    function leftOf(p) {
+      return allSlides[p].offsetLeft - allSlides[0].offsetLeft;
+    }
+    function jumpTo(p) {   // instantly, no animation
+      position = p;
+      slideRow.scrollTo({ left: leftOf(p), behavior: "instant" });
+      showDot();
+    }
+    function glideTo(p) {  // with a smooth slide
+      position = p;
+      slideRow.scrollTo({ left: leftOf(p), behavior: "smooth" });
       showDot();
     }
 
-    // Light up the dot for the current slide.
+    // Which real slide is showing (0, 1 or 2), counting copies as the real one.
+    function realIndex() {
+      return (position - 1 + COUNT) % COUNT;
+    }
     function showDot() {
       dots.forEach(function (dot, i) {
-        dot.setAttribute("aria-current", i === current ? "true" : "false");
+        dot.setAttribute("aria-current", i === realIndex() ? "true" : "false");
       });
     }
 
-    // When someone swipes by hand, work out which slide they landed on.
+    // When the row stops moving (after a glide or a swipe), work out where
+    // it stopped. If that's one of the copies, jump to the real slide.
+    let settleTimer = null;
     slideRow.addEventListener("scroll", function () {
-      const width = slides[0].offsetWidth;
-      const landed = Math.round(slideRow.scrollLeft / width);
-      if (landed !== current) {
-        current = landed;
-        showDot();
-      }
+      clearTimeout(settleTimer);
+      settleTimer = setTimeout(settle, 120);
     });
-
-    // Tapping a dot jumps to that slide.
-    dots.forEach(function (dot, i) {
-      dot.addEventListener("click", function () { goTo(i); });
-    });
-
-    // The Pause / Play button.
-    function showPauseState() {
-      pauseButton.innerHTML = paused ? "&#9654;" : "&#10074;&#10074;";  // ▶ or ❚❚
-      pauseButton.setAttribute("aria-label", paused ? "Play the slides" : "Pause the slides");
+    function settle() {
+      let nearest = 0;
+      allSlides.forEach(function (slide, p) {
+        if (Math.abs(leftOf(p) - slideRow.scrollLeft) < Math.abs(leftOf(nearest) - slideRow.scrollLeft)) nearest = p;
+      });
+      if (nearest === 0) jumpTo(COUNT);              // the copy of the last slide
+      else if (nearest === COUNT + 1) jumpTo(1);     // the copy of the first slide
+      else { position = nearest; showDot(); }
     }
-    pauseButton.addEventListener("click", function () {
-      paused = !paused;
-      showPauseState();
+
+    // Tapping a dot glides to that slide.
+    dots.forEach(function (dot, i) {
+      dot.addEventListener("click", function () { glideTo(i + 1); });
     });
 
-    // Don't move while someone is using the slides.
+    // Hold still while someone is using the slides.
     const slider = document.querySelector(".slider");
-    ["pointerenter", "touchstart", "focusin"].forEach(function (name) {
-      slider.addEventListener(name, function () { userIsHere = true; }, { passive: true });
-    });
-    ["pointerleave", "focusout"].forEach(function (name) {
-      slider.addEventListener(name, function () { userIsHere = false; });
-    });
+    slider.addEventListener("pointerenter", function (e) { if (e.pointerType === "mouse") userIsHere = true; });
+    slider.addEventListener("pointerleave", function (e) { if (e.pointerType === "mouse") userIsHere = false; });
+    slider.addEventListener("focusin", function () { userIsHere = true; });
+    slider.addEventListener("focusout", function () { userIsHere = false; });
+    slider.addEventListener("touchstart", function () { userIsHere = true; }, { passive: true });
     slider.addEventListener("touchend", function () {
-      // After a swipe, wait one full turn before moving again.
+      // After a swipe, wait a moment before moving on again.
       setTimeout(function () { userIsHere = false; }, SECONDS_PER_SLIDE * 1000);
     });
 
-    // The timer that moves the slides along.
+    // Every 3 seconds, glide one slide to the left.
     setInterval(function () {
-      if (!paused && !userIsHere && !document.hidden) goTo(current + 1);
+      if (!reduceMotion && !userIsHere && !document.hidden) glideTo(position + 1);
     }, SECONDS_PER_SLIDE * 1000);
 
-    showDot();
-    showPauseState();
+    // Start on the real first slide (and stay lined up if the window resizes).
+    jumpTo(1);
+    window.addEventListener("resize", function () { jumpTo(position); });
   </script>
 </body>
 </html>

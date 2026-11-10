@@ -687,8 +687,7 @@ main {
 }
 
 /* Each dot is a 44px tap target with a small dot drawn in the middle. */
-.slider-dot,
-.slider-pause {
+.slider-dot {
   display: grid;
   place-items: center;
   width: 2.75rem;
@@ -716,9 +715,6 @@ main {
   background: var(--ink);
 }
 
-.slider-pause {
-  font-size: 0.8rem;
-}
 
 /* ---- Today in Orlando ---- */
 .today-list {
@@ -1459,166 +1455,13 @@ body:has(.event-dialog[open]) {
 
 /* =========================================================
    9. Mail club page
-   Same system as the rest of the site, plus some cutesy mail touches:
-   a scrolling handwritten banner, a red polka-dot "envelope", a collage
-   of mail, and the tiers as envelopes you can open.
+   Same system as the rest of the site: notes with washi tape, numbered
+   steps, tier cards and "what's inside" cards in the blog's card style.
    ========================================================= */
 
 /* The scrolling loop used by the banner's ticker (section 15). */
 @keyframes marquee {
   to { transform: translateX(-50%); }
-}
-
-/* ---- The red polka-dot envelope ----
-   Two layers of round dots (radial gradients) make the polka dots.
-   clip-path cuts the top into a point, like an envelope flap. */
-.mc-envelope {
-  background-color: var(--red-bright);
-  background-image:
-    radial-gradient(circle, var(--red-dark) 0 9px, transparent 10px),
-    radial-gradient(circle, var(--red-dark) 0 9px, transparent 10px);
-  background-size: 44px 44px;
-  background-position: 0 0, 22px 22px;
-}
-
-.mc-envelope {
-  padding: 3.5rem 1rem 1.25rem;
-  clip-path: polygon(0 3rem, 50% 0, 100% 3rem, 100% 100%, 0 100%);
-}
-
-/* The dusty blue letter inside the envelope. */
-.letter-card {
-  display: grid;
-  gap: 1.5rem;
-  padding: 1.5rem;
-  background: var(--dusty);
-}
-
-/* Let both halves of the letter shrink on narrow screens. */
-.letter-card > * {
-  min-width: 0;
-}
-
-.letter-card h2 {
-  margin: 0 0 1rem;
-  font-size: clamp(2.2rem, 6vw, 3rem);
-}
-
-.inside-list {
-  margin: 0 0 1rem;
-  padding: 0;
-  list-style: none;
-}
-
-.inside-list li {
-  position: relative;
-  padding: 0.3rem 0 0.3rem 1.75rem;
-}
-
-/* A tiny red postage stamp instead of a bullet point. */
-.inside-list li::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0.7rem;
-  width: 0.9rem;
-  height: 0.9rem;
-  background: var(--red-bright);
-  border: 2px dotted var(--cream);
-}
-
-.inside-note {
-  margin: 0;
-  font-size: 0.95rem;
-}
-
-/* ---- The collage: this month's real mailer, to scale ----
-   Everything is sized from its real size in inches, using one scale:
-   the collage is 13 inches wide, so 1 inch = 100% / 13 = about 7.7%.
-     letter          6 x 11 in   ->  width 46.2%
-     art print       4 x 6 in    ->  width 30.8%
-     coffee fest card 4 x 6 in   ->  width 30.8%
-     stickers        2.5 in at their longest side
-     envelope        a standard #10 envelope, 9.5 x 4.125 in -> width 73%
-   (The --in value below is "one inch". Change sizes by changing the
-   number of inches, e.g. width: calc(var(--in) * 4).)
-   Positions are hand-placed with a little tilt, like things tipped out
-   of the envelope onto a table. */
-.collage {
-  --in: calc(100% / 13);
-  position: relative;
-  aspect-ratio: 1 / 1;
-}
-
-.collage > * {
-  position: absolute;
-}
-
-/* The envelope, behind everything: cream with a V-shaped flap. */
-.c-envelope {
-  left: 22%;
-  bottom: 2%;
-  width: calc(var(--in) * 9.5);
-  aspect-ratio: 9.5 / 4.125;
-  background: #f4ecdc;
-  box-shadow: var(--soft-shadow);
-}
-
-.c-envelope::before {
-  content: "";
-  position: absolute;
-  inset: 0 0 auto 0;
-  height: 60%;
-  background: #e6d9bf;
-  clip-path: polygon(0 0, 100% 0, 50% 100%);
-}
-
-/* The 6 x 11 in letter from SEARCH. */
-.c-letter {
-  left: 1%;
-  top: 2%;
-  width: calc(var(--in) * 6);
-  box-shadow: var(--soft-shadow);
-  transform: rotate(-4deg);
-}
-
-/* Xine Hann's 4 x 6 in art print. */
-.c-print {
-  left: 38%;
-  top: 4%;
-  width: calc(var(--in) * 4);
-  box-shadow: 4px 6px 0 rgba(0, 0, 0, 0.25);
-  transform: rotate(4deg);
-}
-
-/* The 4 x 6 in Florida Coffee Festival card. */
-.c-perk {
-  right: 1%;
-  top: 26%;
-  width: calc(var(--in) * 4);
-  box-shadow: var(--soft-shadow);
-  transform: rotate(8deg);
-}
-
-/* The two 2.5 in stickers. Their widths are a bit under 2.5 in because
-   they're taller than they are wide. They have see-through backgrounds,
-   so the shadow follows their shape. */
-.c-sticker {
-  filter: drop-shadow(2px 3px 0 rgba(0, 0, 0, 0.3));
-}
-
-.c-sticker-1 {
-  left: 30%;
-  bottom: 6%;
-  width: calc(var(--in) * 1.8);   /* 400 x 555 picture: 1.8 x 2.5 in */
-  transform: rotate(-10deg);
-}
-
-.c-sticker-2 {
-  left: 52%;
-  bottom: 3%;
-  width: calc(var(--in) * 2.1);   /* 400 x 474 picture: 2.1 x 2.5 in */
-  transform: rotate(12deg);
 }
 
 /* ---- Two side-by-side notes: the artists and the local perks ---- */
@@ -1712,160 +1555,113 @@ body:has(.event-dialog[open]) {
   font-size: 1.2rem;
 }
 
-/* ---- Choose your subscription: envelope tabs ----
-   Each tab is drawn in three layers:
-   ::before = the back of the envelope, with its flap opened up
-   .env-card = the card inside, which slides up when chosen
-   ::after  = the front pocket, which hides the bottom of the card */
-.envelope-tabs {
-  display: flex;
-  justify-content: center;
-  gap: 0.5rem;
-  margin: 2rem 0 0;  /* room above for a card when it slides up */
+/* ---- Choose your subscription: three tier cards ----
+   Built like the blog's cards (Anton title, dashed rule, thin rules),
+   but with a coloured price block on top so they read as the tiers. */
+.tier-grid {
+  display: grid;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
 }
 
-/* All three envelopes share the row equally, up to 11rem wide each. */
-.env-tab {
-  position: relative;
-  flex: 1 1 0;
-  max-width: 11rem;
-  height: 9.5rem;
-  padding: 0;
-  background: none;
-  border: 0;
-  font: inherit;
-  cursor: pointer;
-}
-
-.env-tab::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 7.5rem;
-  background: #e2d4b8;
-  clip-path: polygon(0 28%, 50% 0, 100% 28%, 100% 100%, 0 100%);
-}
-
-.env-card {
-  position: absolute;
-  z-index: 1;
-  left: 10%;
-  right: 10%;
-  bottom: 1.5rem;
-  height: 6.5rem;
+.tier-card {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 0.15rem;
-  padding: 0.5rem 0.25rem 0;
-  background: #ffffff;
-  border: 2px solid transparent;
-  transition: transform 0.25s ease-out;
+  padding-bottom: 1.25rem;
+  border-bottom: var(--rule);
 }
 
-.env-tab::after {
-  content: "";
-  position: absolute;
-  z-index: 2;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 4rem;
-  background: #ece2cc;
-  clip-path: polygon(0 0, 50% 50%, 100% 0, 100% 100%, 0 100%);
+/* The coloured block with the price, in halftone dots like the site's art. */
+.tier-top {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  min-height: 8rem;
+  margin-bottom: 1rem;
+  padding: 2.25rem 1.25rem 1.25rem;
+  border: var(--border);
+  background-image: radial-gradient(rgba(255, 255, 255, 0.4) 1.6px, transparent 2px);
+  background-size: 10px 10px;
 }
 
-.env-name {
+.tier-price {
   font-family: var(--font-display);
-  font-size: clamp(0.9rem, 3.4vw, 1.15rem);
-  line-height: 1.1;
-  color: var(--red-bright);
-  text-align: center;
+  font-size: 3.5rem;
+  line-height: 1;
 }
 
-.env-price {
-  font-size: 0.95rem;
-  font-weight: bold;
-  color: var(--ink);
-}
-
-/* Peek out a little on hover; pull all the way out when chosen. */
-.env-tab:hover .env-card {
-  transform: translateY(-0.6rem);
-}
-
-.env-tab[aria-selected="true"] .env-card {
-  transform: translateY(-1.5rem);
-  border-color: var(--red-bright);
-}
-
-/* The letter for the chosen tier, on lined paper. */
-.tier-letter {
-  max-width: 36rem;
-  margin: 0.5rem auto 0;
-  padding: 1.5rem;
-  background-color: var(--cream);
-  background-image: repeating-linear-gradient(transparent 0 1.8rem, rgba(79, 122, 137, 0.18) 1.8rem calc(1.8rem + 1px));
-  border: var(--rule);
-}
-
-.tier-letter h3 {
-  margin: 0 0 0.75rem;
-  font-size: 2.2rem;
-}
-
-.tier-letter h3 span {
-  display: block;
-  margin-top: 0.25rem;
-  font-family: var(--font-type);
-  font-size: 1.05rem;
+.tier-per {
   font-weight: bold;
 }
 
-.tier-letter ul {
-  margin: 0 0 1.5rem;
-  padding-left: 1.25rem;
-}
-
-/* The purple "the complete monthly drop" label on the curator letter.
-   It sits inside the letter (not on its edge), so it never overlaps. */
+/* "The complete monthly drop" label on the curator card. */
 .tier-flag {
-  display: inline-block;
-  margin: 0 0 0.5rem;
-  padding: 0.1rem 0.6rem;
-  background: var(--purple);
+  position: absolute;
+  top: 0.75rem;
+  left: 1.25rem;
+  padding: 0 0.5rem;
+  background: var(--ink);
   color: #ffffff;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   font-weight: bold;
   text-transform: uppercase;
 }
 
-/* ---- The founders' letter: pink lined paper ---- */
-.founders-letter {
-  position: relative;  /* for its strip of tape */
-  max-width: 42rem;
-  padding: 2.25rem 1.75rem 1.75rem;
-  background-color: #fde3ea;
-  background-image: repeating-linear-gradient(transparent 0 1.8rem, rgba(200, 22, 60, 0.15) 1.8rem calc(1.8rem + 1px));
-  border: var(--rule);
+.tier-card .card-title {
+  margin-bottom: 0.75rem;
 }
 
-.founders-letter::before {
-  background: rgba(143, 179, 191, 0.85);  /* dusty blue tape */
+/* What's included: a dashed rule on top, like a blog card's summary. */
+.tier-includes {
+  flex: 1;
+  margin: 0 0 1.25rem;
+  padding: 1rem 0 0 1.25rem;
+  border-top: 1px dashed rgba(20, 20, 20, 0.45);
 }
 
-.founders-letter p:first-child {
-  margin-top: 0;
+.tier-includes li {
+  margin-bottom: 0.35rem;
 }
 
-.signature {
-  margin: 1rem 0 0;
-  font-family: var(--font-script);
-  font-size: 2.1rem;
-  line-height: 1.2;
-  color: var(--red-bright);
+.tier-join {
+  align-self: flex-start;
+}
+
+/* Highlighted when someone arrives from a banner tile (?tier=...). */
+.tier-card.is-chosen .tier-top {
+  outline: 4px solid var(--ink);
+  outline-offset: 4px;
+}
+
+/* ---- What's inside: one card per item in the mailer ---- */
+.inside-grid {
+  display: grid;
+  gap: 2rem 1.5rem;
+  margin-top: 1.5rem;
+}
+
+/* The picture area: the item shown whole, on a soft paper background. */
+/* Every box is the same shape; each picture is fitted inside it whole. */
+.inside-photo {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  margin-bottom: 1rem;
+  background: #ece6da;
+}
+
+.inside-photo img {
+  position: absolute;
+  inset: 1.25rem;
+  width: calc(100% - 2.5rem);
+  height: calc(100% - 2.5rem);
+  object-fit: contain;
+  /* A shadow that follows the picture's own shape (nice on stickers). */
+  filter: drop-shadow(3px 4px 0 rgba(0, 0, 0, 0.18));
+}
+
+.inside-card .card-meta {
+  gap: 0.4rem;
 }
 
 /* ---- Past features: pick a month, see its artist and business ---- */
@@ -2528,35 +2324,32 @@ body:has(.event-dialog[open]) {
     grid-template-columns: 1fr auto;
   }
 
+  .tier-grid,
+  .inside-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
   .mc-notes,
   .feature-pair {
     grid-template-columns: 1fr 1fr;
     align-items: start;
   }
 
-  .envelope-tabs {
-    gap: 2rem;
-  }
 
 
 }
 
-/* Laptops and up (768px+) */
-@media (min-width: 48rem) {
-  .mc-envelope {
-    padding: 6rem 2.5rem 2.5rem;
-    clip-path: polygon(0 5rem, 50% 0, 100% 5rem, 100% 100%, 0 100%);
-  }
-
-  .letter-card {
-    grid-template-columns: 1fr 1fr;
-    align-items: center;
-    padding: 2.5rem;
-  }
-}
 
 /* Big screens (1024px+): three columns of cards. */
 @media (min-width: 64rem) {
+  .tier-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .inside-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
   .footer-inner {
     grid-template-columns: 2fr 1fr 1fr 1.3fr;
   }
@@ -2603,7 +2396,6 @@ body:has(.event-dialog[open]) {
     animation: none;
   }
 
-  .env-card,
   .slider-dot::before {
     transition: none;
   }
