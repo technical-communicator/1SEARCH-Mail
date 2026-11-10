@@ -668,48 +668,353 @@ body:has(.event-dialog[open]) {
   transform: rotate(8deg);
 }
 
-/* ---------- Mail club page ---------- */
-/* Each section of the mail club page gets space above it. */
-.mail-section {
-  margin-top: 3rem;
+/* ---------- Mail club page ----------
+   A cutesy, cut-and-paste "mail" look: cream paper, handwritten script
+   headings, a red polka-dot envelope, paper scraps held on with washi tape,
+   and the tiers as envelopes you can open. The page uses
+   <body class="page-mailclub">, so most of these only apply there. */
+.page-mailclub {
+  --page-colour: #f7f1df;   /* plain cream paper, no halftone */
+  --page-texture: none;
+  --mc-red: #c8163c;        /* bright envelope red */
+  --mc-dot: #6e0f22;        /* the darker polka dots */
+  --dusty: #8fb3bf;         /* dusty blue letter paper */
+  --dusty-dark: #4f7a89;
+  --paper: #fffdf7;         /* white scrap paper */
+  --soft-shadow: 3px 4px 0 rgba(0, 0, 0, 0.18);
+  --font-script: "Yellowtail", "Brush Script MT", cursive;
 }
 
-/* Section headings: a red cut-out label, tilted the other way from h1. */
-.section-title {
-  display: inline-block;
-  margin: 0 0 1.25rem;
-  padding: 0.25rem 0.75rem;
-  background: var(--red);
-  color: #ffffff;
-  border: var(--border);
-  box-shadow: var(--shadow);
-  font-size: 1.4rem;
-  transform: rotate(1deg);
+/* The sections run edge to edge; .mc-wrap keeps content a nice width. */
+.mc-main {
+  max-width: none;
+  padding: 0;
 }
 
-/* The stamp drawing is black ink, so on a coloured page we put it on a
-   round cream "sticker" so it stands out. */
-.stamp-on-paper {
-  width: min(50vw, 280px);  /* smaller on phones so the Join button shows sooner */
-  padding: 0.75rem;
-  background: var(--cream);
-  border: var(--border);
-  border-radius: 50%;
-  box-shadow: var(--shadow);
+.mc-wrap {
+  max-width: 60rem;
+  margin: 0 auto;
+  padding: 2.5rem 1rem;
 }
 
-/* Two things side by side on wide screens (stacked on phones). */
-.split {
+/* Handwritten red headings. */
+.script-title {
+  margin: 0 0 1rem;
+  font-family: var(--font-script);
+  font-weight: normal;
+  font-size: clamp(2.2rem, 6vw, 3.25rem);
+  line-height: 1.1;
+  color: var(--mc-red);
+}
+
+.script-center {
+  text-align: center;
+}
+
+/* ---- Hero ---- */
+.mc-hero {
   display: grid;
   gap: 1.5rem;
-  align-items: center;
+  justify-items: center;
+  text-align: center;
+}
+
+.mc-hero-stamp {
+  width: min(55vw, 260px);
+  transform: rotate(-8deg);
+}
+
+/* Undo the site's cut-out label style for this page's big heading. */
+.mc-hero h1 {
+  display: block;
+  margin: 0 0 1rem;
+  padding: 0;
+  background: none;
+  border: 0;
+  box-shadow: none;
+  font-family: var(--font-script);
+  font-weight: normal;
+  font-size: clamp(2.8rem, 9vw, 4.75rem);
+  line-height: 1.05;
+  color: var(--mc-red);
+  transform: rotate(-2deg);
+}
+
+.mc-hero p {
+  font-size: 1.15rem;
+}
+
+.mc-hero .buttons {
+  justify-content: center;
+}
+
+/* ---- Scrolling handwritten banner ---- */
+.marquee {
+  overflow: hidden;
+  padding: 0.25rem 0 1rem;
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 40s linear infinite;
+}
+
+.marquee-track span {
+  font-family: var(--font-script);
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  color: var(--dusty-dark);
+  white-space: nowrap;
+}
+
+/* Slide left by half the strip (one full copy of the words), then repeat. */
+@keyframes marquee {
+  to { transform: translateX(-50%); }
+}
+
+/* ---- Red polka-dot envelope ----
+   Two layers of round dots (radial gradients) make the polka dots.
+   clip-path cuts the top into a point, like an envelope flap. */
+.mc-envelope,
+.mc-final {
+  background-color: var(--mc-red);
+  background-image:
+    radial-gradient(circle, var(--mc-dot) 0 9px, transparent 10px),
+    radial-gradient(circle, var(--mc-dot) 0 9px, transparent 10px);
+  background-size: 44px 44px;
+  background-position: 0 0, 22px 22px;
+}
+
+.mc-envelope {
+  padding: 3.5rem 0 1rem;
+  clip-path: polygon(0 3rem, 50% 0, 100% 3rem, 100% 100%, 0 100%);
+}
+
+/* The dusty blue letter inside the envelope. */
+.letter-card {
+  display: grid;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  background: var(--dusty);
+  box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.25);
+}
+
+.inside-list {
+  margin: 0 0 1rem;
+  padding: 0;
+  list-style: none;
+  font-family: var(--font-type);
+  font-size: 1.05rem;
+}
+
+.inside-list li {
+  position: relative;
+  padding: 0.3rem 0 0.3rem 1.75rem;
+}
+
+/* A tiny red postage stamp instead of a bullet point. */
+.inside-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.65rem;
+  width: 0.9rem;
+  height: 0.9rem;
+  background: var(--mc-red);
+  border: 2px dotted var(--paper);
+}
+
+.inside-note {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.inside-note a {
+  color: var(--ink);
+}
+
+/* ---- The collage of cut-out mail ----
+   Each piece is placed by hand with position: absolute and tilted
+   a little, like things pasted into a scrapbook. */
+.collage {
+  position: relative;
+  aspect-ratio: 1 / 0.9;  /* height follows width, so it shrinks on small phones */
+}
+
+/* Let both halves of the letter shrink on narrow screens. */
+.letter-card > * {
+  min-width: 0;
+}
+
+.collage > * {
+  position: absolute;
+  box-shadow: var(--soft-shadow);
+}
+
+/* An envelope: a cream rectangle with a darker V-shaped flap. */
+.c-envelope {
+  left: 12%;
+  bottom: 6%;
+  width: 58%;
+  aspect-ratio: 1.5;
+  background: #f4ecdc;
+}
+
+.c-envelope::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 60%;
+  background: #e6d9bf;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+}
+
+/* A red postmark circle on the envelope. */
+.c-envelope::after {
+  content: "";
+  position: absolute;
+  right: 10%;
+  bottom: 14%;
+  width: 22%;
+  aspect-ratio: 1;
+  border: 3px double var(--mc-red);
+  border-radius: 50%;
+  opacity: 0.7;
+}
+
+/* A pink letter on lined paper. */
+.c-letter {
+  left: 2%;
+  top: 4%;
+  width: 44%;
+  aspect-ratio: 0.75;
+  padding: 0.6rem;
+  background-color: #f9cfdb;
+  background-image: repeating-linear-gradient(transparent 0 14px, rgba(200, 22, 60, 0.25) 14px 15px);
+  transform: rotate(-6deg);
+}
+
+.c-letter span {
+  font-family: var(--font-script);
+  font-size: clamp(1rem, 3vw, 1.4rem);
+  color: var(--mc-red);
+}
+
+/* The art print: our mascot artwork with a white photo border. */
+.c-print {
+  right: 4%;
+  top: 2%;
+  width: 44%;
+  height: auto;
+  border: 8px solid #ffffff;
+  transform: rotate(5deg);
+}
+
+/* A postage stamp. The dotted border in the letter's blue looks like
+   the little perforated holes around a real stamp. */
+.c-stamp {
+  right: 6%;
+  bottom: 4%;
+  width: 30%;
+  padding: 3%;
+  background: #ffffff;
+  border: 6px dotted var(--dusty);
+  transform: rotate(9deg);
+}
+
+.c-stamp img {
+  display: block;
+  width: 100%;
+}
+
+/* A little coupon for the local business perk. */
+.c-coupon {
+  left: 38%;
+  top: 44%;
+  padding: 0.3rem 0.6rem;
+  background: var(--yellow);
+  border: 2px dashed var(--ink);
+  font-family: var(--font-type);
+  font-size: 0.8rem;
+  line-height: 1.2;
+  text-align: center;
+  transform: rotate(-10deg);
+}
+
+/* A round die-cut sticker of the mascot. */
+.c-sticker {
+  left: 2%;
+  bottom: 2%;
+  width: 22%;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  background: var(--purple);
+  border: 4px solid #ffffff;
+  border-radius: 50%;
+  transform: rotate(-12deg);
+}
+
+.c-sticker img {
+  width: 65%;
+}
+
+/* ---- Paper scraps held on with washi tape ---- */
+.mc-scraps {
+  display: grid;
+  gap: 3rem;
+}
+
+.scrap {
+  position: relative;
+  padding: 2.25rem 1.5rem 1.5rem;
+  background: var(--paper);
+  box-shadow: var(--soft-shadow);
+}
+
+/* The strip of see-through tape across the top of each scrap. */
+.scrap::before,
+.founders-letter::before {
+  content: "";
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  width: 120px;
+  height: 30px;
+  background: rgba(243, 118, 155, 0.7);
+  transform: translateX(-50%) rotate(-3deg);
+}
+
+.scrap .script-title {
+  font-size: clamp(1.9rem, 5vw, 2.5rem);
+}
+
+.scrap-left {
+  transform: rotate(-1deg);
+}
+
+.scrap-right {
+  transform: rotate(1.2deg);
+}
+
+.scrap-right::before {
+  background: rgba(135, 209, 255, 0.75);  /* blue tape */
+}
+
+.scrap-small {
+  max-width: 34rem;
+  margin: 0 auto;
+  transform: rotate(-0.8deg);
+}
+
+.scrap-small::before {
+  background: rgba(253, 217, 76, 0.75);  /* yellow tape */
 }
 
 /* The "$450" callout, styled like a big postage stamp with a dashed edge. */
 .big-stamp {
-  justify-self: center;
   max-width: 16rem;
-  margin: 0;
+  margin: 2rem auto 1rem;
   padding: 1.25rem;
   background: var(--yellow);
   border: 3px dashed var(--ink);
@@ -760,11 +1065,12 @@ body:has(.event-dialog[open]) {
   transform: rotate(2deg);
 }
 
-/* How it works: numbered postcards. We hide the normal numbers and draw
-   our own with a CSS "counter" so we can style them as round badges. */
+/* ---- How it works: numbered postcards ----
+   We hide the normal list numbers and draw our own with a CSS "counter"
+   so we can style them as round red stamps. */
 .steps {
   display: grid;
-  gap: 1rem;
+  gap: 1.25rem;
   margin: 0 0 1.5rem;
   padding: 0;
   list-style: none;
@@ -773,11 +1079,18 @@ body:has(.event-dialog[open]) {
 
 .steps li {
   position: relative;
-  padding: 1rem 1rem 1rem 4rem;
-  background: var(--cream);
-  border: var(--border);
-  box-shadow: var(--shadow);
+  padding: 1.25rem 1rem 1rem 4rem;
+  background: var(--paper);
+  box-shadow: var(--soft-shadow);
   counter-increment: step;
+}
+
+.steps li:nth-child(odd) {
+  transform: rotate(-1deg);
+}
+
+.steps li:nth-child(even) {
+  transform: rotate(1deg);
 }
 
 .steps li::before {
@@ -789,89 +1102,152 @@ body:has(.event-dialog[open]) {
   height: 2.25rem;
   display: grid;
   place-items: center;
-  background: var(--red);
+  background: var(--mc-red);
   color: #ffffff;
-  border: 2px solid var(--ink);
+  border: 2px dotted #ffffff;
+  outline: 2px solid var(--mc-red);
   border-radius: 50%;
   font-family: var(--font-type);
   font-weight: bold;
 }
 
-/* Tiers: three postcards with "airmail" stripes along the top. */
-.tiers {
-  display: grid;
-  gap: 2rem;
-}
-
-.tier {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  padding: 1.75rem 1.25rem 1.25rem;
-  background: var(--cream);
-  border: var(--border);
-  box-shadow: var(--shadow);
-}
-
-/* The red and blue diagonal stripes of an airmail envelope. */
-.tier::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 10px;
-  background: repeating-linear-gradient(
-    -45deg,
-    var(--red) 0 12px,
-    var(--cream) 12px 18px,
-    #1f4e8c 18px 30px,
-    var(--cream) 30px 36px
-  );
-  border-bottom: 2px solid var(--ink);
-}
-
-.tier h3 {
-  margin: 0 0 0.5rem;
+.mc-tagline {
+  margin: 0;
   font-family: var(--font-type);
-  font-size: 1.35rem;
-}
-
-.tier ul {
-  flex: 1;  /* pushes the button to the bottom so all three line up */
-  margin: 0 0 1.25rem;
-  padding-left: 1.25rem;
-}
-
-.tier li {
-  margin-bottom: 0.4rem;
-}
-
-/* The price, styled like a little stamp in the corner. */
-.tier-price {
-  align-self: flex-end;
-  margin: 0 0 0.5rem;
-  padding: 0.25rem 0.6rem;
-  background: var(--yellow);
-  border: 2px dashed var(--ink);
-  font-family: var(--font-type);
-  transform: rotate(3deg);
-}
-
-.tier-price span {
-  font-size: 1.5rem;
-  font-weight: bold;
-}
-
-.tier .button {
   text-align: center;
 }
 
-/* The top tier gets a pink background and a label on top. */
-.tier-featured {
-  background: #ffe1ea;
+/* ---- Choose your subscription: envelope tabs ----
+   Each tab is drawn in three layers:
+   ::before = the back of the envelope, with its flap opened up
+   .env-card = the card inside, which slides up when chosen
+   ::after  = the front pocket, which hides the bottom of the card */
+.envelope-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 1rem 0 0;
 }
 
+/* All three envelopes share the row equally, up to 11rem wide each. */
+.env-tab {
+  position: relative;
+  flex: 1 1 0;
+  max-width: 11rem;
+  height: 9.5rem;
+  padding: 0;
+  background: none;
+  border: 0;
+  font: inherit;
+  cursor: pointer;
+}
+
+.env-tab::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 7.5rem;
+  background: #e2d4b8;
+  clip-path: polygon(0 28%, 50% 0, 100% 28%, 100% 100%, 0 100%);
+}
+
+.env-card {
+  position: absolute;
+  z-index: 1;
+  left: 10%;
+  right: 10%;
+  bottom: 1.5rem;
+  height: 6.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  padding-top: 0.6rem;
+  background: #ffffff;
+  border: 2px solid transparent;
+  transition: transform 0.25s ease-out;
+}
+
+.env-tab::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 4rem;
+  background: #ece2cc;
+  clip-path: polygon(0 0, 50% 50%, 100% 0, 100% 100%, 0 100%);
+  filter: drop-shadow(0 -1px 0 rgba(0, 0, 0, 0.1));
+}
+
+.env-name {
+  padding: 0 0.25rem;
+  font-family: var(--font-script);
+  font-size: clamp(0.95rem, 3.6vw, 1.2rem);
+  line-height: 1.05;
+  color: var(--mc-red);
+}
+
+.env-price {
+  font-family: var(--font-type);
+  font-size: 0.95rem;
+  font-weight: bold;
+  color: var(--ink);
+}
+
+/* Peek out a little on hover; pull all the way out when chosen. */
+.env-tab:hover .env-card {
+  transform: translateY(-0.6rem);
+}
+
+.env-tab[aria-selected="true"] .env-card {
+  transform: translateY(-1.5rem);
+  border-color: var(--mc-red);
+}
+
+.env-tab:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 4px;
+}
+
+/* The letter for the chosen tier, on lined paper. */
+.tier-letter {
+  position: relative;
+  max-width: 36rem;
+  margin: 0.5rem auto 0;
+  padding: 2rem 1.5rem 1.5rem;
+  background-color: var(--paper);
+  background-image: repeating-linear-gradient(transparent 0 1.7rem, rgba(79, 122, 137, 0.2) 1.7rem calc(1.7rem + 1px));
+  box-shadow: var(--soft-shadow);
+}
+
+.tier-letter h3 {
+  margin: 0 0 0.5rem;
+  font-family: var(--font-script);
+  font-weight: normal;
+  font-size: 2.1rem;
+  line-height: 1.1;
+  color: var(--mc-red);
+}
+
+.tier-letter h3 span {
+  display: block;
+  font-family: var(--font-type);
+  font-size: 1.05rem;
+  font-weight: bold;
+  color: var(--ink);
+}
+
+.tier-letter ul {
+  margin: 0 0 1.5rem;
+  padding-left: 1.25rem;
+  line-height: 1.7;
+}
+
+/* The purple "complete monthly drop" label on the curator letter. */
 .tier-flag {
   position: absolute;
   top: -1rem;
@@ -888,29 +1264,42 @@ body:has(.event-dialog[open]) {
   transform: rotate(-2deg);
 }
 
-/* The founders' note, set like a letter. */
-.letter {
+/* ---- The founders' letter: pink lined paper ---- */
+.founders-letter {
+  position: relative;
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: 2.5rem 2rem 2rem;
+  background-color: #fde3ea;
+  background-image: repeating-linear-gradient(transparent 0 1.75rem, rgba(200, 22, 60, 0.18) 1.75rem calc(1.75rem + 1px));
+  box-shadow: var(--soft-shadow);
   font-size: 1.1rem;
+  line-height: 1.75;
+  transform: rotate(-1deg);
+}
+
+.founders-letter::before {
+  background: rgba(143, 179, 191, 0.75);  /* dusty blue tape */
 }
 
 .signature {
-  font-family: var(--font-type);
-  font-size: 1.3rem;
-  font-weight: bold;
-  color: var(--red);
-  transform: rotate(-2deg);
+  margin: 0;
+  font-family: var(--font-script);
+  font-size: 2rem;
+  color: var(--mc-red);
+  transform: rotate(-3deg);
 }
 
-/* FAQ: tap a question to open it. */
+/* ---- FAQ: tap a question to open it ---- */
 .faq {
   display: grid;
   gap: 0.75rem;
 }
 
 .faq details {
-  background: var(--cream);
-  border: var(--border);
-  box-shadow: var(--shadow);
+  background: var(--paper);
+  border-left: 6px solid var(--mc-red);
+  box-shadow: var(--soft-shadow);
 }
 
 .faq summary {
@@ -930,13 +1319,70 @@ body:has(.event-dialog[open]) {
   padding: 0 1rem 1rem;
 }
 
-.final-cta {
+/* ---- Final call to action: the envelope front, with a V notch on top ---- */
+.mc-final {
+  padding: 5rem 1rem 3rem;
   text-align: center;
+  clip-path: polygon(0 0, 50% 3rem, 100% 0, 100% 100%, 0 100%);
 }
 
-.final-cta .lede {
-  margin-left: auto;
-  margin-right: auto;
+.mc-final .script-title {
+  color: #ffffff;
+}
+
+/* People who turn on "reduce motion" get a banner that stays still. */
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
+
+  .env-card {
+    transition: none;
+  }
+}
+
+/* Wider screens */
+@media (min-width: 48rem) {
+  .mc-hero {
+    grid-template-columns: auto 1fr;
+    justify-items: start;
+    text-align: left;
+    align-items: center;
+  }
+
+  .mc-hero .buttons {
+    justify-content: flex-start;
+  }
+
+  .mc-envelope {
+    padding-top: 6rem;
+    clip-path: polygon(0 5rem, 50% 0, 100% 5rem, 100% 100%, 0 100%);
+  }
+
+  .letter-card {
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 2.5rem;
+  }
+
+  .mc-scraps {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+
+  .steps {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .envelope-tabs {
+    gap: 2rem;
+  }
+}
+
+@media (min-width: 64rem) {
+  .steps {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
 
 /* ---------- Blog ----------
@@ -1469,10 +1915,6 @@ body:has(.event-dialog[open]) {
     order: 0;
   }
 
-  /* Mail club: the $450 stamp sits beside the text. */
-  .split {
-    grid-template-columns: 1fr auto;
-  }
 
   /* About: stamp beside the text. */
   .blue-section {
@@ -1481,10 +1923,9 @@ body:has(.event-dialog[open]) {
   }
 }
 
-/* Big screens: three columns of event cards, tier postcards and blog posts. */
+/* Big screens: three columns of event cards and blog posts. */
 @media (min-width: 64rem) {
   .event-list,
-  .tiers,
   .post-grid {
     grid-template-columns: 1fr 1fr 1fr;
   }
