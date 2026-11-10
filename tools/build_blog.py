@@ -134,7 +134,7 @@ def header(prefix, current):
         f'      <a href="{prefix}{href}"{" aria-current=\"page\"" if label == current else ""}>{label}</a>'
         for href, label in links
     )
-    return f"""  <header class="site-header">
+    return f"""  <header class="site-header" id="top">
     <!-- The logo (mascot head + name) links back to the home page. -->
     <a class="logo" href="{prefix}index.html">
       <!-- alt="" because the words next to it already name the link. -->
@@ -182,9 +182,53 @@ def footer(prefix):
   <div data-mailclub-banner data-root="{prefix}"></div>
   <script src="{prefix}banner.js"></script>
 
+  <!-- The site footer. It's the same on every page: if you change it,
+       change it in index.html, events.html, mailclub.html, about.html
+       AND in footer() in tools/build_blog.py (for the blog pages). -->
   <footer class="site-footer">
-    <img loading="lazy" decoding="async" src="{prefix}images/stamp.webp" alt="" width="600" height="600">
-    <p>Follow us on Instagram: <a href="https://www.instagram.com/searchcentralfl/">@searchcentralfl</a></p>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a class="footer-logo" href="{prefix}index.html">
+          <img loading="lazy" decoding="async" src="{prefix}images/mascot-head-color.webp" alt="" width="213" height="240">
+          <span><strong>SEARCH</strong> Central Florida</span>
+        </a>
+        <p>A hyperlocal guide to Orlando arts, culture and small businesses. Find something good, close the app and go.</p>
+      </div>
+
+      <nav class="footer-col" aria-label="Explore">
+        <h2>Explore</h2>
+        <ul>
+          <li><a href="{prefix}events.html">Events this week</a></li>
+          <li><a href="{prefix}mailclub.html">Snail mail club</a></li>
+          <li><a href="{prefix}blog.html">Blog</a></li>
+          <li><a href="{prefix}about.html">About us</a></li>
+        </ul>
+      </nav>
+
+      <nav class="footer-col" aria-label="Mail club">
+        <h2>Mail club</h2>
+        <ul>
+          <li><a href="{prefix}mailclub.html?tier=sticker#tiers">Sticker supporter</a></li>
+          <li><a href="{prefix}mailclub.html?tier=print#tiers">Print collector</a></li>
+          <li><a href="{prefix}mailclub.html?tier=curator#tiers">Print &amp; sticker curator</a></li>
+          <li><a href="{prefix}mailclub.html#past-mailers">Past mailers</a></li>
+        </ul>
+      </nav>
+
+      <div class="footer-col">
+        <h2>Say hi</h2>
+        <ul>
+          <li><a href="https://www.instagram.com/searchcentralfl/">Instagram: @searchcentralfl</a></li>
+          <li><a href="mailto:searchcentralflorida@gmail.com">Email us</a></li>
+          <li>Have an event? Send it to us on Instagram.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; 2026 Search Central Florida. Made in Orlando.</p>
+      <a href="#top" class="footer-top">Back to top &uarr;</a>
+    </div>
   </footer>"""
 
 

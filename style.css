@@ -511,23 +511,10 @@ main {
 /* =========================================================
    6. Home page
    ========================================================= */
-/* ---- The hero: headline, mascot, and three feature tiles ---- */
-.home-hero {
-  padding-bottom: 0.5rem;
-}
-
-/* Headline on the left, mascot on the right, even on phones
-   (the mascot is small there so the tiles still fit on screen). */
-.home-hero-head {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 0.75rem;
-  align-items: center;
-}
-
+/* ---- The hero: a short intro, then the slides ---- */
 .home-hero h1 {
-  margin: 0.4rem 0 0.6rem;
-  font-size: clamp(2.6rem, 11vw, 6.5rem);
+  margin: 0.4rem 0 0.4rem;
+  font-size: clamp(2.4rem, 10vw, 6rem);
   line-height: 0.95;
 }
 
@@ -536,73 +523,199 @@ main {
   line-height: 1.6;
 }
 
-.home-hero-mascot {
-  width: clamp(5.5rem, 24vw, 17rem);
-  transform: rotate(6deg);
-  filter: drop-shadow(3px 4px 0 rgba(0, 0, 0, 0.18));
-}
-
-/* The three feature tiles. On phones they're three compact squares in
-   a row, like app shortcuts, so all three show without scrolling.
-   On wider screens they grow and show a description too. */
-.feature-tiles {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.6rem;
+/* ---- The slides ----
+   .slides is one long row that scrolls sideways. scroll-snap makes each
+   slide click into place. On phones each slide is 88% wide, so a sliver
+   of the next one peeks in to show there's more. */
+.slider {
   margin-top: 1.25rem;
 }
 
-.feature-tile {
+.slides {
+  display: flex;
+  gap: 0.75rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;  /* hide the scrollbar; the dots show where you are */
+  padding-bottom: 6px;    /* room for the slides' shadow */
+}
+
+.slides::-webkit-scrollbar {
+  display: none;
+}
+
+.slide {
+  flex: 0 0 88%;
+  scroll-snap-align: start;
   position: relative;
+  overflow: hidden;
   display: grid;
   grid-template-columns: 1fr;
-  align-content: space-between;
-  gap: 0.5rem;
-  min-height: 6.5rem;
-  padding: 0.7rem 0.6rem;
+  min-height: 17.75rem;
+  padding: 1.1rem;
   color: var(--ink);
   border: var(--border);
-  box-shadow: 4px 4px 0 var(--ink);
-  text-decoration: none;
-  transition: transform 0.15s, box-shadow 0.15s;
 }
 
-.feature-tile.series-red {
+.slide.series-red {
   color: #ffffff;
 }
 
-/* Press down into the shadow on hover. */
-.feature-tile:hover {
-  color: inherit;
-  transform: translate(2px, 2px);
-  box-shadow: 2px 2px 0 var(--ink);
+/* The mail club slide: pink with white halftone dots. */
+.slide-pink {
+  background-color: var(--pink);
+  background-image: radial-gradient(rgba(255, 255, 255, 0.35) 2px, transparent 2.6px);
+  background-size: 12px 12px;
 }
 
-.feature-tile.series-red:hover {
+/* The words sit on top of the picture. */
+.slide-text {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 64%;
+}
+
+/* Keep each button on one line. */
+.slide-button {
+  white-space: nowrap;
+  font-size: 0.9rem;
+  padding: 0.6rem 0.9rem;
+}
+
+.slide-kicker {
+  margin: 0 0 0.5rem;
+  padding: 0 0.5rem;
+  background: var(--ink);
   color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
-.feature-name {
-  font-family: var(--font-display);
-  font-size: clamp(1.2rem, 6vw, 2rem);
+.slide h2 {
+  margin: 0 0 0.6rem;
+  font-size: clamp(1.8rem, 8vw, 3.75rem);
   line-height: 1;
   text-transform: uppercase;
 }
 
-/* The description only shows on wider screens. */
-.feature-text {
-  display: none;
-  font-size: 0.95rem;
-  line-height: 1.4;
+.slide-detail {
+  margin: 0 0 1rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
 }
 
-.feature-detail {
-  font-size: 0.75rem;
-  line-height: 1.3;
-  font-weight: bold;
-  text-decoration: underline;
-  text-decoration-thickness: 2px;
-  text-underline-offset: 3px;
+.slide-button {
+  margin-top: auto;  /* sits at the bottom of the slide */
+  background: var(--ink);
+  box-shadow: 3px 3px 0 #ffffff;
+}
+
+.series-red .slide-button {
+  background: var(--cream);
+  color: var(--ink);
+  box-shadow: 3px 3px 0 var(--ink);
+}
+
+/* The pictures, tucked into the bottom-right corner of each slide. */
+.slide-art {
+  position: absolute;
+  right: -4%;
+  bottom: -4%;
+}
+
+.slide-mascot {
+  width: 48%;
+  transform: rotate(8deg);
+  filter: drop-shadow(3px 4px 0 rgba(0, 0, 0, 0.2));
+}
+
+.slide-mail {
+  width: 34%;
+  right: 4%;
+  top: 14%;
+}
+
+.slide-mail img {
+  display: block;
+  width: 100%;
+  border: 6px solid #ffffff;
+  box-shadow: var(--soft-shadow);
+  transform: rotate(5deg);
+}
+
+.slide-mail .slide-sticker {
+  position: absolute;
+  left: 15%;
+  bottom: -55%;
+  width: 75%;
+  border: 0;
+  box-shadow: none;
+  filter: drop-shadow(2px 3px 0 rgba(0, 0, 0, 0.3));
+  transform: rotate(-12deg);
+}
+
+.slide-photo {
+  width: 38%;
+  right: 5%;
+  bottom: auto;
+  top: 18%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  border: 6px solid #ffffff;
+  transform: rotate(4deg);
+}
+
+/* ---- Dots and pause button under the slides ---- */
+.slider-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.slider-dots {
+  display: flex;
+  gap: 0.25rem;
+}
+
+/* Each dot is a 44px tap target with a small dot drawn in the middle. */
+.slider-dot,
+.slider-pause {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  background: none;
+  border: 0;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.slider-dot::before {
+  content: "";
+  width: 0.75rem;
+  height: 0.75rem;
+  border: var(--border);
+  border-radius: 50%;
+  transition: width 0.2s;
+}
+
+/* The dot for the slide that's showing is filled in and stretched. */
+.slider-dot[aria-current="true"]::before {
+  width: 1.75rem;
+  border-radius: 999px;
+  background: var(--ink);
+}
+
+.slider-pause {
+  font-size: 0.8rem;
 }
 
 /* ---- Today in Orlando ---- */
@@ -1710,25 +1823,116 @@ body:has(.event-dialog[open]) {
 
 /* =========================================================
    12. Footer
+   Dark ink background, the logo and a short line about SCF, three
+   columns of links, and a thin bar along the bottom.
    ========================================================= */
 .site-footer {
-  display: flex;
-  flex-direction: column;
+  background: var(--ink);
+  color: #e9e4da;
+  font-size: 0.95rem;
+}
+
+/* On phones: the brand on top, Explore and Mail club side by side,
+   then Say hi underneath. */
+.footer-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem 1.25rem;
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 2.5rem 1rem 2rem;
+}
+
+.site-footer a {
+  color: #ffffff;
+  text-decoration-color: var(--pink);
+}
+
+.site-footer a:hover {
+  color: var(--pink);
+}
+
+.site-footer a:focus-visible {
+  outline-color: var(--yellow);
+}
+
+.footer-logo {
+  display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 1.5rem 1rem 2rem;
-  background: var(--cream);
-  border-top: var(--border);
-  text-align: center;
+  gap: 0.6rem;
+  margin-bottom: 0.75rem;
+  text-decoration: none;
 }
 
-.site-footer img {
-  width: 90px;
-  transform: rotate(-8deg);
+.footer-logo img {
+  width: 48px;
+  height: auto;
 }
 
-.site-footer p {
+.footer-logo span {
+  font-size: 1.1rem;
+  letter-spacing: 0.06em;
+}
+
+.footer-brand,
+.footer-col:last-child {
+  grid-column: 1 / -1;  /* full width on phones */
+}
+
+.footer-brand p {
+  max-width: 24rem;
   margin: 0;
+  color: #bdb7ab;
+}
+
+/* Column headings: small, uppercase, with a pink rule underneath. */
+.footer-col h2 {
+  margin: 0 0 0.75rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 2px solid var(--pink);
+  font-family: var(--font-type);
+  font-size: 0.85rem;
+  font-weight: bold;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+
+.footer-col ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.footer-col li {
+  padding: 0.3rem 0;
+  overflow-wrap: anywhere;  /* lets the long email address wrap on phones */
+}
+
+/* The thin bar along the bottom: copyright and "Back to top". */
+.footer-bottom {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem;
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 0.5rem 1rem;
+  border-top: 1px solid #3a3a3a;
+  align-items: center;
+  font-size: 0.85rem;
+  color: #bdb7ab;
+}
+
+.footer-bottom p {
+  margin: 0;
+}
+
+/* Tall enough to tap easily on a phone. */
+.footer-top {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
 }
 
 
@@ -1756,6 +1960,16 @@ body:has(.event-dialog[open]) {
     padding: 2rem 1.5rem 4rem;
   }
 
+  /* Footer: the brand gets a wide column, then the three link columns. */
+  .footer-inner {
+    grid-template-columns: 1fr 1fr;
+    padding: 3rem 1.5rem 2.5rem;
+  }
+
+  .footer-bottom {
+    padding: 1rem 1.5rem;
+  }
+
   /* All seven day tiles fit in one row, no swiping needed. */
   .day-strip {
     display: grid;
@@ -1779,32 +1993,52 @@ body:has(.event-dialog[open]) {
     border-left: var(--rule);
   }
 
-  /* Home: three feature tiles side by side. */
-  .feature-tiles {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.25rem;
-    margin-top: 2rem;
+  /* Home: each slide fills the full width, words on the left. */
+  .slide {
+    flex-basis: 100%;
+    min-height: 24rem;
+    padding: 2.5rem;
   }
 
-  .feature-tile {
-    min-height: 11rem;
-    padding: 1.25rem;
+  .slide-text {
+    max-width: 55%;
   }
 
-  .feature-name {
-    font-size: 2.6rem;
-  }
-
-  .feature-text {
-    display: block;
-  }
-
-  .feature-detail {
-    font-size: 0.9rem;
+  .slide-detail {
+    font-size: 1.05rem;
   }
 
   .home-hero .masthead-intro {
     font-size: 1.15rem;
+  }
+
+  .slide-mascot {
+    width: 34%;
+    right: 6%;
+    bottom: -8%;
+  }
+
+  .slide-mail {
+    width: 22%;
+    right: 12%;
+    top: 10%;
+  }
+
+  .slide-photo {
+    width: 21%;
+    right: 10%;
+    top: 10%;
+  }
+
+  .slide-mail .slide-sticker {
+    left: -45%;
+    bottom: -12%;
+    width: 65%;
+  }
+
+  .slide-button {
+    font-size: 1rem;
+    padding: 0.7rem 1.2rem;
   }
 
   /* Words on the left, picture on the right. */
@@ -1859,6 +2093,15 @@ body:has(.event-dialog[open]) {
 
 /* Big screens (1024px+): three columns of cards. */
 @media (min-width: 64rem) {
+  .footer-inner {
+    grid-template-columns: 2fr 1fr 1fr 1.3fr;
+  }
+
+  .footer-brand,
+  .footer-col:last-child {
+    grid-column: auto;
+  }
+
   .event-list,
   .post-grid {
     grid-template-columns: 1fr 1fr 1fr;
@@ -1886,8 +2129,7 @@ body:has(.event-dialog[open]) {
    People who turn on "reduce motion" don't get movement effects.
    ========================================================= */
 @media (prefers-reduced-motion: reduce) {
-  .event-card:hover,
-  .feature-tile:hover {
+  .event-card:hover {
     transform: none;
   }
 
@@ -1897,8 +2139,13 @@ body:has(.event-dialog[open]) {
     animation: none;
   }
 
-  .env-card {
+  .env-card,
+  .slider-dot::before {
     transition: none;
+  }
+
+  .slides {
+    scroll-behavior: auto;
   }
 }
 
