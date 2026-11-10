@@ -31,7 +31,8 @@
    13. Wider screens
    14. Reduced motion
    15. Mail club banner (the full-width promo at the bottom of every page)
-   16. Submitting events: the form, the call to action, the review dashboard */
+   16. Submitting events: the form, the call to action, the review dashboard
+   17. Film finish: grain over the whole site, and a film look on photos */
 
 
 /* =========================================================
@@ -3092,6 +3093,79 @@ h1.mcb-title {
   .review-form .buttons,
   .review-form .form-status {
     grid-column: 1 / -1;
+  }
+}
+
+
+/* =========================================================
+   17. Film finish
+   A little distress, like film photography:
+   - a fine grain and dust texture over every page (images/grain.webp)
+   - photos get a slightly faded, warm "film print" tone
+
+   TO MAKE IT STRONGER OR SUBTLER, change --grain below:
+   0 = off, 1 = the starting amount, 2 = twice as strong, and so on.
+   ========================================================= */
+:root {
+  --grain: 1;
+}
+
+/* The grain sits on two see-through layers fixed over the whole screen.
+   Both use the same texture as a stencil ("mask"):
+   - a dark layer, which shows on the light paper
+   - a light layer, which shows on the dark and coloured parts
+   pointer-events: none means you can still click through them. */
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  -webkit-mask-image: url("images/grain.webp");
+  mask-image: url("images/grain.webp");
+  -webkit-mask-size: 596px 843px;
+  mask-size: 596px 843px;
+  -webkit-mask-repeat: repeat;
+  mask-repeat: repeat;
+}
+
+body::before {
+  background: #2a2118;  /* warm near-black, like film grain */
+  opacity: calc(0.14 * var(--grain));
+}
+
+body::after {
+  background: #ffffff;
+  opacity: calc(0.22 * var(--grain));
+}
+
+/* Photos: a touch less colourful, a little warmer, slightly more
+   contrast, like a print from a film camera. */
+.card-image,
+.post-hero,
+.mcb-print,
+.mcb-card img,
+.slide-photo,
+.slide-mail img,
+.feature-image {
+  filter: contrast(1.05) saturate(0.88) sepia(0.08);
+}
+
+/* These already have a shadow filter, so the film tone is added to it. */
+.inside-photo img {
+  filter: contrast(1.05) saturate(0.88) sepia(0.08) drop-shadow(3px 4px 0 rgba(0, 0, 0, 0.18));
+}
+
+.slide-mail .slide-sticker {
+  filter: contrast(1.05) saturate(0.88) sepia(0.08) drop-shadow(2px 3px 0 rgba(0, 0, 0, 0.3));
+}
+
+/* For people who print the page: no grain. */
+@media print {
+  body::before,
+  body::after {
+    content: none;
   }
 }
 
