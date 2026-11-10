@@ -1481,6 +1481,8 @@ body:has(.event-dialog[open]) {
 }
 
 .mc-note {
+  display: flex;
+  flex-direction: column;
   position: relative;  /* for its strip of tape */
   padding: 2rem 1.5rem 1.5rem;
   background: var(--cream);
@@ -1498,6 +1500,7 @@ body:has(.event-dialog[open]) {
 
 /* The "$450" line: a quiet stat under a dashed rule. */
 .stat-line {
+  margin-top: auto !important;  /* sits at the bottom of the note */
   margin: 1.25rem 0 0;
   padding-top: 0.75rem;
   border-top: 1px dashed rgba(20, 20, 20, 0.45);
@@ -2369,10 +2372,15 @@ body:has(.event-dialog[open]) {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .mc-notes,
   .feature-pair {
     grid-template-columns: 1fr 1fr;
     align-items: start;
+  }
+
+  /* The two notes side by side, stretched to the same height. */
+  .mc-notes {
+    grid-template-columns: 1fr 1fr;
+    align-items: stretch;
   }
 
 

@@ -18,10 +18,11 @@ The owner asked for a simple interim starter site and set the brief's build phas
 - `mailclub.html` is the SEARCH snail mail club page. Its copy comes from the owners (Halley and Zach) and is deliberately lowercase; keep that voice. The owner wanted it cut down, so it **opens with the pink mail club banner** (`banner.js`, `data-heading="1"` makes its headline the page's h1). The order is:
   1. **Choose your subscription:** three `.tier-card`s in the blog card style, each with a coloured halftone `.tier-top` block where the **tier name** (`.tier-name`, Anton) is the headline and the price is a small line under it (the owner asked for the name, not the price, to lead). The curator's "the complete monthly drop" label is a diagonal **corner ribbon** (`.tier-flag`, two lines, clipped by `overflow: hidden` on `.tier-top`). Tiers are stacked below 1024px; from 1024px they're three across and use `grid-template-rows: subgrid`, so the coloured blocks, lists and Join buttons line up. `?tier=sticker|print|curator` adds `.is-chosen`.
   2. **What's inside:** four `.post-card.inside-card`s (print, sticker, perk, newsletter), each with this month's photo in a same-size `.inside-photo` box and tier labels.
-  3. Artists and perks (taped notes).
-  4. How it works.
-  5. Past features (`#past-mailers`).
-  6. The FAQ (`<details>`).
+  3. Artists and perks: two taped notes, side by side on desktop and stretched to the same height, each ending in a bottom-pinned `.stat-line`.
+  4. Past features (`#past-mailers`).
+  5. The FAQ (`<details>`).
+
+  The "How it works" section was removed at the owner's request (its timing details are still in the FAQ).
 
   The old envelope tabs, polka-dot envelope, to-scale collage and the "Why a snail mail club?" letter were removed. **Every Patreon link** has `data-patreon` and the real URL in its `href`, and the single `PATREON_URL` constant in the script also sets them: `https://patreon.com/SearchCentralFlorida?utm_medium=unknown&utm_source=join_link&utm_campaign=creatorshare_creator&utm_content=copyLink`.
 - Mail club **past features**: `mailers.json` lists months, newest first, each with an `artist` and a `business` (`name`, `about`, `image`, `instagram`, `post`). Months with `"placeholder": true` show grey "image coming soon" boxes until the owner sends the details. The page's script builds month chips and an artist/business pair. The blog's Monthly Mail recaps list (the `PAST-MAILERS` markers) sits under it. The "$450 given" stat is a quiet `.stat-line`, toned down at the owner's request.
