@@ -49,7 +49,16 @@
     </header>
 
     <!-- Shown if config.js hasn't been filled in yet. -->
-    <p class="panel" id="setup-note" hidden>The review dashboard isn't connected yet. Follow the steps in README.md, then fill in config.js.</p>
+    <div class="panel setup-note" id="setup-note" hidden>
+      <p><strong>Logging in isn't switched on yet.</strong> The login below starts working once the site is connected to Supabase, where your login and the submitted events are stored. It's a one-time setup of about 30 minutes:</p>
+      <ol>
+        <li>Create a free Supabase project and run <code>supabase/schema.sql</code> (with your email in it).</li>
+        <li>Create your login in Supabase (Authentication &rarr; Users), with that same email and a password.</li>
+        <li>Set up the spam check, add the two server functions and their secret keys.</li>
+        <li>Paste the three public values into <code>config.js</code>.</li>
+      </ol>
+      <p>Every step is explained in plain language in <a href="https://github.com/technical-communicator/SEARCH-Mail#turning-on-event-submissions-one-time-setup-about-30-minutes">the setup guide (README)</a>. After that, come back here and log in with your email and password.</p>
+    </div>
 
     <!-- ===== LOG IN ===== -->
     <section class="admin-login" id="login" hidden>
@@ -135,6 +144,8 @@
 
     <div class="footer-bottom">
       <p>&copy; 2026 Search Central Florida. Made in Orlando.</p>
+      <!-- For Search Central Florida's reviewers. The page asks for a login. -->
+      <a href="admin.html" class="footer-top">Reviewer login</a>
       <a href="#top" class="footer-top">Back to top &uarr;</a>
     </div>
   </footer>
@@ -162,8 +173,13 @@
     const $ = function (id) { return document.getElementById(id); };
 
     if (!config.supabaseUrl || !config.supabaseAnonKey) {
+      // Not connected yet: show the explanation and the login form, but
+      // switched off, so it's clear where logging in will happen.
       $("setup-note").hidden = false;
-      return;  // not connected yet: stop here
+      $("login").hidden = false;
+      $("login-form").querySelectorAll("input, button").forEach(function (el) { el.disabled = true; });
+      $("login-status").textContent = "Logging in will work once the setup above is done.";
+      return;  // stop here
     }
 
     const db = window.supabase.createClient(config.supabaseUrl, config.supabaseAnonKey);

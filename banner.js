@@ -31,6 +31,7 @@ const BANNER_SETTINGS = {
   perkPost: "blog/featured-business-florida-coffee-festival.html",
   perkImage: "images/mailer/coffee-fest-thumb.webp",  // a small copy, it shows tiny
   stickerImage: "images/mailer/xine-sticker-flowers-small.webp",
+  sticker2Image: "images/mailer/xine-sticker-rose-small.webp",   // two stickers come in every package
 };
 
 // The ticker's words. They're written twice so the loop has no gap.
@@ -88,6 +89,7 @@ function buildMailclubBanner(spot) {
               '<img loading="lazy" decoding="async" class="mcb-print" src="' + root + BANNER_SETTINGS.printImage + '" alt="" width="700" height="990">' +
             "</a>" +
             '<img loading="lazy" decoding="async" class="mcb-sticker" src="' + root + BANNER_SETTINGS.stickerImage + '" alt="" width="400" height="474">' +
+            '<img loading="lazy" decoding="async" class="mcb-sticker mcb-sticker-2" src="' + root + BANNER_SETTINGS.sticker2Image + '" alt="" width="240" height="333">' +
             // The small "this month's perk" card, like a product card on a shop banner.
             '<a class="mcb-card" href="' + root + BANNER_SETTINGS.perkPost + '">' +
               '<img loading="lazy" decoding="async" src="' + root + BANNER_SETTINGS.perkImage + '" alt="">' +

@@ -672,6 +672,16 @@ main {
   transform: rotate(4deg);
 }
 
+/* The second sticker (two come in every package), on the print's top corner. */
+.slide-mail .slide-sticker-2 {
+  left: auto;
+  right: -6%;
+  top: -10%;
+  bottom: auto;
+  width: 40%;
+  transform: rotate(12deg);
+}
+
 /* ---- Dots and pause button under the slides ---- */
 .slider-controls {
   display: flex;
@@ -1660,6 +1670,23 @@ body:has(.event-dialog[open]) {
   filter: drop-shadow(3px 4px 0 rgba(0, 0, 0, 0.18));
 }
 
+/* The stickers box shows two stickers, overlapping a little, each
+   tilted like they've just been tipped out of the envelope. */
+.inside-photo-pair img {
+  width: calc(58% - 1.25rem);
+  height: calc(62% - 1.25rem);
+}
+
+.inside-photo-pair img:first-child {
+  inset: 1.25rem auto auto 1.25rem;
+  transform: rotate(-8deg);
+}
+
+.inside-photo-pair img:last-child {
+  inset: auto 1.25rem 1.25rem auto;
+  transform: rotate(9deg);
+}
+
 .inside-card .card-meta {
   gap: 0.4rem;
 }
@@ -2527,6 +2554,15 @@ h1.mcb-title {
   transform: rotate(12deg);
 }
 
+/* The second sticker, stuck on the print's top-left corner. */
+.mcb-sticker-2 {
+  right: auto;
+  left: 8%;
+  top: -6%;
+  width: 30%;
+  transform: rotate(-14deg);
+}
+
 /* Little four-pointed sparkles, like the stars on a shop banner. */
 .mcb-sparkle {
   position: absolute;
@@ -2882,6 +2918,26 @@ h1.mcb-title {
 }
 
 /* ---- Review dashboard ---- */
+.setup-note {
+  max-width: 44rem;
+  margin-bottom: 1rem;
+  border-left: 6px solid var(--yellow);
+}
+
+.setup-note ol {
+  padding-left: 1.25rem;
+}
+
+.setup-note li {
+  margin-bottom: 0.3rem;
+}
+
+.submit-form input:disabled,
+.submit-form button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
 .admin-login {
   max-width: 26rem;
 }
