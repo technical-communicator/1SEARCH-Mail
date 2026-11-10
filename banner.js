@@ -1,5 +1,8 @@
 // banner.js: the full-width SEARCH snail mail club banner.
 //
+// Its pictures use loading="lazy", so phones only download them when the
+// visitor scrolls near the banner.
+//
 // It appears near the bottom of every page, like a shop's promo banner:
 //   1. a black ticker strip with scrolling news
 //   2. a big pink banner with a headline, a Join button and this month's artist
@@ -21,12 +24,13 @@ const BANNER_SETTINGS = {
   artistPost: "blog/featured-artist-xine-hann.html",
   artistImage: "images/blog/xine-hann-collage.webp",
   // The artwork shown big on the banner: this month's print and a sticker.
-  printImage: "images/mailer/xine-print.webp",
+  // (Small copies, about 460px and 280px wide, so phones load them fast.)
+  printImage: "images/mailer/xine-print-small.webp",
   // The small card on the banner shows this month's local business perk.
   perk: "Florida Coffee Fest",
   perkPost: "blog/featured-business-florida-coffee-festival.html",
-  perkImage: "images/blog/florida-coffee-festival.webp",
-  stickerImage: "images/mailer/xine-sticker-flowers.webp",
+  perkImage: "images/mailer/coffee-fest-thumb.webp",  // a small copy, it shows tiny
+  stickerImage: "images/mailer/xine-sticker-flowers-small.webp",
 };
 
 // The ticker's words. They're written twice so the loop has no gap.
@@ -78,12 +82,12 @@ function buildMailclubBanner(spot) {
             '<span class="mcb-sparkle mcb-sparkle-1" aria-hidden="true">✦</span>' +
             '<span class="mcb-sparkle mcb-sparkle-2" aria-hidden="true">✦</span>' +
             '<a href="' + root + BANNER_SETTINGS.artistPost + '" aria-label="' + BANNER_SETTINGS.month + "'s artist: " + BANNER_SETTINGS.artist + '">' +
-              '<img class="mcb-print" src="' + root + BANNER_SETTINGS.printImage + '" alt="" width="700" height="990">' +
+              '<img loading="lazy" decoding="async" class="mcb-print" src="' + root + BANNER_SETTINGS.printImage + '" alt="" width="700" height="990">' +
             "</a>" +
-            '<img class="mcb-sticker" src="' + root + BANNER_SETTINGS.stickerImage + '" alt="" width="400" height="474">' +
+            '<img loading="lazy" decoding="async" class="mcb-sticker" src="' + root + BANNER_SETTINGS.stickerImage + '" alt="" width="400" height="474">' +
             // The small "this month's perk" card, like a product card on a shop banner.
             '<a class="mcb-card" href="' + root + BANNER_SETTINGS.perkPost + '">' +
-              '<img src="' + root + BANNER_SETTINGS.perkImage + '" alt="">' +
+              '<img loading="lazy" decoding="async" src="' + root + BANNER_SETTINGS.perkImage + '" alt="">' +
               '<span class="mcb-card-label">' + BANNER_SETTINGS.month + "'s perk</span>" +
               '<span class="mcb-card-name">' + BANNER_SETTINGS.perk + " &rarr;</span>" +
             "</a>" +

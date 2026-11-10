@@ -1787,10 +1787,13 @@ body:has(.event-dialog[open]) {
   white-space: nowrap;
 }
 
-/* ---- The big pink banner, on the SCF pink halftone ---- */
+/* ---- The big pink banner, with halftone dots ---- */
 .mcb-main {
   overflow: hidden;  /* keeps the tilted picture inside the banner */
-  background: var(--pink) url("images/bg-pink.webp") center / cover;
+  /* Pink with white halftone dots, drawn by CSS so there's nothing to download. */
+  background-color: var(--pink);
+  background-image: radial-gradient(rgba(255, 255, 255, 0.35) 2px, transparent 2.6px);
+  background-size: 12px 12px;
   border-top: var(--border);
   border-bottom: var(--border);
 }

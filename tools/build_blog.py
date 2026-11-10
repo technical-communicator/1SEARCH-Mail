@@ -183,7 +183,7 @@ def footer(prefix):
   <script src="{prefix}banner.js"></script>
 
   <footer class="site-footer">
-    <img src="{prefix}images/stamp.png" alt="" width="600" height="600">
+    <img loading="lazy" decoding="async" src="{prefix}images/stamp.webp" alt="" width="600" height="600">
     <p>Follow us on Instagram: <a href="https://www.instagram.com/searchcentralfl/">@searchcentralfl</a></p>
   </footer>"""
 
@@ -226,7 +226,7 @@ def card_image(post, prefix, loading="lazy"):
                 f'alt="{esc(post["cover_alt"])}" loading="{loading}">')
     colour = SERIES_BY_NAME[post["series"]][1] if post["series"] else "red"
     return (f'<div class="card-image card-image-blank series-{colour}">'
-            f'<img src="{prefix}images/stamp.png" alt=""></div>')
+            f'<img src="{prefix}images/stamp.webp" alt=""></div>')
 
 
 def post_card(post, prefix):
