@@ -1,18 +1,34 @@
 /* style.css: one shared stylesheet for every page.
    "Mobile-first" means the basic styles are for small screens, and the
-   @media rule near the bottom adds tweaks for wider screens. */
+   @media rules near the bottom add tweaks for wider screens.
+
+   The look comes from the SCF artwork in the images/ folder:
+   cherry red, sunny yellow and bubblegum pink halftone, the purple of
+   the mascot's hood, and thick black "ink" outlines like a cut-out zine. */
 
 /* ---------- Colours and fonts ----------
    Custom properties (the --names) are reusable values.
    Change a colour here and it updates everywhere it's used. */
 :root {
-  --paper: #f6f1e7;      /* page background, a warm off-white like paper */
-  --ink: #1d1d1b;        /* main text colour */
-  --muted: #5a5750;      /* softer text for details */
-  --accent: #c8341e;     /* brand red for buttons and links */
-  --card: #ffffff;       /* card background */
+  --red: #8a0f26;        /* cherry red from the mascot background */
+  --red-dark: #5e0a1a;
+  --yellow: #fdd94c;     /* yellow halftone */
+  --pink: #f3769b;       /* pink halftone */
+  --purple: #4f4c7a;     /* the mascot's hood */
+  --cream: #fff6e6;      /* paper colour for cards and boxes */
+  --ink: #141414;        /* outlines and main text */
+  --muted: #4d4a45;      /* softer text for details */
+
+  /* The chunky "cut and paste" shadow used on cards and buttons. */
+  --shadow: 5px 5px 0 var(--ink);
+  --border: 3px solid var(--ink);
+
+  /* Fonts. Rubik Dirt (speckled, like the logo) is only for big headings.
+     Courier Prime matches the typewriter text on the stamp.
+     Body text uses the device's own clean font so it's easy to read. */
+  --font-grunge: "Rubik Dirt", Impact, sans-serif;
+  --font-type: "Courier Prime", "Courier New", monospace;
   --font-body: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --font-heading: "Courier New", Courier, monospace;
 }
 
 /* Make width and padding add up the way you'd expect. */
@@ -20,27 +36,65 @@
   box-sizing: border-box;
 }
 
+/* The body is a column (header, main, footer) at least one screen tall,
+   so the footer stays at the bottom even on short pages. */
 body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
   margin: 0;
-  background: var(--paper);
   color: var(--ink);
+  background-color: var(--yellow); /* shows while the texture loads */
   font-family: var(--font-body);
   line-height: 1.6;
 }
 
+/* The yellow halftone texture behind every page.
+   We put it on a fixed layer behind everything (z-index: -1) and use
+   "cover" so the dots stay the same size no matter how long the page is. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: url("images/bg-yellow.webp") center / cover;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
 a {
-  color: var(--accent);
+  color: var(--red);
+  font-weight: bold;
 }
 
 /* A visible outline when tabbing with the keyboard (good for accessibility). */
 a:focus-visible {
   outline: 3px solid var(--ink);
-  outline-offset: 2px;
+  outline-offset: 3px;
 }
 
-h1,
+/* ---------- Headings ----------
+   Big headings look like a label cut out and pasted on:
+   paper background, thick outline, hard shadow and a slight tilt. */
+h1 {
+  display: inline-block;
+  margin: 0 0 1rem;
+  padding: 0.25rem 0.75rem;
+  background: var(--cream);
+  border: var(--border);
+  box-shadow: var(--shadow);
+  font-family: var(--font-grunge);
+  font-weight: normal;
+  font-size: 2.25rem;
+  line-height: 1.15;
+  transform: rotate(-1.5deg);
+}
+
 h2 {
-  font-family: var(--font-heading);
+  font-family: var(--font-type);
   line-height: 1.2;
 }
 
@@ -50,105 +104,166 @@ h2 {
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: var(--red);
+  border-bottom: var(--border);
+}
+
+/* The white "SEARCH Central Florida" wordmark. */
+.logo img {
+  display: block;
+  height: 48px;
+  width: auto;
+}
+
+.site-header nav {
+  display: flex;
   gap: 0.5rem;
-  padding: 1rem;
-  background: var(--ink);
 }
 
-.logo {
-  color: var(--paper);
-  font-family: var(--font-heading);
-  font-size: 1.5rem;
-  font-weight: bold;
-  text-decoration: none;
-  letter-spacing: 0.1em;
-}
-
+/* Nav links look like little paper tags. */
 .site-header nav a {
-  color: var(--paper);
-  margin-left: 1rem;
+  padding: 0.25rem 0.75rem;
+  background: var(--cream);
+  color: var(--ink);
+  border: 2px solid var(--ink);
+  font-family: var(--font-type);
   text-decoration: none;
+  text-transform: uppercase;
 }
 
-/* Underline the link for the page you're currently on. */
+/* Highlight the link for the page you're currently on. */
 .site-header nav a[aria-current="page"] {
-  text-decoration: underline;
+  background: var(--pink);
 }
 
 /* ---------- Main content ---------- */
 main {
-  max-width: 48rem;  /* keeps lines a comfortable reading length */
+  flex: 1;           /* main grows to fill the space above the footer */
+  width: 100%;
+  max-width: 60rem;  /* keeps lines a comfortable reading length */
   margin: 0 auto;    /* centres the content */
-  padding: 1.5rem 1rem;
+  padding: 2rem 1rem;
 }
+
+/* The intro line under a page heading, on a paper strip so it stays
+   readable on top of the halftone dots. */
+.lede {
+  display: table;    /* sits on its own line but only as wide as its text */
+  margin: 0 0 1.5rem;
+  padding: 0.25rem 0.5rem;
+  background: var(--cream);
+  border: 2px solid var(--ink);
+}
+
+/* A paper "panel" for blocks of reading text. */
+.panel {
+  background: var(--cream);
+  border: var(--border);
+  box-shadow: var(--shadow);
+  padding: 1.25rem;
+}
+
+/* Remove the extra space above the first and below the last paragraph. */
+.panel > :first-child { margin-top: 0; }
+.panel > :last-child  { margin-bottom: 0; }
 
 /* ---------- Home page hero ---------- */
 .hero {
-  padding: 2rem 0;
+  display: grid;
+  gap: 1.5rem;
+  align-items: center;
+  justify-items: center;
+  text-align: center;
 }
 
-.hero h1 {
-  font-size: 2.25rem;
-  margin-top: 0;
+/* The mascot artwork, pasted on at a tilt. */
+.mascot {
+  width: min(70vw, 300px);
+  border: var(--border);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  transform: rotate(-3deg);
+}
+
+.hero .panel p {
+  margin: 0;
+  font-size: 1.15rem;
 }
 
 .buttons {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem;
+  justify-content: center;
+  gap: 1rem;
   margin-top: 1.5rem;
 }
 
 .button {
   display: inline-block;
   padding: 0.75rem 1.25rem;
-  background: var(--accent);
+  background: var(--red);
   color: #ffffff;
-  border: 2px solid var(--accent);
-  border-radius: 4px;
-  font-weight: bold;
+  border: var(--border);
+  box-shadow: var(--shadow);
+  font-family: var(--font-type);
+  font-size: 1.1rem;
   text-decoration: none;
+  text-transform: uppercase;
+}
+
+/* On hover, the button "presses down" into its shadow. */
+.button:hover {
+  transform: translate(3px, 3px);
+  box-shadow: 2px 2px 0 var(--ink);
 }
 
 .button-outline {
-  background: transparent;
-  color: var(--accent);
+  background: var(--cream);
+  color: var(--ink);
 }
 
 /* ---------- Event cards ---------- */
 .event-list {
   display: grid;
-  gap: 1rem;
+  gap: 1.5rem;
 }
 
 .event-card {
   /* Each category sets --cat-colour below; grey is the fallback. */
-  --cat-colour: #6b6b6b;
-  background: var(--card);
-  border-left: 6px solid var(--cat-colour);
-  border-radius: 4px;
-  padding: 1rem 1.25rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --cat-colour: #5c5c5c;
+  position: relative;
+  background: var(--cream);
+  border: var(--border);
+  border-top: 10px solid var(--cat-colour);
+  box-shadow: var(--shadow);
+  padding: 1.5rem 1.25rem 1.25rem;
 }
 
 .event-card h2 {
-  font-size: 1.25rem;
-  margin: 0.5rem 0;
+  font-size: 1.3rem;
+  margin: 0.25rem 0 0.5rem;
 }
 
 .event-card p {
   margin: 0.25rem 0;
 }
 
-/* The small coloured label at the top of each card. */
+/* The category label sticks up over the top edge like a piece of tape. */
 .event-category {
-  display: inline-block;
+  position: absolute;
+  top: -1.1rem;
+  left: 1rem;
+  padding: 0.1rem 0.6rem;
   background: var(--cat-colour);
   color: #ffffff;
-  font-size: 0.8rem;
+  border: 2px solid var(--ink);
+  font-family: var(--font-type);
+  font-size: 0.85rem;
   font-weight: bold;
-  padding: 0.15rem 0.5rem;
-  border-radius: 3px;
+  text-transform: uppercase;
+  transform: rotate(-2deg);
 }
 
 .event-when {
@@ -162,32 +277,98 @@ main {
 /* One colour per category. The class names come from the JavaScript in
    events.html (for example "Food and Drink" becomes .cat-food-and-drink).
    All of these are dark enough for white text to be readable. */
-.cat-music          { --cat-colour: #7b2d8e; }
-.cat-art            { --cat-colour: #c8341e; }
+.cat-music          { --cat-colour: #4f4c7a; }  /* hood purple */
+.cat-art            { --cat-colour: #8a0f26; }  /* cherry red */
 .cat-markets        { --cat-colour: #2e6b3a; }
-.cat-food-and-drink { --cat-colour: #b04a00; }
+.cat-food-and-drink { --cat-colour: #a84300; }
 .cat-film           { --cat-colour: #1f4e8c; }
-.cat-comedy         { --cat-colour: #a3326a; }
-.cat-community      { --cat-colour: #00727a; }
-.cat-workshops      { --cat-colour: #5c4a1e; }
+.cat-comedy         { --cat-colour: #b0245e; }  /* deep pink */
+.cat-community      { --cat-colour: #00707a; }
+.cat-workshops      { --cat-colour: #6b4e16; }
+
+/* ---------- About page ---------- */
+/* A pink halftone section, like a different coloured page in a zine. */
+.pink-section {
+  display: grid;
+  gap: 1.5rem;
+  align-items: center;
+  justify-items: center;
+  padding: 1.5rem;
+  background: var(--pink) url("images/bg-pink.webp") center / cover;
+  border: var(--border);
+  box-shadow: var(--shadow);
+}
+
+.stamp {
+  width: min(60vw, 240px);
+  transform: rotate(8deg);
+}
 
 /* ---------- Footer ---------- */
 .site-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1.5rem 1rem 2rem;
+  background: var(--cream);
+  border-top: var(--border);
+  font-family: var(--font-type);
   text-align: center;
-  padding: 2rem 1rem;
-  color: var(--muted);
-  font-size: 0.9rem;
 }
 
-/* ---------- Wider screens ----------
-   On tablets and desktops, show the event cards in two columns
-   and make the big heading larger. */
+.site-footer img {
+  width: 90px;
+  transform: rotate(-8deg);
+}
+
+.site-footer p {
+  margin: 0;
+}
+
+/* ---------- Wider screens ---------- */
 @media (min-width: 40rem) {
+  h1 {
+    font-size: 3rem;
+  }
+
+  .logo img {
+    height: 60px;
+  }
+
+  /* Two columns of event cards on tablets. */
   .event-list {
     grid-template-columns: 1fr 1fr;
   }
 
-  .hero h1 {
-    font-size: 3rem;
+  /* Home: mascot on the left, words on the right. */
+  .hero {
+    grid-template-columns: auto 1fr;
+    justify-items: start;
+    text-align: left;
+  }
+
+  .hero .buttons {
+    justify-content: flex-start;
+  }
+
+  /* About: stamp beside the text. */
+  .pink-section {
+    grid-template-columns: 1fr auto;
+    padding: 2rem;
+  }
+}
+
+/* Three columns of event cards on big screens. */
+@media (min-width: 64rem) {
+  .event-list {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+/* People who turn on "reduce motion" don't get the button press effect. */
+@media (prefers-reduced-motion: reduce) {
+  .button:hover {
+    transform: none;
   }
 }

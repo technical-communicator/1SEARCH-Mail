@@ -6,11 +6,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>About | Search Central Florida</title>
   <meta name="description" content="About Search Central Florida, a hyperlocal Orlando arts, culture and small business guide.">
+  <!-- Little mascot icon in the browser tab. -->
+  <link rel="icon" type="image/png" href="images/favicon.png">
+
+  <!-- Fonts from Google Fonts: Rubik Dirt for big headings, Courier Prime for labels. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Rubik+Dirt&display=swap">
+
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header class="site-header">
-    <a class="logo" href="index.html">SEARCH</a>
+    <!-- The logo links back to the home page. The alt text is what screen readers say. -->
+    <a class="logo" href="index.html"><img src="images/wordmark-white.webp" alt="SEARCH Central Florida, home" width="700" height="245"></a>
     <nav>
       <a href="events.html">Events</a>
       <!-- aria-current tells screen readers (and our CSS) which page you're on. -->
@@ -21,13 +30,22 @@
   <main>
     <h1>About SCF</h1>
 
-    <!-- Placeholder copy: edit freely. -->
-    <p>Search Central Florida is a hyperlocal guide to Orlando arts, culture and small businesses.</p>
-    <p>We share a handful of hand-picked events every day on Instagram, and this site is where even more good events live.</p>
-    <p>We believe the best stuff happens in person. Find something fun, close the app and go.</p>
+    <!-- A pink "zine page" with the text on a paper panel and the mail club stamp beside it. -->
+    <section class="pink-section">
+      <div class="panel">
+        <!-- Placeholder copy: edit freely. -->
+        <p>Search Central Florida is a hyperlocal guide to Orlando arts, culture and small businesses.</p>
+        <p>We share a handful of hand-picked events every day on Instagram, and this site is where even more good events live.</p>
+        <p>We believe the best stuff happens in person. Find something fun, close the app and go.</p>
+      </div>
+      <img class="stamp" src="images/stamp.png" width="600" height="600"
+           alt="SEARCH: a snail mail club stamp featuring the mascot">
+    </section>
   </main>
 
   <footer class="site-footer">
+    <!-- alt="" because the stamp is decoration; the text below says the same thing. -->
+    <img src="images/stamp.png" alt="" width="600" height="600">
     <p>Follow us on Instagram: <a href="https://www.instagram.com/searchcentralfl/">@searchcentralfl</a></p>
   </footer>
 </body>

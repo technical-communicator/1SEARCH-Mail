@@ -8,11 +8,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Events in Orlando | Search Central Florida</title>
   <meta name="description" content="Upcoming arts, music, food and community events in Orlando, curated by Search Central Florida.">
+  <!-- Little mascot icon in the browser tab. -->
+  <link rel="icon" type="image/png" href="images/favicon.png">
+
+  <!-- Fonts from Google Fonts: Rubik Dirt for big headings, Courier Prime for labels. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Rubik+Dirt&display=swap">
+
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header class="site-header">
-    <a class="logo" href="index.html">SEARCH</a>
+    <!-- The logo links back to the home page. The alt text is what screen readers say. -->
+    <a class="logo" href="index.html"><img src="images/wordmark-white.webp" alt="SEARCH Central Florida, home" width="700" height="245"></a>
     <nav>
       <a href="events.html" aria-current="page">Events</a>
       <a href="about.html">About</a>
@@ -21,7 +30,8 @@
 
   <main>
     <h1>Events</h1>
-    <p>Hand-picked things to do around Orlando.</p>
+    <!-- "lede" puts the intro on a paper strip so it reads clearly over the dots. -->
+    <p class="lede">Hand-picked things to do around Orlando.</p>
 
     <!-- The cards get added inside this element by the script below.
          aria-live makes screen readers announce it when the cards appear. -->
@@ -31,6 +41,8 @@
   </main>
 
   <footer class="site-footer">
+    <!-- alt="" because the stamp is decoration; the text below says the same thing. -->
+    <img src="images/stamp.png" alt="" width="600" height="600">
     <p>Follow us on Instagram: <a href="https://www.instagram.com/searchcentralfl/">@searchcentralfl</a></p>
   </footer>
 

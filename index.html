@@ -10,13 +10,22 @@
   <title>Search Central Florida | Orlando arts, culture and local events</title>
   <meta name="description" content="Search Central Florida helps you find cool local events, art and small businesses in Orlando.">
 
+  <!-- Little mascot icon in the browser tab. -->
+  <link rel="icon" type="image/png" href="images/favicon.png">
+
+  <!-- Fonts from Google Fonts: Rubik Dirt for big headings, Courier Prime for labels. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Rubik+Dirt&display=swap">
+
   <!-- One shared stylesheet for every page. -->
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <!-- Site header: the same block appears on every page. -->
   <header class="site-header">
-    <a class="logo" href="index.html">SEARCH</a>
+    <!-- The logo links back to the home page. The alt text is what screen readers say. -->
+    <a class="logo" href="index.html"><img src="images/wordmark-white.webp" alt="SEARCH Central Florida, home" width="700" height="245"></a>
     <nav>
       <a href="events.html">Events</a>
       <a href="about.html">About</a>
@@ -25,19 +34,29 @@
 
   <main>
     <!-- The "hero" is the big intro area at the top of the page. -->
+    <!-- On phones the mascot sits on top; on wider screens it moves to the left. -->
     <section class="hero">
-      <h1>Search Central Florida</h1>
-      <p>Your guide to the best local art, music, markets and events in Orlando, so you can get off your phone and out the door.</p>
+      <img class="mascot" src="images/mascot.webp" width="800" height="800"
+           alt="The SEARCH mascot: a girl in a purple cat-ear hood with silver ear rings, on a red halftone background">
 
-      <!-- Two big buttons linking to the other pages. -->
-      <div class="buttons">
-        <a class="button" href="events.html">See events</a>
-        <a class="button button-outline" href="about.html">About us</a>
+      <div>
+        <h1>Search Central Florida</h1>
+        <div class="panel">
+          <p>Your guide to the best local art, music, markets and events in Orlando, so you can get off your phone and out the door.</p>
+        </div>
+
+        <!-- Two big buttons linking to the other pages. -->
+        <div class="buttons">
+          <a class="button" href="events.html">See events</a>
+          <a class="button button-outline" href="about.html">About us</a>
+        </div>
       </div>
     </section>
   </main>
 
   <footer class="site-footer">
+    <!-- alt="" because the stamp is decoration; the text below says the same thing. -->
+    <img src="images/stamp.png" alt="" width="600" height="600">
     <p>Follow us on Instagram: <a href="https://www.instagram.com/searchcentralfl/">@searchcentralfl</a></p>
   </footer>
 </body>
