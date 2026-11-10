@@ -74,6 +74,8 @@
         <p id="dialog-date" class="dialog-date"></p>
         <div id="dialog-times" class="times"></div>
         <p id="dialog-description" class="dialog-description"></p>
+        <!-- Link to the event's Instagram or event page. Hidden if there isn't one. -->
+        <a id="dialog-link" class="button dialog-link" target="_blank" rel="noopener" hidden></a>
       </div>
       <!-- The close button. "×" is the multiplication sign, used as an X. -->
       <button id="dialog-close" class="dialog-close" type="button" aria-label="Close">×</button>
@@ -207,6 +209,30 @@
       });
     }
 
+    // ---------- Links ----------
+
+    // Each event can have a "link" in events.json: its Instagram, ticket
+    // page or website. This picks a short button label from the address.
+    function linkLabel(url) {
+      if (url.includes("instagram.com")) return "Instagram";
+      if (url.includes("eventbrite.") || url.includes("ticket")) return "Tickets";
+      return "Website";
+    }
+
+    // Make the link button, or return null if the event has no link.
+    // target="_blank" opens it in a new tab so the calendar stays open.
+    // rel="noopener" is a standard safety setting for links to other sites.
+    function makeLink(event, className) {
+      if (!event.link) return null;
+      const link = make("a", className, linkLabel(event.link) + " \u2197"); // \u2197 is the ↗ arrow
+      link.href = event.link;
+      link.target = "_blank";
+      link.rel = "noopener";
+      // Screen readers hear the full meaning, e.g. "Tasty Takeover on Instagram, opens in a new tab".
+      link.setAttribute("aria-label", event.title + ": " + linkLabel(event.link) + ", opens in a new tab");
+      return link;
+    }
+
     // ---------- Cards ----------
 
     // Build one card. The whole card can be clicked: the title is a real
@@ -226,12 +252,18 @@
       title.append(openButton);
       top.append(make("span", "event-category", event.category), title, make("p", "event-venue", event.venue));
 
-      // Bottom half: short description, time chips and a "Details" hint.
+      // Bottom half: short description, time chips, then a row with the
+      // event's link (if it has one) and a "Details" hint.
+      const footer = make("div", "card-footer");
+      const link = makeLink(event, "event-link");
+      if (link) footer.append(link);
+      footer.append(make("span", "card-details", "Details"));
+
       const bottom = make("div", "card-bottom");
       bottom.append(
         make("p", "event-description", event.description),
         makeTimes(event),
-        make("span", "card-details", "Details")
+        footer
       );
 
       card.append(top, bottom);
@@ -306,6 +338,17 @@
       // Swap in this event's time chips (replaceChildren clears the old ones first).
       document.getElementById("dialog-times").replaceChildren(...makeTimes(event).children);
       document.getElementById("dialog-description").textContent = event.description;
+
+      // The big link button: show it with this event's link, or hide it.
+      const dialogLink = document.getElementById("dialog-link");
+      if (event.link) {
+        dialogLink.href = event.link;
+        dialogLink.textContent = (linkLabel(event.link) === "Instagram" ? "See it on Instagram" :
+          linkLabel(event.link) === "Tickets" ? "Get tickets" : "Visit the website") + " \u2197";
+        dialogLink.hidden = false;
+      } else {
+        dialogLink.hidden = true;
+      }
 
       dialog.showModal();
     }

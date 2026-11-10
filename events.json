@@ -1,82 +1,155 @@
 [
   {
-    "title": "Zine Making Workshop",
+    "title": "Mex Market",
+    "date": "2026-11-09",
+    "start_time": "18:00",
+    "venue": "Águila Coffee",
+    "category": "Markets",
+    "description": "An evening market at Águila, the Mexican coffee shop in Ivanhoe Village.",
+    "link": "https://www.instagram.com/aguilaorl/"
+  },
+  {
+    "title": "All Vintage Collage Party",
+    "date": "2026-11-09",
+    "start_time": "18:00",
+    "end_time": "20:00",
+    "venue": "Austin's Coffee",
+    "category": "Art",
+    "description": "Cut, paste and make collages from vintage materials at Austin's in Winter Park.",
+    "link": "https://www.instagram.com/austinscoffee/"
+  },
+  {
+    "title": "New Peace Mondays",
+    "date": "2026-11-09",
+    "start_time": "19:00",
+    "end_time": "22:00",
+    "venue": "Bynx Cafe",
+    "category": "Music",
+    "description": "An open mic night of hip hop, poetry, comedy and live music downtown. Performers of any kind can sign up.",
+    "link": "https://www.instagram.com/bynxorlando/"
+  },
+  {
+    "title": "Dragged From The Grave",
+    "date": "2026-11-09",
+    "start_time": "20:00",
+    "venue": "Anthem Orlando",
+    "category": "Comedy",
+    "description": "Anthem's alternative, drag-king-forward drag night, big on costume, character and camp horror.",
+    "link": "https://www.instagram.com/anthemorlando/"
+  },
+  {
+    "title": "Cinema NSYNQ",
+    "date": "2026-11-10",
+    "start_time": "18:00",
+    "venue": "Lucky Straws Boba",
+    "category": "Film",
+    "description": "A movie night at Lucky Straws Boba Tea Cafe.",
+    "link": "https://www.instagram.com/luckystrawsboba/"
+  },
+  {
+    "title": "Craft Club Orlando",
     "date": "2026-11-10",
     "start_time": "18:30",
-    "end_time": "20:30",
-    "venue": "Orlando Public Library",
+    "venue": "BookBurn Cafe",
     "category": "Workshops",
-    "description": "Cut, paste and staple your own mini zine. All supplies provided."
+    "description": "A social club where local crafters get together to make, learn and collaborate. Beginners welcome.",
+    "link": "https://www.eventbrite.com/o/120871017614"
   },
   {
-    "title": "Open Mic Comedy Night",
-    "date": "2026-11-11",
-    "start_time": "20:00",
+    "title": "Tasty Takeover",
+    "date": "2026-11-10",
+    "start_time": "18:30",
     "end_time": "22:00",
-    "venue": "The Milk District",
-    "category": "Comedy",
-    "description": "Local comics try out new material. Sign up at the door or just come to laugh."
+    "venue": "Sportstown / Etoile Boutique",
+    "category": "Food and Drink",
+    "description": "Orlando's original food truck block party, every Tuesday in the Milk District since 2011.",
+    "link": "https://www.instagram.com/tastytakeover/"
   },
   {
-    "title": "Open Studio Night",
+    "title": "The Reconnect Movement",
+    "date": "2026-11-10",
+    "start_time": "19:00",
+    "end_time": "23:00",
+    "venue": "Dr. Drips Coffee Lounge",
+    "category": "Community",
+    "description": "A community night at Dr. Drips, the vintage coffee lounge in Ivanhoe Village.",
+    "link": "https://www.instagram.com/dr.drip.coffee/"
+  },
+  {
+    "title": "Kaya's Birthday Bash",
+    "date": "2026-11-11",
+    "start_time": "17:30",
+    "end_time": "22:00",
+    "venue": "Kaya Orlando",
+    "category": "Food and Drink",
+    "description": "Kaya, the neighborhood restaurant and bar known for craft cocktails and natural wine, throws a birthday party.",
+    "link": "https://www.instagram.com/kaya.orlando/"
+  },
+  {
+    "title": "Her Turn to Spin DJ Workshop",
+    "date": "2026-11-11",
+    "start_time": "19:00",
+    "end_time": "21:00",
+    "venue": "Rugged Perspective",
+    "category": "Workshops",
+    "description": "Learn to DJ at Rugged Perspective, the rug tufting studio in the Milk District.",
+    "link": "https://www.instagram.com/ruggedperspective_orl/"
+  },
+  {
+    "title": "Timucua Jazz Jam",
+    "date": "2026-11-11",
+    "start_time": "19:30",
+    "venue": "Timucua Arts Foundation",
+    "category": "Music",
+    "description": "An open jazz jam with a house band of Central Florida jazz players. Musicians are welcome to sit in.",
+    "link": "https://timucua.com/"
+  },
+  {
+    "title": "OTR: Open Stage Fight Night",
+    "date": "2026-11-11",
+    "start_time": "22:00",
+    "venue": "The Renaissance Theatre",
+    "category": "Comedy",
+    "description": "The Ren's late-night OTR show. Two shows: 10:00 PM and 11:15 PM.",
+    "link": "https://rentheatre.com/"
+  },
+  {
+    "title": "FPN Movie Night",
+    "date": "2026-11-12",
+    "start_time": "18:00",
+    "end_time": "21:00",
+    "venue": "Austin's Coffee",
+    "category": "Film",
+    "description": "A movie night at Austin's Coffee in Winter Park.",
+    "link": "https://www.instagram.com/austinscoffee/"
+  },
+  {
+    "title": "FL Girl Goes to Orlando Show",
     "date": "2026-11-12",
     "start_time": "19:00",
-    "venue": "Ivanhoe Village Art Studios",
-    "category": "Art",
-    "description": "Wander through working studios and meet the artists behind the work."
-  },
-  {
-    "title": "Jazz Night at The Wall Street Cellar",
-    "date": "2026-11-13",
-    "start_time": "20:00",
-    "end_time": "23:00",
-    "venue": "The Wall Street Cellar",
+    "venue": "Austin's Coffee",
     "category": "Music",
-    "description": "A cozy night of live jazz trios downtown. Grab a drink and settle in."
+    "description": "An evening show at Austin's Coffee in Winter Park.",
+    "link": "https://www.instagram.com/austinscoffee/"
   },
   {
-    "title": "Mills 50 Makers Market",
-    "date": "2026-11-14",
-    "start_time": "10:00",
-    "end_time": "15:00",
-    "venue": "Mills 50 District",
-    "category": "Markets",
-    "description": "Local makers selling prints, candles, ceramics and vintage finds."
+    "title": "Theatrical Thursdays",
+    "date": "2026-11-12",
+    "start_time": "19:00",
+    "end_time": "22:00",
+    "venue": "Bynx Cafe",
+    "category": "Comedy",
+    "description": "A Thursday night show at Bynx, the downtown café and live music space.",
+    "link": "https://www.instagram.com/bynxorlando/"
   },
   {
-    "title": "Taco Pop-Up in Audubon Park",
-    "date": "2026-11-14",
-    "start_time": "17:00",
-    "end_time": "21:00",
-    "venue": "Audubon Park Garden District",
-    "category": "Food and Drink",
-    "description": "A one-night taco pop-up from a local chef, with agua fresca and music."
-  },
-  {
-    "title": "Community Garden Workday",
-    "date": "2026-11-15",
-    "start_time": "09:00",
-    "end_time": "12:00",
-    "venue": "Mead Botanical Garden",
-    "category": "Community",
-    "description": "Help plant, weed and mulch, then hang out with neighbors. Gloves provided."
-  },
-  {
-    "title": "Outdoor Movie on the Lawn",
-    "date": "2026-11-15",
-    "start_time": "19:30",
-    "venue": "Lake Eola Park",
-    "category": "Film",
-    "description": "Bring a blanket for a free outdoor screening of a classic film."
-  },
-  {
-    "title": "Vinyl Listening Party",
-    "date": "2026-11-15",
-    "start_time": "21:00",
-    "end_time": "23:30",
-    "venue": "Downtown Record Shop",
+    "title": "4Resonance Open Air Party",
+    "date": "2026-11-12",
+    "start_time": "22:00",
+    "venue": "Kissimmee Campgrounds",
     "category": "Music",
-    "description": "Hear a new local album start to finish on the big speakers."
+    "description": "An open-air night party from Orlando collective 4Resonance.",
+    "link": "https://www.instagram.com/4res0nance/"
   },
   {
     "title": "Florida Coffee Festival",
@@ -85,6 +158,7 @@
     "end_time": "16:00",
     "venue": "Festival Park, Orlando",
     "category": "Food and Drink",
-    "description": "Local roasters, matcha and specialty drinks, latte art championship, live music and goat cuddling."
+    "description": "Local roasters, matcha and specialty drinks, latte art championship, live music and goat cuddling.",
+    "link": "https://www.eventbrite.com/e/2026-florida-coffee-festival-tickets-1997481661420"
   }
 ]

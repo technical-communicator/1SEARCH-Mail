@@ -497,9 +497,49 @@ main {
   font-family: var(--font-type);
 }
 
+/* Bottom row of a card: the event's link on the left, "Details" on the right. */
+.card-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: auto;  /* pushes the row to the bottom of the card */
+}
+
+/* The Instagram / Tickets / Website link on a card.
+   position + z-index lift it above the card's big invisible button,
+   so tapping the link opens the link, not the pop-up. */
+.event-link {
+  position: relative;
+  z-index: 1;
+  padding: 0.15rem 0.75rem;
+  background: var(--pink);
+  color: var(--ink);
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  font-family: var(--font-type);
+  font-size: 0.85rem;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.event-link:hover {
+  background: var(--ink);
+  color: #ffffff;
+}
+
+.event-link:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 2px;
+}
+
+/* The big link button in the pop-up. */
+.dialog-link {
+  align-self: flex-start;
+}
+
 .card-details {
-  align-self: flex-end;
-  margin-top: auto;
+  margin-left: auto;  /* sits at the right end of the row */
   padding: 0.1rem 0.75rem;
   background: var(--yellow);
   border: 2px solid var(--ink);
