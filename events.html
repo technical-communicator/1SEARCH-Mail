@@ -65,6 +65,10 @@
        the script calls showModal(). The Esc key closes it automatically. -->
   <dialog id="event-dialog" class="event-dialog" aria-labelledby="dialog-title">
     <article id="dialog-card" class="dialog-card">
+      <!-- The close button. "×" is the multiplication sign, used as an X.
+           It comes first and has "autofocus", so when the pop-up opens the
+           keyboard focus lands here and the pop-up starts at the top. -->
+      <button id="dialog-close" class="dialog-close" type="button" aria-label="Close" autofocus>×</button>
       <div class="card-top">
         <span id="dialog-category" class="event-category"></span>
         <h2 id="dialog-title"></h2>
@@ -77,8 +81,6 @@
         <!-- Link to the event's Instagram or event page. Hidden if there isn't one. -->
         <a id="dialog-link" class="button dialog-link" target="_blank" rel="noopener" hidden></a>
       </div>
-      <!-- The close button. "×" is the multiplication sign, used as an X. -->
-      <button id="dialog-close" class="dialog-close" type="button" aria-label="Close">×</button>
     </article>
   </dialog>
 
@@ -351,6 +353,7 @@
       }
 
       dialog.showModal();
+      dialog.scrollTop = 0; // on short screens the pop-up scrolls; start at the top
     }
 
     // Close with the × button.

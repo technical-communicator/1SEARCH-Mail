@@ -173,7 +173,7 @@ h2 {
 /* Nav links look like little paper tags. */
 .site-header nav a {
   flex: 1;              /* equal widths on phones */
-  padding: 0.25rem 0.2rem;
+  padding: 0.5rem 0.2rem;  /* taller on phones so they're easy to tap */
   font-size: 0.8rem;
   text-align: center;
   white-space: nowrap;  /* never split "Mail Club" onto two lines */
@@ -232,7 +232,7 @@ main {
 
 /* The mascot artwork, pasted on at a tilt. */
 .mascot {
-  width: min(70vw, 300px);
+  width: min(55vw, 300px);  /* smaller on phones so the words show sooner */
   border: var(--border);
   border-radius: 12px;
   box-shadow: var(--shadow);
@@ -295,7 +295,8 @@ main {
 }
 
 .day {
-  flex: 0 0 calc((100% - 1.5rem) / 4.3); /* about 4.3 tiles visible on phones */
+  /* About 4.3 tiles visible on phones, but never narrower than 4.6rem. */
+  flex: 0 0 max(4.6rem, calc((100% - 1.5rem) / 4.3));
   scroll-snap-align: start;
   display: flex;
   flex-direction: column;
@@ -324,7 +325,8 @@ main {
 }
 
 .day-count {
-  font-size: 0.7rem;
+  font-size: 0.75rem;
+  white-space: nowrap;  /* keep "4 events" on one line */
 }
 
 .day:hover {
@@ -512,7 +514,10 @@ main {
 .event-link {
   position: relative;
   z-index: 1;
-  padding: 0.15rem 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.5rem;  /* big enough to tap easily with a thumb */
+  padding: 0.15rem 0.9rem;
   background: var(--pink);
   color: var(--ink);
   border: 2px solid var(--ink);
@@ -720,7 +725,7 @@ body:has(.event-dialog[open]) {
 }
 
 .mc-hero-stamp {
-  width: min(55vw, 260px);
+  width: min(45vw, 260px);  /* smaller on phones so the heading shows sooner */
   transform: rotate(-8deg);
 }
 
