@@ -1,36 +1,80 @@
 /* style.css: one shared stylesheet for every page.
-   "Mobile-first" means the basic styles are for small screens, and the
-   @media rules near the bottom add tweaks for wider screens.
 
-   The look comes from the SCF artwork in the images/ folder:
-   cherry red, sunny yellow, bubblegum pink and sky blue halftone, the purple of
-   the mascot's hood, and thick black "ink" outlines like a cut-out zine. */
+   THE DESIGN SYSTEM
+   The whole site follows the same simple rules, taken from the blog:
+   - Plain warm paper background, so text is always easy to read.
+   - Two fonts: Anton for big headlines, and Courier Prime (a typewriter
+     font made to be read on screens) for everything else.
+   - Thin black rules between sections instead of heavy boxes and shadows.
+   - Every page starts with a "masthead": a small coloured label, a giant
+     headline and a one-line intro.
+   - Each section of the site has its own colour from the SCF artwork:
+     Events = blue, Mail Club = pink, Blog = red, About = yellow.
+   - The halftone dots and cut-and-paste touches are accents, not backgrounds.
 
-/* ---------- Colours and fonts ----------
+   "Mobile-first": the basic styles are for phones, and the @media rules
+   near the bottom add changes for wider screens.
+
+   CONTENTS
+   1. Colours, fonts and basics
+   2. Header and navigation
+   3. Page layout and the masthead
+   4. Shared pieces: buttons, labels, rules, panels
+   5. Cards (used on Home, Blog and the mail club)
+   6. Home page
+   7. Events page
+   8. Event pop-up
+   9. Mail club page
+   10. Blog
+   11. About page
+   12. Footer
+   13. Wider screens
+   14. Reduced motion */
+
+
+/* =========================================================
+   1. Colours, fonts and basics
    Custom properties (the --names) are reusable values.
-   Change a colour here and it updates everywhere it's used. */
+   Change one here and it updates everywhere it's used.
+   ========================================================= */
 :root {
-  --red: #8a0f26;        /* cherry red from the mascot background */
+  /* Brand colours from the SCF artwork */
+  --red: #8a0f26;        /* cherry red */
+  --red-bright: #c8163c; /* bright envelope red (mail club) */
   --red-dark: #5e0a1a;
-  --yellow: #fdd94c;     /* yellow halftone */
-  --pink: #f3769b;       /* pink halftone */
-  --blue: #87d1ff;       /* blue halftone */
+  --yellow: #fdd94c;
+  --pink: #f3769b;
+  --blue: #87d1ff;
   --purple: #4f4c7a;     /* the mascot's hood */
-  --cream: #fff6e6;      /* paper colour for cards and boxes */
-  --ink: #141414;        /* outlines and main text */
-  --muted: #4d4a45;      /* softer text for details */
+  --dusty: #8fb3bf;      /* dusty blue letter paper (mail club) */
 
-  /* The chunky "cut and paste" shadow used on cards and buttons. */
-  --shadow: 5px 5px 0 var(--ink);
-  --border: 3px solid var(--ink);
+  /* Paper and ink */
+  --paper: #f5f1ea;      /* the page background */
+  --cream: #fffdf7;      /* lighter paper for cards */
+  --ink: #141414;        /* text and rules */
+  --muted: #55524c;      /* softer text for details */
 
-  /* Fonts. Rubik Dirt (speckled, like the logo) is only for big headings.
-     Courier Prime matches the typewriter text on the stamp.
-     Body text uses the device's own clean font so it's easy to read. */
-  --font-grunge: "Rubik Dirt", Impact, sans-serif;
+  /* Lines and shadows */
+  --rule: 1px solid var(--ink);
+  --border: 2px solid var(--ink);
+  --soft-shadow: 3px 4px 0 rgba(0, 0, 0, 0.18);
+
+  /* Fonts */
+  --font-display: "Anton", "Arial Narrow", Impact, sans-serif;
   --font-type: "Courier Prime", "Courier New", monospace;
-  --font-body: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-script: "Yellowtail", "Brush Script MT", cursive;
+
+  /* The colour of the section you're in (each page changes it),
+     and a text colour that's readable on top of it. */
+  --section: var(--red);
+  --section-text: #ffffff;
 }
+
+/* Each page picks its section colour with a class on <body>.
+   These colours are light, so text on them is black. */
+.page-events   { --section: var(--blue);   --section-text: var(--ink); }
+.page-mailclub { --section: var(--pink);   --section-text: var(--ink); }
+.page-about    { --section: var(--yellow); --section-text: var(--ink); }
 
 /* Make width and padding add up the way you'd expect. */
 * {
@@ -44,39 +88,11 @@ body {
   flex-direction: column;
   min-height: 100vh;
   margin: 0;
+  background: var(--paper);
   color: var(--ink);
-  background-color: var(--page-colour); /* shows while the texture loads */
-  font-family: var(--font-body);
-  line-height: 1.6;
-}
-
-/* Each page gets its own halftone colour, like different coloured pages
-   in a zine. Yellow is the default (the home page). A page picks another
-   colour with a class on its <body> tag, e.g. <body class="page-blue">. */
-body {
-  --page-colour: var(--yellow);
-  --page-texture: url("images/bg-yellow.webp");
-}
-
-.page-blue {
-  --page-colour: var(--blue);
-  --page-texture: url("images/bg-blue.webp");
-}
-
-.page-pink {
-  --page-colour: var(--pink);
-  --page-texture: url("images/bg-pink.webp");
-}
-
-/* The halftone texture sits on a fixed layer behind everything
-   (z-index: -1). "cover" keeps the dots the same size no matter how
-   long the page is. */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  background: var(--page-colour) var(--page-texture) center / cover;
+  font-family: var(--font-type);
+  font-size: 1.0625rem;  /* 17px: typewriter fonts read best a little larger */
+  line-height: 1.7;
 }
 
 img {
@@ -84,40 +100,39 @@ img {
   height: auto;
 }
 
+/* Links: ink coloured with a red underline. */
 a {
+  color: var(--ink);
+  text-decoration-color: var(--red);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+a:hover {
   color: var(--red);
-  font-weight: bold;
 }
 
 /* A visible outline when tabbing with the keyboard (good for accessibility). */
-a:focus-visible {
+a:focus-visible,
+button:focus-visible,
+summary:focus-visible {
   outline: 3px solid var(--ink);
   outline-offset: 3px;
 }
 
-/* ---------- Headings ----------
-   Big headings look like a label cut out and pasted on:
-   paper background, thick outline, hard shadow and a slight tilt. */
-h1 {
-  display: inline-block;
-  margin: 0 0 1rem;
-  padding: 0.25rem 0.75rem;
-  background: var(--cream);
-  border: var(--border);
-  box-shadow: var(--shadow);
-  font-family: var(--font-grunge);
+/* All headlines use Anton. */
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
   font-weight: normal;
-  font-size: 2.25rem;
-  line-height: 1.15;
-  transform: rotate(-1.5deg);
+  line-height: 1.05;
 }
 
-h2 {
-  font-family: var(--font-type);
-  line-height: 1.2;
-}
 
-/* ---------- Header and navigation ---------- */
+/* =========================================================
+   2. Header and navigation
+   ========================================================= */
 .site-header {
   display: flex;
   flex-wrap: wrap;
@@ -138,6 +153,10 @@ h2 {
   text-decoration: none;
 }
 
+.logo:hover {
+  color: #ffffff;
+}
+
 .logo img {
   display: block;
   height: 52px;
@@ -147,7 +166,6 @@ h2 {
 .logo-text {
   display: flex;
   flex-direction: column;
-  font-family: var(--font-type);
   line-height: 1.1;
 }
 
@@ -163,7 +181,7 @@ h2 {
 }
 
 /* On phones the nav gets its own full-width row under the logo,
-   with the four tags sharing the space equally. */
+   with the four links sharing the space equally. */
 .site-header nav {
   display: flex;
   gap: 0.4rem;
@@ -173,107 +191,110 @@ h2 {
 /* Nav links look like little paper tags. */
 .site-header nav a {
   flex: 1;              /* equal widths on phones */
-  padding: 0.5rem 0.2rem;  /* taller on phones so they're easy to tap */
-  font-size: 0.8rem;
-  text-align: center;
-  white-space: nowrap;  /* never split "Mail Club" onto two lines */
+  padding: 0.5rem 0.2rem;  /* tall enough to tap easily */
   background: var(--cream);
   color: var(--ink);
-  border: 2px solid var(--ink);
-  font-family: var(--font-type);
+  border: var(--border);
+  font-size: 0.8rem;
+  font-weight: bold;
+  line-height: 1.2;
+  text-align: center;
   text-decoration: none;
   text-transform: uppercase;
+  white-space: nowrap;  /* never split "Mail Club" onto two lines */
 }
 
-/* Highlight the link for the page you're currently on. */
+.site-header nav a:hover {
+  background: var(--yellow);
+}
+
+/* The page you're on is highlighted in pink. */
 .site-header nav a[aria-current="page"] {
   background: var(--pink);
 }
 
-/* ---------- Main content ---------- */
+
+/* =========================================================
+   3. Page layout and the masthead
+   ========================================================= */
 main {
   flex: 1;           /* main grows to fill the space above the footer */
   width: 100%;
-  max-width: 60rem;  /* keeps lines a comfortable reading length */
+  max-width: 72rem;
   margin: 0 auto;    /* centres the content */
-  padding: 2rem 1rem;
+  padding: 1.5rem 1rem 3rem;
 }
 
-/* The intro line under a page heading, on a paper strip so it stays
-   readable on top of the halftone dots. */
-.lede {
-  display: table;    /* sits on its own line but only as wide as its text */
-  margin: 0 0 1.5rem;
-  padding: 0.25rem 0.5rem;
-  background: var(--cream);
-  border: 2px solid var(--ink);
+/* The top of every page: coloured label, giant headline, one-line intro. */
+.masthead {
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: var(--rule);
 }
 
-/* A paper "panel" for blocks of reading text. */
-.panel {
-  background: var(--cream);
-  border: var(--border);
-  box-shadow: var(--shadow);
-  padding: 1.25rem;
+.masthead h1 {
+  margin: 0.5rem 0 0.75rem;
+  font-size: clamp(3rem, 12vw, 7rem);
+  line-height: 0.95;
 }
 
-/* Remove the extra space above the first and below the last paragraph. */
-.panel > :first-child { margin-top: 0; }
-.panel > :last-child  { margin-bottom: 0; }
-
-/* ---------- Home page hero ---------- */
-.hero {
-  display: grid;
-  gap: 1.5rem;
-  align-items: center;
-  justify-items: center;
-  text-align: center;
-}
-
-/* The mascot artwork, pasted on at a tilt. */
-.mascot {
-  width: min(55vw, 300px);  /* smaller on phones so the words show sooner */
-  border: var(--border);
-  border-radius: 12px;
-  box-shadow: var(--shadow);
-  transform: rotate(-3deg);
-}
-
-.hero .panel p {
+.masthead-intro {
+  max-width: 44rem;
   margin: 0;
   font-size: 1.15rem;
+  color: var(--muted);
 }
 
-/* A little space between paragraphs in the hero panel. */
-.hero .panel p + p {
-  margin-top: 0.75rem;
+/* A headline that starts a new section partway down a page. */
+.section-head {
+  margin: 3rem 0 1.25rem;
+  padding-top: 1rem;
+  border-top: 3px solid var(--ink);
+  font-size: clamp(2rem, 6vw, 2.75rem);
 }
 
+/* Right after a masthead, a section headline doesn't need a second rule. */
+.masthead + .section-head {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+
+/* Some sections are kept narrower so lines are comfortable to read. */
+.reading {
+  max-width: 42rem;
+}
+
+
+/* =========================================================
+   4. Shared pieces: buttons, labels, rules, panels
+   ========================================================= */
 .buttons {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  gap: 1rem;
+  gap: 0.75rem;
   margin-top: 1.5rem;
 }
 
 .button {
   display: inline-block;
-  padding: 0.75rem 1.25rem;
+  padding: 0.7rem 1.2rem;
   background: var(--red);
   color: #ffffff;
   border: var(--border);
-  box-shadow: var(--shadow);
+  box-shadow: 3px 3px 0 var(--ink);
   font-family: var(--font-type);
-  font-size: 1.1rem;
+  font-size: 1rem;
+  font-weight: bold;
+  line-height: 1.3;
+  text-align: center;
   text-decoration: none;
   text-transform: uppercase;
 }
 
-/* On hover, the button "presses down" into its shadow. */
 .button:hover {
-  transform: translate(3px, 3px);
-  box-shadow: 2px 2px 0 var(--ink);
+  color: #ffffff;
+  background: var(--red-dark);
 }
 
 .button-outline {
@@ -281,17 +302,249 @@ main {
   color: var(--ink);
 }
 
-/* ---------- Events page: day strip ----------
-   Inspired by a movie theater's showtimes bar: a row of date tiles.
-   On phones about four fit and you swipe for the rest; on wider
-   screens all seven fit (see the @media rules at the bottom). */
+.button-outline:hover {
+  background: var(--yellow);
+  color: var(--ink);
+}
+
+/* The small coloured label above a masthead or on a card. */
+.section-chip,
+.series-label {
+  display: inline-block;
+  margin: 0;
+  padding: 0.1rem 0.5rem;
+  background: var(--section);
+  color: var(--section-text);
+  font-size: 0.8rem;
+  font-weight: bold;
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+/* Card labels say which colour they are, so they set their own text colour. */
+.series-pink,
+.series-blue,
+.series-yellow {
+  color: var(--ink);
+}
+
+.series-red {
+  color: #ffffff;
+}
+
+.series-label {
+  position: relative;
+  z-index: 1;  /* stays clickable above a card's big link */
+}
+
+/* Series colours, used by labels, tabs and blank card images. */
+.series-red    { background: var(--red); }
+.series-pink   { background: var(--pink); }
+.series-blue   { background: var(--blue); }
+.series-yellow { background: var(--yellow); }
+
+/* A plain paper box. */
+.panel {
+  padding: 1.25rem;
+  background: var(--cream);
+  border: var(--rule);
+}
+
+.panel > :first-child { margin-top: 0; }
+.panel > :last-child  { margin-bottom: 0; }
+
+/* Tape: a see-through strip that "holds" a piece of paper on the page.
+   Add class="taped" to any box with position: relative. */
+.taped::before {
+  content: "";
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  width: 110px;
+  height: 26px;
+  background: rgba(243, 118, 155, 0.7);
+  transform: translateX(-50%) rotate(-3deg);
+}
+
+/* Small details text: dates, reading times, notes. */
+.post-meta {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+
+/* =========================================================
+   5. Cards (used on Home, Blog and the mail club)
+   A picture, a big headline with an arrow, a dashed rule, a summary
+   and a details line. The whole card is clickable.
+   ========================================================= */
+.post-grid {
+  display: grid;
+  gap: 2.5rem 2rem;
+}
+
+.post-card {
+  position: relative;  /* lets the headline link cover the whole card */
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 1.25rem;
+  border-bottom: var(--rule);
+}
+
+/* Pictures are cropped to the same shape so the grid lines up. */
+.card-image {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+}
+
+/* Cards without a picture: a block in their colour with the stamp. */
+.card-image-blank {
+  display: grid;
+  place-items: center;
+}
+
+.card-image-blank img {
+  width: 40%;
+  max-width: 10rem;
+}
+
+.post-card .card-image {
+  margin-bottom: 1rem;
+}
+
+.card-title {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 0 0 1rem;
+  font-size: 1.75rem;
+  line-height: 1.08;
+}
+
+.card-title a,
+.lead-title a {
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.card-title a:hover,
+.lead-title a:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 3px;
+}
+
+/* The headline link stretches over the whole card. */
+.card-title a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.post-card:focus-within {
+  outline: 3px solid var(--ink);
+  outline-offset: 6px;
+}
+
+.card-title a:focus-visible {
+  outline: none;  /* the whole card gets the outline instead */
+}
+
+/* The little black arrow box next to each headline. */
+.card-arrow {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-top: 0.3rem;
+  background: var(--ink);
+  color: #ffffff;
+  font-family: var(--font-type);
+  font-size: 0.9rem;
+}
+
+/* The summary under the headline, after a dashed rule. */
+.card-summary {
+  margin: 0 0 1rem;
+  padding-top: 1rem;
+  border-top: 1px dashed rgba(20, 20, 20, 0.45);
+}
+
+/* Label and date on one line at the bottom of a card. */
+.card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  margin: auto 0 0;  /* "auto" pushes it to the bottom of the card */
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+/* The lead story: the newest post, shown big. */
+.lead-story {
+  display: grid;
+  gap: 1.25rem;
+  padding-bottom: 2rem;
+  margin-bottom: 2rem;
+  border-bottom: var(--rule);
+}
+
+/* On phones the picture goes first, like the other cards. */
+.lead-story .card-image {
+  order: -1;
+}
+
+.lead-title {
+  margin: 0 0 1rem;
+  font-size: clamp(2.4rem, 6vw, 4.25rem);
+  line-height: 1.02;
+}
+
+
+/* =========================================================
+   6. Home page
+   ========================================================= */
+/* The welcome: words on one side, the mascot on the other. */
+.home-lead {
+  display: grid;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.home-lead .mascot {
+  width: min(70vw, 320px);
+  justify-self: center;
+  border: var(--border);
+  box-shadow: var(--soft-shadow);
+  transform: rotate(-3deg);
+}
+
+.home-lead h1 {
+  margin: 0.5rem 0 1rem;
+  font-size: clamp(3rem, 11vw, 6rem);
+  line-height: 0.95;
+}
+
+
+/* =========================================================
+   7. Events page
+   ========================================================= */
+/* ---- Day strip: a row of date tiles, like a movie showtimes bar ----
+   On phones about four fit and you swipe for the rest; on wider screens
+   all seven fit (see "Wider screens"). */
 .day-strip {
   display: flex;
   gap: 0.5rem;
   overflow-x: auto;              /* swipe sideways on small screens */
   scroll-snap-type: x mandatory; /* tiles snap neatly into place */
-  padding: 4px 10px 12px 4px;    /* room for the selected tile's shadow */
-  margin: 0 0 1rem;
+  padding: 2px 2px 10px;
+  margin: 0 0 1.5rem;
 }
 
 .day {
@@ -303,7 +556,7 @@ main {
   align-items: center;
   padding: 0 0 0.4rem;
   background: var(--ink);
-  color: var(--cream);
+  color: #ffffff;
   border: var(--border);
   font-family: var(--font-type);
   cursor: pointer;
@@ -313,15 +566,15 @@ main {
 .day-name {
   align-self: stretch;
   padding: 0.15rem 0;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: bold;
   text-transform: uppercase;
 }
 
 .day-number {
-  font-size: 2rem;
-  font-weight: bold;
-  line-height: 1.1;
+  font-family: var(--font-display);
+  font-size: 2.1rem;
+  line-height: 1.15;
 }
 
 .day-count {
@@ -333,37 +586,26 @@ main {
   background: #333333;
 }
 
-.day:focus-visible {
-  outline: 3px solid var(--red);
-  outline-offset: 2px;
-}
-
-/* The selected day: paper coloured, lifted up, with a red label band. */
+/* The chosen day takes the Events blue, like the blog's section tabs. */
 .day[aria-pressed="true"] {
-  background: var(--cream);
+  background: var(--blue);
   color: var(--ink);
-  box-shadow: var(--shadow);
-  transform: translate(-2px, -2px);
 }
 
 .day[aria-pressed="true"] .day-name {
-  background: var(--red);
+  background: var(--ink);
   color: #ffffff;
 }
 
 /* "Saturday, November 14" above the cards. */
 .day-heading {
-  display: table;
   margin: 0 0 1.5rem;
-  padding: 0.25rem 0.75rem;
-  background: var(--ink);
-  color: var(--cream);
-  font-size: 1.2rem;
+  padding-top: 1rem;
+  border-top: 3px solid var(--ink);
+  font-size: clamp(1.8rem, 5vw, 2.5rem);
 }
 
-/* ---------- Event cards ----------
-   Like a movie listing: a coloured "poster" band on top with the title,
-   then the details and time chips underneath. */
+/* ---- Event cards: a coloured band on top, details underneath ---- */
 .event-list {
   display: grid;
   gap: 1.5rem;
@@ -387,14 +629,13 @@ main {
   flex-direction: column;
   background: var(--cream);
   border: var(--border);
-  box-shadow: var(--shadow);
   transition: transform 0.15s, box-shadow 0.15s;
 }
 
 /* Lift the card a little on hover, to show it can be clicked. */
 .event-card:hover {
-  transform: translate(-3px, -3px);
-  box-shadow: 8px 8px 0 var(--ink);
+  transform: translate(-2px, -2px);
+  box-shadow: 4px 4px 0 var(--ink);
 }
 
 /* Keyboard users see an outline around the whole card. */
@@ -403,7 +644,7 @@ main {
   outline-offset: 4px;
 }
 
-/* Top half: category colour with a light halftone dot pattern on it,
+/* Top band: category colour with a light halftone dot pattern on it,
    drawn with a repeating radial gradient (no image needed). */
 .card-top {
   padding: 1rem 1.25rem;
@@ -416,29 +657,26 @@ main {
 
 .card-top h2,
 .card-top h3 {
-  margin: 0.6rem 0 0.25rem;
-  font-family: var(--font-type);
-  font-size: 1.35rem;
-  line-height: 1.2;
+  margin: 0.6rem 0 0.3rem;
+  font-size: 1.7rem;
+  line-height: 1.05;
 }
 
 .card-top .event-venue {
   margin: 0;
-  color: rgba(255, 255, 255, 0.92);
+  color: rgba(255, 255, 255, 0.95);
 }
 
-/* The category label, like a sticker on the poster. */
+/* The category label, like a sticker on the band. */
 .event-category {
   display: inline-block;
-  padding: 0.05rem 0.5rem;
+  padding: 0 0.5rem;
   background: var(--cream);
   color: var(--ink);
-  border: 2px solid var(--ink);
-  font-family: var(--font-type);
+  border: var(--border);
   font-size: 0.8rem;
   font-weight: bold;
   text-transform: uppercase;
-  transform: rotate(-2deg);
 }
 
 /* The title is a button with its look reset so it reads like a heading.
@@ -460,10 +698,9 @@ main {
 }
 
 .card-open:focus-visible {
-  outline: none;  /* the whole card gets the outline instead (see above) */
+  outline: none;  /* the whole card gets the outline instead */
 }
 
-/* Bottom half: description, time chips and the "Details" hint. */
 .card-bottom {
   flex: 1;
   display: flex;
@@ -485,18 +722,15 @@ main {
 
 /* The start time, like a showtime button. */
 .time-chip {
-  padding: 0.3rem 0.75rem;
+  padding: 0.25rem 0.75rem;
   background: var(--ink);
   color: #ffffff;
-  border-radius: 4px;
-  font-family: var(--font-type);
   font-size: 1.1rem;
   font-weight: bold;
 }
 
 .time-until {
   color: var(--muted);
-  font-family: var(--font-type);
 }
 
 /* Bottom row of a card: the event's link on the left, "Details" on the right. */
@@ -520,9 +754,7 @@ main {
   padding: 0.15rem 0.9rem;
   background: var(--pink);
   color: var(--ink);
-  border: 2px solid var(--ink);
-  border-radius: 999px;
-  font-family: var(--font-type);
+  border: var(--border);
   font-size: 0.85rem;
   font-weight: bold;
   text-decoration: none;
@@ -533,38 +765,42 @@ main {
   color: #ffffff;
 }
 
-.event-link:focus-visible {
-  outline: 3px solid var(--ink);
-  outline-offset: 2px;
-}
-
-/* The big link button in the pop-up. */
-.dialog-link {
-  align-self: flex-start;
-}
-
 .card-details {
   margin-left: auto;  /* sits at the right end of the row */
-  padding: 0.1rem 0.75rem;
-  background: var(--yellow);
-  border: 2px solid var(--ink);
-  border-radius: 999px;
-  font-family: var(--font-type);
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   font-weight: bold;
   text-transform: uppercase;
+  text-decoration: underline;
+  text-decoration-color: var(--red);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
 }
+
+/* One colour per category. The class names come from the JavaScript in
+   events.html (for example "Food and Drink" becomes .cat-food-and-drink).
+   All of these are dark enough for white text to be readable. */
+.cat-music          { --cat-colour: #4f4c7a; }  /* hood purple */
+.cat-art            { --cat-colour: #8a0f26; }  /* cherry red */
+.cat-markets        { --cat-colour: #2e6b3a; }
+.cat-food-and-drink { --cat-colour: #a84300; }
+.cat-film           { --cat-colour: #1f4e8c; }
+.cat-comedy         { --cat-colour: #b0245e; }  /* deep pink */
+.cat-community      { --cat-colour: #00707a; }
+.cat-workshops      { --cat-colour: #6b4e16; }
 
 /* The message on a day with no events. */
 .empty-day {
   grid-column: 1 / -1;  /* stretch across every column */
 }
 
-/* ---------- Enlarged event pop-up ---------- */
+
+/* =========================================================
+   8. Event pop-up
+   ========================================================= */
 .event-dialog {
   width: min(92vw, 36rem);
   max-height: 90vh;
-  padding: 0 10px 10px 0;  /* room for the card's shadow */
+  padding: 0;
   background: transparent;
   border: 0;
   overflow: auto;
@@ -586,12 +822,11 @@ body:has(.event-dialog[open]) {
   position: relative;
   background: var(--cream);
   border: var(--border);
-  box-shadow: 8px 8px 0 var(--ink);
   animation: pop 0.2s ease-out;
 }
 
 @keyframes pop {
-  from { opacity: 0; transform: scale(0.85); }
+  from { opacity: 0; transform: scale(0.9); }
   to   { opacity: 1; transform: scale(1); }
 }
 
@@ -600,7 +835,7 @@ body:has(.event-dialog[open]) {
 }
 
 .dialog-card .card-top h2 {
-  font-size: 1.9rem;
+  font-size: clamp(2rem, 7vw, 2.75rem);
 }
 
 .dialog-card .card-bottom {
@@ -610,7 +845,7 @@ body:has(.event-dialog[open]) {
 
 .dialog-date {
   margin: 0;
-  font-size: 1.15rem;
+  font-size: 1.1rem;
   font-weight: bold;
 }
 
@@ -620,7 +855,11 @@ body:has(.event-dialog[open]) {
 
 .dialog-description {
   margin: 0;
-  font-size: 1.15rem;
+  font-size: 1.1rem;
+}
+
+.dialog-link {
+  align-self: flex-start;
 }
 
 .dialog-close {
@@ -631,132 +870,44 @@ body:has(.event-dialog[open]) {
   height: 2.5rem;
   background: var(--cream);
   color: var(--ink);
-  border: 2px solid var(--ink);
+  border: var(--border);
   border-radius: 50%;
   font-size: 1.6rem;
   line-height: 1;
   cursor: pointer;
 }
 
-.dialog-close:focus-visible {
-  outline: 3px solid var(--yellow);
-  outline-offset: 2px;
-}
 
-/* One colour per category. The class names come from the JavaScript in
-   events.html (for example "Food and Drink" becomes .cat-food-and-drink).
-   All of these are dark enough for white text to be readable. */
-.cat-music          { --cat-colour: #4f4c7a; }  /* hood purple */
-.cat-art            { --cat-colour: #8a0f26; }  /* cherry red */
-.cat-markets        { --cat-colour: #2e6b3a; }
-.cat-food-and-drink { --cat-colour: #a84300; }
-.cat-film           { --cat-colour: #1f4e8c; }
-.cat-comedy         { --cat-colour: #b0245e; }  /* deep pink */
-.cat-community      { --cat-colour: #00707a; }
-.cat-workshops      { --cat-colour: #6b4e16; }
+/* =========================================================
+   9. Mail club page
+   Same system as the rest of the site, plus some cutesy mail touches:
+   a scrolling handwritten banner, a red polka-dot "envelope", a collage
+   of mail, and the tiers as envelopes you can open.
+   ========================================================= */
 
-/* ---------- About page ---------- */
-/* A blue halftone panel, pasted onto the pink About page. */
-.blue-section {
+/* The masthead here has the stamp beside the words. */
+.mc-lead {
   display: grid;
   gap: 1.5rem;
   align-items: center;
-  justify-items: center;
-  padding: 1.5rem;
-  background: var(--blue) url("images/bg-blue.webp") center / cover;
-  border: var(--border);
-  box-shadow: var(--shadow);
 }
 
-.stamp {
-  width: min(60vw, 240px);
-  transform: rotate(8deg);
+.mc-lead .masthead-intro + .masthead-intro {
+  margin-top: 0.75rem;
 }
 
-/* ---------- Mail club page ----------
-   A cutesy, cut-and-paste "mail" look: cream paper, handwritten script
-   headings, a red polka-dot envelope, paper scraps held on with washi tape,
-   and the tiers as envelopes you can open. The page uses
-   <body class="page-mailclub">, so most of these only apply there. */
-.page-mailclub {
-  --page-colour: #f7f1df;   /* plain cream paper, no halftone */
-  --page-texture: none;
-  --mc-red: #c8163c;        /* bright envelope red */
-  --mc-dot: #6e0f22;        /* the darker polka dots */
-  --dusty: #8fb3bf;         /* dusty blue letter paper */
-  --dusty-dark: #4f7a89;
-  --paper: #fffdf7;         /* white scrap paper */
-  --soft-shadow: 3px 4px 0 rgba(0, 0, 0, 0.18);
-  --font-script: "Yellowtail", "Brush Script MT", cursive;
-}
-
-/* The sections run edge to edge; .mc-wrap keeps content a nice width. */
-.mc-main {
-  max-width: none;
-  padding: 0;
-}
-
-.mc-wrap {
-  max-width: 60rem;
-  margin: 0 auto;
-  padding: 2.5rem 1rem;
-}
-
-/* Handwritten red headings. */
-.script-title {
-  margin: 0 0 1rem;
-  font-family: var(--font-script);
-  font-weight: normal;
-  font-size: clamp(2.2rem, 6vw, 3.25rem);
-  line-height: 1.1;
-  color: var(--mc-red);
-}
-
-.script-center {
-  text-align: center;
-}
-
-/* ---- Hero ---- */
-.mc-hero {
-  display: grid;
-  gap: 1.5rem;
-  justify-items: center;
-  text-align: center;
-}
-
-.mc-hero-stamp {
-  width: min(45vw, 260px);  /* smaller on phones so the heading shows sooner */
+.mc-stamp {
+  width: min(50vw, 240px);
+  justify-self: center;
   transform: rotate(-8deg);
 }
 
-/* Undo the site's cut-out label style for this page's big heading. */
-.mc-hero h1 {
-  display: block;
-  margin: 0 0 1rem;
-  padding: 0;
-  background: none;
-  border: 0;
-  box-shadow: none;
-  font-family: var(--font-script);
-  font-weight: normal;
-  font-size: clamp(2.8rem, 9vw, 4.75rem);
-  line-height: 1.05;
-  color: var(--mc-red);
-  transform: rotate(-2deg);
-}
-
-.mc-hero p {
-  font-size: 1.15rem;
-}
-
-.mc-hero .buttons {
-  justify-content: center;
-}
-
-/* ---- Scrolling handwritten banner ---- */
+/* ---- Scrolling handwritten banner ----
+   The words are written twice in a row; the strip slides left by half
+   its width, over and over, so it loops without a gap. */
 .marquee {
   overflow: hidden;
-  padding: 0.25rem 0 1rem;
+  margin: 0 -1rem 1.5rem;  /* runs to the edges of the screen on phones */
 }
 
 .marquee-track {
@@ -767,31 +918,30 @@ body:has(.event-dialog[open]) {
 
 .marquee-track span {
   font-family: var(--font-script);
-  font-size: clamp(2rem, 6vw, 3.5rem);
-  color: var(--dusty-dark);
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  color: var(--red-bright);
   white-space: nowrap;
 }
 
-/* Slide left by half the strip (one full copy of the words), then repeat. */
 @keyframes marquee {
   to { transform: translateX(-50%); }
 }
 
-/* ---- Red polka-dot envelope ----
+/* ---- The red polka-dot envelope ----
    Two layers of round dots (radial gradients) make the polka dots.
    clip-path cuts the top into a point, like an envelope flap. */
 .mc-envelope,
 .mc-final {
-  background-color: var(--mc-red);
+  background-color: var(--red-bright);
   background-image:
-    radial-gradient(circle, var(--mc-dot) 0 9px, transparent 10px),
-    radial-gradient(circle, var(--mc-dot) 0 9px, transparent 10px);
+    radial-gradient(circle, var(--red-dark) 0 9px, transparent 10px),
+    radial-gradient(circle, var(--red-dark) 0 9px, transparent 10px);
   background-size: 44px 44px;
   background-position: 0 0, 22px 22px;
 }
 
 .mc-envelope {
-  padding: 3.5rem 0 1rem;
+  padding: 3.5rem 1rem 1.25rem;
   clip-path: polygon(0 3rem, 50% 0, 100% 3rem, 100% 100%, 0 100%);
 }
 
@@ -801,15 +951,22 @@ body:has(.event-dialog[open]) {
   gap: 1.5rem;
   padding: 1.5rem;
   background: var(--dusty);
-  box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.25);
+}
+
+/* Let both halves of the letter shrink on narrow screens. */
+.letter-card > * {
+  min-width: 0;
+}
+
+.letter-card h2 {
+  margin: 0 0 1rem;
+  font-size: clamp(2.2rem, 6vw, 3rem);
 }
 
 .inside-list {
   margin: 0 0 1rem;
   padding: 0;
   list-style: none;
-  font-family: var(--font-type);
-  font-size: 1.05rem;
 }
 
 .inside-list li {
@@ -822,11 +979,11 @@ body:has(.event-dialog[open]) {
   content: "";
   position: absolute;
   left: 0;
-  top: 0.65rem;
+  top: 0.7rem;
   width: 0.9rem;
   height: 0.9rem;
-  background: var(--mc-red);
-  border: 2px dotted var(--paper);
+  background: var(--red-bright);
+  border: 2px dotted var(--cream);
 }
 
 .inside-note {
@@ -834,21 +991,12 @@ body:has(.event-dialog[open]) {
   font-size: 0.95rem;
 }
 
-.inside-note a {
-  color: var(--ink);
-}
-
 /* ---- The collage of cut-out mail ----
-   Each piece is placed by hand with position: absolute and tilted
-   a little, like things pasted into a scrapbook. */
+   Each piece is placed by hand with position: absolute and tilted a
+   little, like things pasted into a scrapbook. */
 .collage {
   position: relative;
-  aspect-ratio: 1 / 0.9;  /* height follows width, so it shrinks on small phones */
-}
-
-/* Let both halves of the letter shrink on narrow screens. */
-.letter-card > * {
-  min-width: 0;
+  aspect-ratio: 1 / 0.9;  /* height follows width, so it shrinks on phones */
 }
 
 .collage > * {
@@ -882,7 +1030,7 @@ body:has(.event-dialog[open]) {
   bottom: 14%;
   width: 22%;
   aspect-ratio: 1;
-  border: 3px double var(--mc-red);
+  border: 3px double var(--red-bright);
   border-radius: 50%;
   opacity: 0.7;
 }
@@ -902,7 +1050,7 @@ body:has(.event-dialog[open]) {
 .c-letter span {
   font-family: var(--font-script);
   font-size: clamp(1rem, 3vw, 1.4rem);
-  color: var(--mc-red);
+  color: var(--red-bright);
 }
 
 /* The art print: our mascot artwork with a white photo border. */
@@ -910,7 +1058,6 @@ body:has(.event-dialog[open]) {
   right: 4%;
   top: 2%;
   width: 44%;
-  height: auto;
   border: 8px solid #ffffff;
   transform: rotate(5deg);
 }
@@ -939,7 +1086,6 @@ body:has(.event-dialog[open]) {
   padding: 0.3rem 0.6rem;
   background: var(--yellow);
   border: 2px dashed var(--ink);
-  font-family: var(--font-type);
   font-size: 0.8rem;
   line-height: 1.2;
   text-align: center;
@@ -964,79 +1110,48 @@ body:has(.event-dialog[open]) {
   width: 65%;
 }
 
-/* ---- Paper scraps held on with washi tape ---- */
-.mc-scraps {
+/* ---- Two side-by-side notes: the artists and the local perks ---- */
+.mc-notes {
   display: grid;
-  gap: 3rem;
+  gap: 2.5rem;
 }
 
-.scrap {
-  position: relative;
-  padding: 2.25rem 1.5rem 1.5rem;
-  background: var(--paper);
-  box-shadow: var(--soft-shadow);
+.mc-note {
+  position: relative;  /* for its strip of tape */
+  padding: 2rem 1.5rem 1.5rem;
+  background: var(--cream);
+  border: var(--rule);
 }
 
-/* The strip of see-through tape across the top of each scrap. */
-.scrap::before,
-.founders-letter::before {
-  content: "";
-  position: absolute;
-  top: -14px;
-  left: 50%;
-  width: 120px;
-  height: 30px;
-  background: rgba(243, 118, 155, 0.7);
-  transform: translateX(-50%) rotate(-3deg);
+.mc-note h3 {
+  margin: 0 0 0.75rem;
+  font-size: 1.9rem;
 }
 
-.scrap .script-title {
-  font-size: clamp(1.9rem, 5vw, 2.5rem);
-}
-
-.scrap-left {
-  transform: rotate(-1deg);
-}
-
-.scrap-right {
-  transform: rotate(1.2deg);
-}
-
-.scrap-right::before {
-  background: rgba(135, 209, 255, 0.75);  /* blue tape */
-}
-
-.scrap-small {
-  max-width: 34rem;
-  margin: 0 auto;
-  transform: rotate(-0.8deg);
-}
-
-.scrap-small::before {
-  background: rgba(253, 217, 76, 0.75);  /* yellow tape */
+.mc-note-blue::before {
+  background: rgba(135, 209, 255, 0.8);  /* blue tape */
 }
 
 /* The "$450" callout, styled like a big postage stamp with a dashed edge. */
 .big-stamp {
   max-width: 16rem;
-  margin: 2rem auto 1rem;
+  margin: 1.75rem auto 0.75rem;
   padding: 1.25rem;
   background: var(--yellow);
   border: 3px dashed var(--ink);
   outline: 6px solid var(--yellow);  /* the solid colour outside the dashes */
   box-shadow: 0 0 0 9px var(--ink);  /* thin ink line around the outside */
-  font-family: var(--font-type);
   font-weight: bold;
+  line-height: 1.4;
   text-align: center;
   transform: rotate(-3deg);
 }
 
 .big-stamp-number {
   display: block;
-  font-family: var(--font-grunge);
+  font-family: var(--font-display);
   font-size: 3.5rem;
-  font-weight: normal;
-  line-height: 1;
+  line-height: 1.1;
   color: var(--red);
 }
 
@@ -1044,38 +1159,28 @@ body:has(.event-dialog[open]) {
 .sticker-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem;
+  gap: 0.6rem;
   margin: 1rem 0;
   padding: 0;
   list-style: none;  /* hides the bullet points */
 }
 
 .sticker-list li {
-  padding: 0.25rem 0.75rem;
+  padding: 0.2rem 0.75rem;
   background: var(--blue);
-  border: 2px solid var(--ink);
+  border: var(--border);
   border-radius: 999px;  /* fully rounded ends */
-  font-family: var(--font-type);
   font-weight: bold;
 }
 
-/* Give every other sticker a different colour and tilt, so it looks hand-placed. */
-.sticker-list li:nth-child(odd) {
-  background: var(--yellow);
-  transform: rotate(-2deg);
-}
+.sticker-list li:nth-child(odd) { background: var(--yellow); }
+.sticker-list li:nth-child(3n)  { background: var(--pink); }
 
-.sticker-list li:nth-child(3n) {
-  background: var(--pink);
-  transform: rotate(2deg);
-}
-
-/* ---- How it works: numbered postcards ----
+/* ---- How it works: numbered steps separated by rules ----
    We hide the normal list numbers and draw our own with a CSS "counter"
    so we can style them as round red stamps. */
 .steps {
   display: grid;
-  gap: 1.25rem;
   margin: 0 0 1.5rem;
   padding: 0;
   list-style: none;
@@ -1084,42 +1189,27 @@ body:has(.event-dialog[open]) {
 
 .steps li {
   position: relative;
-  padding: 1.25rem 1rem 1rem 4rem;
-  background: var(--paper);
-  box-shadow: var(--soft-shadow);
+  padding: 1rem 0 1rem 3.75rem;
+  border-bottom: var(--rule);
   counter-increment: step;
-}
-
-.steps li:nth-child(odd) {
-  transform: rotate(-1deg);
-}
-
-.steps li:nth-child(even) {
-  transform: rotate(1deg);
 }
 
 .steps li::before {
   content: counter(step);
   position: absolute;
-  left: 1rem;
-  top: 1rem;
-  width: 2.25rem;
-  height: 2.25rem;
+  left: 0;
+  top: 0.9rem;
+  width: 2.5rem;
+  height: 2.5rem;
   display: grid;
   place-items: center;
-  background: var(--mc-red);
+  background: var(--red-bright);
   color: #ffffff;
   border: 2px dotted #ffffff;
-  outline: 2px solid var(--mc-red);
+  outline: 2px solid var(--red-bright);
   border-radius: 50%;
-  font-family: var(--font-type);
-  font-weight: bold;
-}
-
-.mc-tagline {
-  margin: 0;
-  font-family: var(--font-type);
-  text-align: center;
+  font-family: var(--font-display);
+  font-size: 1.2rem;
 }
 
 /* ---- Choose your subscription: envelope tabs ----
@@ -1131,7 +1221,7 @@ body:has(.event-dialog[open]) {
   display: flex;
   justify-content: center;
   gap: 0.5rem;
-  margin: 1rem 0 0;
+  margin: 2rem 0 0;  /* room above for a card when it slides up */
 }
 
 /* All three envelopes share the row equally, up to 11rem wide each. */
@@ -1168,8 +1258,8 @@ body:has(.event-dialog[open]) {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.2rem;
-  padding-top: 0.6rem;
+  gap: 0.15rem;
+  padding: 0.5rem 0.25rem 0;
   background: #ffffff;
   border: 2px solid transparent;
   transition: transform 0.25s ease-out;
@@ -1185,19 +1275,17 @@ body:has(.event-dialog[open]) {
   height: 4rem;
   background: #ece2cc;
   clip-path: polygon(0 0, 50% 50%, 100% 0, 100% 100%, 0 100%);
-  filter: drop-shadow(0 -1px 0 rgba(0, 0, 0, 0.1));
 }
 
 .env-name {
-  padding: 0 0.25rem;
-  font-family: var(--font-script);
-  font-size: clamp(0.95rem, 3.6vw, 1.2rem);
-  line-height: 1.05;
-  color: var(--mc-red);
+  font-family: var(--font-display);
+  font-size: clamp(0.9rem, 3.4vw, 1.15rem);
+  line-height: 1.1;
+  color: var(--red-bright);
+  text-align: center;
 }
 
 .env-price {
-  font-family: var(--font-type);
   font-size: 0.95rem;
   font-weight: bold;
   color: var(--ink);
@@ -1210,396 +1298,135 @@ body:has(.event-dialog[open]) {
 
 .env-tab[aria-selected="true"] .env-card {
   transform: translateY(-1.5rem);
-  border-color: var(--mc-red);
-}
-
-.env-tab:focus-visible {
-  outline: 3px solid var(--ink);
-  outline-offset: 4px;
+  border-color: var(--red-bright);
 }
 
 /* The letter for the chosen tier, on lined paper. */
 .tier-letter {
-  position: relative;
   max-width: 36rem;
   margin: 0.5rem auto 0;
-  padding: 2rem 1.5rem 1.5rem;
-  background-color: var(--paper);
-  background-image: repeating-linear-gradient(transparent 0 1.7rem, rgba(79, 122, 137, 0.2) 1.7rem calc(1.7rem + 1px));
-  box-shadow: var(--soft-shadow);
+  padding: 1.5rem;
+  background-color: var(--cream);
+  background-image: repeating-linear-gradient(transparent 0 1.8rem, rgba(79, 122, 137, 0.18) 1.8rem calc(1.8rem + 1px));
+  border: var(--rule);
 }
 
 .tier-letter h3 {
-  margin: 0 0 0.5rem;
-  font-family: var(--font-script);
-  font-weight: normal;
-  font-size: 2.1rem;
-  line-height: 1.1;
-  color: var(--mc-red);
+  margin: 0 0 0.75rem;
+  font-size: 2.2rem;
 }
 
 .tier-letter h3 span {
   display: block;
+  margin-top: 0.25rem;
   font-family: var(--font-type);
   font-size: 1.05rem;
   font-weight: bold;
-  color: var(--ink);
 }
 
 .tier-letter ul {
   margin: 0 0 1.5rem;
   padding-left: 1.25rem;
-  line-height: 1.7;
 }
 
-/* The purple "complete monthly drop" label on the curator letter. */
+/* The purple "the complete monthly drop" label on the curator letter.
+   It sits inside the letter (not on its edge), so it never overlaps. */
 .tier-flag {
-  position: absolute;
-  top: -1rem;
-  left: 1rem;
-  margin: 0;
+  display: inline-block;
+  margin: 0 0 0.5rem;
   padding: 0.1rem 0.6rem;
   background: var(--purple);
   color: #ffffff;
-  border: 2px solid var(--ink);
-  font-family: var(--font-type);
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: bold;
   text-transform: uppercase;
-  transform: rotate(-2deg);
 }
 
 /* ---- The founders' letter: pink lined paper ---- */
 .founders-letter {
-  position: relative;
-  max-width: 40rem;
-  margin: 0 auto;
-  padding: 2.5rem 2rem 2rem;
+  position: relative;  /* for its strip of tape */
+  max-width: 42rem;
+  padding: 2.25rem 1.75rem 1.75rem;
   background-color: #fde3ea;
-  background-image: repeating-linear-gradient(transparent 0 1.75rem, rgba(200, 22, 60, 0.18) 1.75rem calc(1.75rem + 1px));
-  box-shadow: var(--soft-shadow);
-  font-size: 1.1rem;
-  line-height: 1.75;
-  transform: rotate(-1deg);
+  background-image: repeating-linear-gradient(transparent 0 1.8rem, rgba(200, 22, 60, 0.15) 1.8rem calc(1.8rem + 1px));
+  border: var(--rule);
 }
 
 .founders-letter::before {
-  background: rgba(143, 179, 191, 0.75);  /* dusty blue tape */
+  background: rgba(143, 179, 191, 0.85);  /* dusty blue tape */
+}
+
+.founders-letter p:first-child {
+  margin-top: 0;
 }
 
 .signature {
-  margin: 0;
+  margin: 1rem 0 0;
   font-family: var(--font-script);
-  font-size: 2rem;
-  color: var(--mc-red);
-  transform: rotate(-3deg);
+  font-size: 2.1rem;
+  line-height: 1.2;
+  color: var(--red-bright);
 }
 
-/* ---- FAQ: tap a question to open it ---- */
+/* ---- The list of past mailers ---- */
+.mailer-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mailer-list li {
+  padding: 0.75rem 0;
+  border-bottom: var(--rule);
+}
+
+/* ---- FAQ: tap a question to open it. Rules between questions. ---- */
 .faq {
-  display: grid;
-  gap: 0.75rem;
+  border-top: var(--rule);
 }
 
 .faq details {
-  background: var(--paper);
-  border-left: 6px solid var(--mc-red);
-  box-shadow: var(--soft-shadow);
+  border-bottom: var(--rule);
 }
 
 .faq summary {
-  padding: 0.75rem 1rem;
-  font-family: var(--font-type);
+  padding: 0.9rem 0;
   font-weight: bold;
   cursor: pointer;
 }
 
-.faq summary:focus-visible {
-  outline: 3px solid var(--ink);
-  outline-offset: 3px;
-}
-
 .faq details p {
   margin: 0;
-  padding: 0 1rem 1rem;
+  padding: 0 0 1rem;
 }
 
 /* ---- Final call to action: the envelope front, with a V notch on top ---- */
 .mc-final {
+  margin: 3rem -1rem -3rem;  /* runs to the edges and down to the footer */
   padding: 5rem 1rem 3rem;
   text-align: center;
   clip-path: polygon(0 0, 50% 3rem, 100% 0, 100% 100%, 0 100%);
 }
 
-.mc-final .script-title {
+.mc-final p {
+  margin: 0 0 1.25rem;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 6vw, 3rem);
+  line-height: 1.1;
   color: #ffffff;
 }
 
-/* People who turn on "reduce motion" get a banner that stays still. */
-@media (prefers-reduced-motion: reduce) {
-  .marquee-track {
-    animation: none;
-  }
 
-  .env-card {
-    transition: none;
-  }
-}
-
-/* Wider screens */
-@media (min-width: 48rem) {
-  .mc-hero {
-    grid-template-columns: auto 1fr;
-    justify-items: start;
-    text-align: left;
-    align-items: center;
-  }
-
-  .mc-hero .buttons {
-    justify-content: flex-start;
-  }
-
-  .mc-envelope {
-    padding-top: 6rem;
-    clip-path: polygon(0 5rem, 50% 0, 100% 5rem, 100% 100%, 0 100%);
-  }
-
-  .letter-card {
-    grid-template-columns: 1fr 1fr;
-    align-items: center;
-    padding: 2.5rem;
-  }
-
-  .mc-scraps {
-    grid-template-columns: 1fr 1fr;
-    align-items: start;
-  }
-
-  .steps {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .envelope-tabs {
-    gap: 2rem;
-  }
-}
-
-@media (min-width: 64rem) {
-  .steps {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
-/* ---------- Blog ----------
-   The blog is built for reading, like a magazine website: a plain paper
-   background (no halftone dots), big condensed headlines, a serif for
-   body text, and thin black rules instead of boxes and shadows.
-   Every blog page has <body class="page-blog">, so these styles only
-   apply there. */
-.page-blog {
-  --page-colour: #f5f1ea;
-  --page-texture: none;
-  --font-display: "Anton", "Arial Narrow", Impact, sans-serif;
-  --font-serif: "Source Serif 4", Georgia, serif;
-  --rule: 1px solid var(--ink);
-}
-
+/* =========================================================
+   10. Blog
+   Blog pages use <body class="page-blog">. Most of the look comes from
+   the shared pieces above; these are the blog-only parts.
+   ========================================================= */
 /* Extra space at the bottom of the footer so the fixed section tabs
    never cover the Instagram link. */
 .page-blog .site-footer {
   padding-bottom: 4.5rem;
 }
-
-.blog-main {
-  max-width: 75rem;
-}
-
-/* Undo the site's cut-out label style for headings on blog pages. */
-.page-blog h1 {
-  display: block;
-  padding: 0;
-  background: none;
-  border: 0;
-  box-shadow: none;
-  transform: none;
-  font-family: var(--font-display);
-  font-weight: normal;
-}
-
-/* The giant page title: "Blog" or a series name. */
-.blog-title {
-  margin: 0;
-  font-size: clamp(3.5rem, 13vw, 8rem);
-  line-height: 0.95;
-}
-
-.blog-intro {
-  margin: 0.5rem 0 1.5rem;
-  padding-bottom: 1.5rem;
-  border-bottom: var(--rule);
-  font-family: var(--font-serif);
-  font-size: 1.2rem;
-  color: var(--muted);
-}
-
-/* Links in headlines are black; the underline shows on hover. */
-.lead-title a,
-.card-title a {
-  color: var(--ink);
-  text-decoration: none;
-}
-
-.lead-title a:hover,
-.card-title a:hover {
-  text-decoration: underline;
-  text-decoration-thickness: 3px;
-}
-
-/* ---- Lead story: the newest post, shown big ---- */
-.lead-story {
-  display: grid;
-  gap: 1.25rem;
-  padding-bottom: 2rem;
-  margin-bottom: 2rem;
-  border-bottom: var(--rule);
-}
-
-/* On phones the lead story's picture goes first, like the other cards. */
-.lead-story .card-image {
-  order: -1;
-}
-
-.lead-title {
-  margin: 0 0 1rem;
-  font-family: var(--font-display);
-  font-weight: normal;
-  font-size: clamp(2.4rem, 6vw, 4.25rem);
-  line-height: 1.02;
-}
-
-/* ---- Grid of post cards ---- */
-.post-grid {
-  display: grid;
-  gap: 2.5rem 2rem;
-}
-
-.post-card {
-  position: relative;  /* lets the headline link cover the whole card */
-  display: flex;
-  flex-direction: column;
-  padding-bottom: 1.25rem;
-  border-bottom: var(--rule);
-}
-
-/* Cover images are cropped to the same shape so the grid lines up. */
-.card-image {
-  display: block;
-  width: 100%;
-  aspect-ratio: 16 / 10;
-  object-fit: cover;
-}
-
-/* Posts without a cover: a block in the series colour with the stamp. */
-.card-image-blank {
-  display: grid;
-  place-items: center;
-}
-
-.card-image-blank img {
-  width: 40%;
-  max-width: 10rem;
-}
-
-.post-card .card-image {
-  margin-bottom: 1rem;
-}
-
-.card-title {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 1rem;
-  margin: 0 0 1rem;
-  font-family: var(--font-display);
-  font-weight: normal;
-  font-size: 1.75rem;
-  line-height: 1.08;
-}
-
-/* The headline link stretches over the whole card (see .post-card). */
-.card-title a::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-}
-
-.post-card:focus-within {
-  outline: 3px solid var(--ink);
-  outline-offset: 6px;
-}
-
-.card-title a:focus-visible {
-  outline: none;  /* the whole card gets the outline instead */
-}
-
-/* The little black arrow box next to each headline. */
-.card-arrow {
-  flex: none;
-  display: grid;
-  place-items: center;
-  width: 1.5rem;
-  height: 1.5rem;
-  margin-top: 0.3rem;
-  background: var(--ink);
-  color: #ffffff;
-  font-family: var(--font-body);
-  font-size: 0.9rem;
-}
-
-/* The summary under the headline, after a dashed rule. */
-.card-summary {
-  margin: 0 0 1rem;
-  padding-top: 1rem;
-  border-top: 1px dashed rgba(20, 20, 20, 0.45);
-  font-family: var(--font-serif);
-  font-size: 1.1rem;
-  line-height: 1.5;
-}
-
-/* Series label and date, on one line at the bottom of a card. */
-.card-meta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.5rem 1rem;
-  margin: auto 0 0;  /* "auto" pushes it to the bottom of the card */
-  font-size: 0.9rem;
-  color: var(--muted);
-}
-
-/* The small coloured series label (a link to that series' page).
-   position + z-index keep it clickable above the card's big link. */
-.series-label {
-  position: relative;
-  z-index: 1;
-  padding: 0.1rem 0.5rem;
-  color: var(--ink);
-  font-size: 0.8rem;
-  font-weight: bold;
-  text-decoration: none;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-}
-
-.series-label:hover {
-  text-decoration: underline;
-}
-
-/* Series colours, used by labels, tabs and blank card images. */
-.series-red    { background: var(--red); color: #ffffff; }
-.series-pink   { background: var(--pink); }
-.series-blue   { background: var(--blue); }
-.series-yellow { background: var(--yellow); }
 
 /* ---- Section tabs, fixed along the bottom of the screen ---- */
 .series-tabs {
@@ -1628,6 +1455,7 @@ body:has(.event-dialog[open]) {
 
 .series-tabs a:hover {
   background: #333333;
+  color: #ffffff;
 }
 
 /* The tab for the page you're on takes its series colour. */
@@ -1656,15 +1484,14 @@ body:has(.event-dialog[open]) {
 
 /* The one-line summary under the headline. */
 .post-dek {
-  margin: 0 auto 1.5rem;
   max-width: 46rem;
-  font-size: clamp(1.15rem, 2.5vw, 1.45rem);
-  font-weight: 300;
-  line-height: 1.4;
+  margin: 0 auto 1.5rem;
+  font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+  line-height: 1.5;
   color: var(--muted);
 }
 
-/* Series on the left, date on the right, between two rules. */
+/* Series on the left, date on the right, under a rule. */
 .post-byline {
   display: flex;
   flex-wrap: wrap;
@@ -1702,12 +1529,14 @@ body:has(.event-dialog[open]) {
 
 .share-button {
   flex: none;
+  min-height: 2.5rem;
   padding: 0.35rem 1rem;
   background: transparent;
   color: var(--ink);
-  border: var(--rule);
+  border: var(--border);
   font: inherit;
   font-size: 0.9rem;
+  font-weight: bold;
   cursor: pointer;
 }
 
@@ -1716,13 +1545,12 @@ body:has(.event-dialog[open]) {
   color: #ffffff;
 }
 
-/* The article text: a narrow column of comfortable serif type. */
+/* The article text: a narrow column of comfortable typewriter text. */
 .post-body {
   max-width: 40rem;
   margin: 0 auto;
-  font-family: var(--font-serif);
-  font-size: 1.2rem;
-  line-height: 1.7;
+  font-size: 1.1rem;
+  line-height: 1.75;
   overflow-wrap: break-word;  /* lets long emails and links wrap on small phones */
 }
 
@@ -1736,23 +1564,9 @@ body:has(.event-dialog[open]) {
   margin-bottom: 0.4rem;
 }
 
-.post-body a {
-  color: var(--ink);
-  font-weight: normal;
-  text-decoration-color: var(--red);
-  text-decoration-thickness: 2px;
-  text-underline-offset: 3px;
-}
-
-.post-body a:hover {
-  color: var(--red);
-}
-
 /* Subheadings inside a post. */
 .post-body h2 {
   margin: 2.5rem 0 0.75rem;
-  font-family: var(--font-display);
-  font-weight: normal;
   font-size: 1.9rem;
   line-height: 1.1;
   text-transform: uppercase;
@@ -1768,7 +1582,6 @@ body:has(.event-dialog[open]) {
 
 /* A small "Source:" credit line under quoted info. */
 .post-body .source {
-  font-family: var(--font-body);
   font-size: 0.9rem;
   color: var(--muted);
 }
@@ -1776,10 +1589,9 @@ body:has(.event-dialog[open]) {
 /* A box for event details inside a post. */
 .event-callout {
   padding: 1rem 1.25rem;
-  background: #ffffff;
+  background: var(--cream);
   border: var(--rule);
   border-left: 6px solid var(--red);
-  font-family: var(--font-body);
   font-size: 1rem;
   line-height: 1.6;
 }
@@ -1795,8 +1607,6 @@ body:has(.event-dialog[open]) {
 
 .post-cta p {
   margin-top: 0;
-  font-family: var(--font-serif);
-  font-size: 1.15rem;
 }
 
 .more-posts {
@@ -1807,28 +1617,48 @@ body:has(.event-dialog[open]) {
 
 .more-posts h2 {
   margin: 0 0 1.5rem;
-  font-family: var(--font-display);
-  font-weight: normal;
   font-size: 2.25rem;
 }
 
-/* The list of past mailers on the mail club page. */
-.mailer-list {
+/* The giant "Blog" or series title, same as every other masthead. */
+.blog-title {
   margin: 0;
-  padding-left: 1.25rem;
+  font-size: clamp(3.5rem, 13vw, 8rem);
+  line-height: 0.95;
 }
 
-.mailer-list li {
-  margin-bottom: 0.4rem;
-}
-
-.post-meta {
+.blog-intro {
+  margin: 0.5rem 0 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: var(--rule);
+  font-size: 1.15rem;
   color: var(--muted);
-  font-family: var(--font-type);
-  font-size: 0.9rem;
 }
 
-/* ---------- Footer ---------- */
+
+/* =========================================================
+   11. About page
+   ========================================================= */
+.about-body {
+  display: grid;
+  gap: 2rem;
+  align-items: start;
+}
+
+.about-body p:first-child {
+  margin-top: 0;
+}
+
+.about-stamp {
+  width: min(60vw, 240px);
+  justify-self: center;
+  transform: rotate(8deg);
+}
+
+
+/* =========================================================
+   12. Footer
+   ========================================================= */
 .site-footer {
   display: flex;
   flex-direction: column;
@@ -1837,7 +1667,6 @@ body:has(.event-dialog[open]) {
   padding: 1.5rem 1rem 2rem;
   background: var(--cream);
   border-top: var(--border);
-  font-family: var(--font-type);
   text-align: center;
 }
 
@@ -1850,25 +1679,29 @@ body:has(.event-dialog[open]) {
   margin: 0;
 }
 
-/* ---------- Wider screens ---------- */
-@media (min-width: 40rem) {
-  h1 {
-    font-size: 3rem;
-  }
 
+/* =========================================================
+   13. Wider screens
+   ========================================================= */
+/* Tablets and up (640px+) */
+@media (min-width: 40rem) {
   .logo img {
     height: 64px;
   }
 
-  /* Wider screens: nav sits beside the logo, tags sized to their words. */
+  /* The nav sits beside the logo, with tags sized to their words. */
   .site-header nav {
     width: auto;
   }
 
   .site-header nav a {
     flex: none;
-    padding: 0.25rem 0.75rem;
-    font-size: 1rem;
+    padding: 0.35rem 0.75rem;
+    font-size: 0.9rem;
+  }
+
+  main {
+    padding: 2rem 1.5rem 4rem;
   }
 
   /* All seven day tiles fit in one row, no swiping needed. */
@@ -1878,23 +1711,8 @@ body:has(.event-dialog[open]) {
     overflow: visible;
   }
 
-  /* Two columns of event cards on tablets. */
-  .event-list {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  /* Home: mascot on the left, words on the right. */
-  .hero {
-    grid-template-columns: auto 1fr;
-    justify-items: start;
-    text-align: left;
-  }
-
-  .hero .buttons {
-    justify-content: flex-start;
-  }
-
-  /* Blog: two columns of post cards; lead story text beside its image. */
+  /* Two columns of cards. */
+  .event-list,
   .post-grid {
     grid-template-columns: 1fr 1fr;
   }
@@ -1909,34 +1727,69 @@ body:has(.event-dialog[open]) {
     border-left: var(--rule);
   }
 
+  /* Words on the left, picture on the right. */
+  .home-lead,
+  .mc-lead {
+    grid-template-columns: 3fr 2fr;
+    gap: 2rem;
+  }
+
   .lead-story {
     grid-template-columns: 2fr 3fr;
     gap: 2rem;
     align-items: start;
   }
 
-  /* Wider screens: words on the left, picture on the right. */
   .lead-story .card-image {
     order: 0;
   }
 
-
-  /* About: stamp beside the text. */
-  .blue-section {
+  .about-body {
     grid-template-columns: 1fr auto;
-    padding: 2rem;
+  }
+
+  .mc-notes {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+
+  .envelope-tabs {
+    gap: 2rem;
+  }
+
+  .marquee {
+    margin-left: -1.5rem;
+    margin-right: -1.5rem;
+  }
+
+  .mc-final {
+    margin: 3rem -1.5rem -4rem;
   }
 }
 
-/* Big screens: three columns of event cards and blog posts. */
+/* Laptops and up (768px+) */
+@media (min-width: 48rem) {
+  .mc-envelope {
+    padding: 6rem 2.5rem 2.5rem;
+    clip-path: polygon(0 5rem, 50% 0, 100% 5rem, 100% 100%, 0 100%);
+  }
+
+  .letter-card {
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 2.5rem;
+  }
+}
+
+/* Big screens (1024px+): three columns of cards. */
 @media (min-width: 64rem) {
   .event-list,
   .post-grid {
     grid-template-columns: 1fr 1fr 1fr;
   }
 
-  /* With three columns, clear the two-column lines and redraw them:
-     a line to the left of every card that isn't first in its row. */
+  /* Clear the two-column lines and redraw them: a line to the left of
+     every card that isn't first in its row. */
   .post-grid .post-card::before {
     content: none;
   }
@@ -1951,15 +1804,23 @@ body:has(.event-dialog[open]) {
   }
 }
 
-/* People who turn on "reduce motion" don't get the movement effects. */
+
+/* =========================================================
+   14. Reduced motion
+   People who turn on "reduce motion" don't get movement effects.
+   ========================================================= */
 @media (prefers-reduced-motion: reduce) {
-  .button:hover,
   .event-card:hover {
     transform: none;
   }
 
   .slide-in,
-  .dialog-card {
+  .dialog-card,
+  .marquee-track {
     animation: none;
+  }
+
+  .env-card {
+    transition: none;
   }
 }

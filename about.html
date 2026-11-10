@@ -9,15 +9,16 @@
   <!-- Little mascot icon in the browser tab. -->
   <link rel="icon" type="image/png" href="images/favicon.png">
 
-  <!-- Fonts from Google Fonts: Rubik Dirt for big headings, Courier Prime for labels. -->
+  <!-- Fonts from Google Fonts: Anton for headlines, Courier Prime (typewriter) for text,
+       Yellowtail (handwriting) for small accents. -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Rubik+Dirt&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Yellowtail&display=swap">
 
   <link rel="stylesheet" href="style.css">
 </head>
-<!-- "page-pink" gives this page the pink halftone background (see style.css). -->
-<body class="page-pink">
+<!-- "page-about" gives this page its section colour, yellow (see style.css). -->
+<body class="page-about">
   <header class="site-header">
     <!-- The logo (mascot head + name) links back to the home page. -->
     <a class="logo" href="index.html">
@@ -38,17 +39,21 @@
   </header>
 
   <main>
-    <h1>About SCF</h1>
+    <header class="masthead">
+      <p class="section-chip">About</p>
+      <h1>About SCF</h1>
+      <p class="masthead-intro">A hyperlocal guide to Orlando arts, culture and small businesses.</p>
+    </header>
 
-    <!-- A blue "zine page" with the text on a paper panel and the mail club stamp beside it. -->
-    <section class="blue-section">
-      <div class="panel">
+    <!-- The text on the left, the mail club stamp on the right. -->
+    <section class="about-body">
+      <div class="reading">
         <!-- Placeholder copy: edit freely. -->
         <p>Search Central Florida is a hyperlocal guide to Orlando arts, culture and small businesses.</p>
         <p>We share a handful of hand-picked events every day on Instagram, and this site is where even more good events live.</p>
         <p>We believe the best stuff happens in person. Find something fun, close the app and go.</p>
       </div>
-      <img class="stamp" src="images/stamp.png" width="600" height="600"
+      <img class="about-stamp" src="images/stamp.png" width="600" height="600"
            alt="SEARCH: a snail mail club stamp featuring the mascot">
     </section>
   </main>

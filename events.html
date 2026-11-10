@@ -13,15 +13,16 @@
   <!-- Little mascot icon in the browser tab. -->
   <link rel="icon" type="image/png" href="images/favicon.png">
 
-  <!-- Fonts from Google Fonts: Rubik Dirt for big headings, Courier Prime for labels. -->
+  <!-- Fonts from Google Fonts: Anton for headlines, Courier Prime (typewriter) for text,
+       Yellowtail (handwriting) for small accents. -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Rubik+Dirt&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Yellowtail&display=swap">
 
   <link rel="stylesheet" href="style.css">
 </head>
-<!-- "page-blue" gives this page the blue halftone background (see style.css). -->
-<body class="page-blue">
+<!-- "page-events" gives this page its section colour, blue (see style.css). -->
+<body class="page-events">
   <header class="site-header">
     <!-- The logo (mascot head + name) links back to the home page. -->
     <a class="logo" href="index.html">
@@ -41,9 +42,11 @@
   </header>
 
   <main class="events-main">
-    <h1>Events</h1>
-    <!-- "lede" puts the intro on a paper strip so it reads clearly over the dots. -->
-    <p class="lede">Hand-picked things to do around Orlando. Pick a day, then tap an event for the details.</p>
+    <header class="masthead">
+      <p class="section-chip">Orlando events</p>
+      <h1>Events</h1>
+      <p class="masthead-intro">Hand-picked things to do around Orlando. Pick a day, then tap an event for the details.</p>
+    </header>
 
     <!-- ===== DAY STRIP =====
          "Today" plus the next six days, like the date bar on a movie

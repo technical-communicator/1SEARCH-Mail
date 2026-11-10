@@ -13,10 +13,11 @@
   <!-- Little mascot icon in the browser tab. -->
   <link rel="icon" type="image/png" href="images/favicon.png">
 
-  <!-- Fonts from Google Fonts: Rubik Dirt for big headings, Courier Prime for labels. -->
+  <!-- Fonts from Google Fonts: Anton for headlines, Courier Prime (typewriter) for text,
+       Yellowtail (handwriting) for small accents. -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Rubik+Dirt&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Yellowtail&display=swap">
 
   <!-- One shared stylesheet for every page. -->
   <link rel="stylesheet" href="style.css">
@@ -42,17 +43,13 @@
   </header>
 
   <main>
-    <!-- The "hero" is the big intro area at the top of the page. -->
-    <!-- On phones the mascot sits on top; on wider screens it moves to the left. -->
-    <section class="hero">
-      <img class="mascot" src="images/mascot.webp" width="800" height="800"
-           alt="The SEARCH mascot: a girl in a purple cat-ear hood with silver ear rings, on a red halftone background">
-
+    <!-- The masthead: words on the left, the mascot on the right
+         (on phones the mascot drops below the words). -->
+    <section class="masthead home-lead">
       <div>
+        <p class="section-chip">Orlando arts &amp; culture</p>
         <h1>Search Central Florida</h1>
-        <div class="panel">
-          <p>Your guide to the best local art, music, markets and events in Orlando, so you can get off your phone and out the door.</p>
-        </div>
+        <p class="masthead-intro">Your guide to the best local art, music, markets and events in Orlando, so you can get off your phone and out the door.</p>
 
         <!-- Big buttons linking to the other pages. -->
         <div class="buttons">
@@ -60,7 +57,45 @@
           <a class="button button-outline" href="mailclub.html">Join the mail club</a>
         </div>
       </div>
+      <img class="mascot" src="images/mascot.webp" width="800" height="800"
+           alt="The SEARCH mascot: a girl in a purple cat-ear hood with silver ear rings, on a red halftone background">
     </section>
+
+    <!-- Three cards, built just like the blog's cards: picture, big
+         headline with an arrow, a dashed rule, then a short summary.
+         The whole card is a link (see "Cards" in style.css). -->
+    <h2 class="section-head">Start here</h2>
+    <div class="post-grid">
+      <article class="post-card">
+        <div class="card-image card-image-blank series-blue"><img src="images/stamp.png" alt=""></div>
+        <h3 class="card-title">
+          <a href="events.html">Events this week</a>
+          <span class="card-arrow" aria-hidden="true">&rarr;</span>
+        </h3>
+        <p class="card-summary">Hand-picked shows, markets, workshops and parties happening around Orlando in the next seven days.</p>
+        <p class="card-meta"><span class="series-label series-blue">Events</span></p>
+      </article>
+
+      <article class="post-card">
+        <img class="card-image" src="images/mascot.webp" alt="">
+        <h3 class="card-title">
+          <a href="mailclub.html">SEARCH: a snail mail club</a>
+          <span class="card-arrow" aria-hidden="true">&rarr;</span>
+        </h3>
+        <p class="card-summary">Art from a different Central Florida artist in your mailbox every month, plus perks from local businesses.</p>
+        <p class="card-meta"><span class="series-label series-pink">Mail Club</span></p>
+      </article>
+
+      <article class="post-card">
+        <img class="card-image" src="images/blog/xine-hann-collage.webp" alt="">
+        <h3 class="card-title">
+          <a href="blog.html">From the blog</a>
+          <span class="card-arrow" aria-hidden="true">&rarr;</span>
+        </h3>
+        <p class="card-summary">Local artist spotlights, Orlando guides and news from the mail club.</p>
+        <p class="card-meta"><span class="series-label series-red">Blog</span></p>
+      </article>
+    </div>
   </main>
 
   <footer class="site-footer">

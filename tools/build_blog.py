@@ -167,11 +167,11 @@ def head(prefix, title, description, url, og_type, extra="", image="images/masco
   <meta property="og:image" content="{SITE_URL}{image}">
 
   <link rel="icon" type="image/png" href="{prefix}images/favicon.png">
-  <!-- Fonts. The blog adds Anton (big condensed headlines) and
-       Source Serif 4 (easy-to-read body text) to the site's usual two. -->
+  <!-- Fonts: Anton for headlines, Courier Prime (typewriter) for text,
+       Yellowtail (handwriting) for small accents. Same on every page. -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Courier+Prime:wght@400;700&family=Rubik+Dirt&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Yellowtail&display=swap">
   <link rel="stylesheet" href="{prefix}style.css">{extra}
 </head>"""
 
