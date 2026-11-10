@@ -120,7 +120,7 @@ def header(prefix, current):
   </header>"""
 
 
-def head(prefix, title, description, url, og_type, extra=""):
+def head(prefix, title, description, url, og_type, extra="", image="images/mascot.webp"):
     """Everything inside <head>: titles, link preview tags, fonts, CSS."""
     return f"""<head>
   <meta charset="UTF-8">
@@ -134,7 +134,7 @@ def head(prefix, title, description, url, og_type, extra=""):
   <meta property="og:title" content="{esc(title)}">
   <meta property="og:description" content="{esc(description)}">
   <meta property="og:url" content="{url}">
-  <meta property="og:image" content="{SITE_URL}images/mascot.webp">
+  <meta property="og:image" content="{SITE_URL}{image}">
 
   <link rel="icon" type="image/png" href="{prefix}images/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -189,7 +189,8 @@ def build_post_page(post):
 <!-- GENERATED FILE: made by tools/build_blog.py from posts/{post['slug']}.md.
      Edit the .md file and run the script; changes made here get overwritten. -->
 <html lang="en">
-{head("../", post["title"] + " | SEARCH Central Florida blog", post["description"], url, "article", extra)}
+{head("../", post["title"] + " | SEARCH Central Florida blog", post["description"], url, "article", extra,
+      post["cover"] or "images/mascot.webp")}
 <body>
 {header("../", "Blog")}
 

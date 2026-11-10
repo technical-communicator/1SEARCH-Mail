@@ -18,9 +18,9 @@ This month’s featured artist is Xine Hann! Xine is a mom, graphic designer, an
 
 ## Featured business: Florida Coffee Festival
 
-Inside your package you’ll also find an exclusive offer from this month’s featured business, Florida Coffee Festival! Use the promotion code in your mail to get 20% off general admission tickets when you buy online. The third annual festival brings together local coffee shops, roasters, matcha brands, and specialty drink makers for a full day of sampling, plus coffee cuppings, goat cuddling (yes, really), the Florida Latte Art Championship, live music, and local artist and chef pop-ups. Come find your next favorite café and celebrate the spaces where so much of Central Florida’s creative community comes together.
+Inside your package you’ll also find an exclusive offer from this month’s featured business, [Florida Coffee Festival](https://www.instagram.com/flacoffeefestival/)! Use the promotion code in your mail to get 20% off general admission tickets when you buy online. The third annual festival brings together local coffee shops, roasters, matcha brands, and specialty drink makers for a full day of sampling, plus coffee cuppings, goat cuddling (yes, really), the Florida Latte Art Championship, live music, and local artist and chef pop-ups. Come find your next favorite café and celebrate the spaces where so much of Central Florida’s creative community comes together.
 
-<p class="event-callout"><strong>Florida Coffee Festival</strong> | Saturday, November 15th, 11:00am–4:00pm | Festival Park, Orlando<br><a href="../events.html?day=2026-11-15">See it on our events calendar</a></p>
+<p class="event-callout"><strong>Florida Coffee Festival</strong> | Saturday, November 15th, 11:00am–4:00pm | Festival Park, Orlando<br><a href="featured-business-florida-coffee-festival.html">Read more about the festival</a> · <a href="../events.html?day=2026-11-15">See it on our events calendar</a></p>
 
 None of this happens without you. Every subscription puts real support behind local artists and small businesses across Central Florida, and we’re always looking for ways to make SEARCH: a snail mail club more worth your while. Thank you for making supporting local a part of your monthly routine!
 

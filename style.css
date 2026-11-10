@@ -1019,6 +1019,12 @@ body:has(.event-dialog[open]) {
   border-left: 8px solid var(--red);
 }
 
+/* A small "Source:" credit line under quoted info. */
+.source {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
 /* The mail club nudge at the end of every post. */
 .post-cta {
   margin-top: 2.5rem;
@@ -1103,6 +1109,27 @@ body:has(.event-dialog[open]) {
 
   .hero .buttons {
     justify-content: flex-start;
+  }
+
+  /* Blog list: a post's cover image sits to the left of its text. */
+  .post-card:has(.post-card-cover) {
+    display: grid;
+    grid-template-columns: 2fr 3fr;
+    column-gap: 1.5rem;
+    align-content: start;
+  }
+
+  .post-card-cover {
+    grid-row: 1 / span 6;  /* the image spans all the text rows */
+    margin-bottom: 0;
+  }
+
+  .post-card:has(.post-card-cover) > :not(.post-card-cover) {
+    grid-column: 2;
+  }
+
+  .post-card:has(.post-card-cover) > .post-series {
+    justify-self: start;  /* keep the tab only as wide as its words */
   }
 
   /* Mail club: the $450 stamp sits beside the text. */
