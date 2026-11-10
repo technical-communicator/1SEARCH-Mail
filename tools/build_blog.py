@@ -61,7 +61,7 @@ SERIES = [
      "local businesses giving special perks to our mail club members."),
 ]
 SERIES_BY_NAME = {name: (slug, colour, intro) for name, slug, colour, intro in SERIES}
-ALL_INTRO = "local artists, orlando guides and news from SEARCH: a snail mail club."
+ALL_INTRO = "local artists, orlando guides and news from Search Central Florida."
 
 
 def esc(text):
@@ -205,7 +205,8 @@ def footer(prefix):
         </ul>
       </nav>
 
-      <nav class="footer-col" aria-label="Mail club">
+      <!-- footer-col-mail is hidden on phones to keep the footer short. -->
+      <nav class="footer-col footer-col-mail" aria-label="Mail club">
         <h2>Mail club</h2>
         <ul>
           <li><a href="{prefix}mailclub.html?tier=sticker#tiers">Sticker supporter</a></li>
@@ -218,9 +219,9 @@ def footer(prefix):
       <div class="footer-col">
         <h2>Say hi</h2>
         <ul>
-          <li><a href="https://www.instagram.com/searchcentralfl/">Instagram: @searchcentralfl</a></li>
+          <li><a href="https://www.instagram.com/searchcentralfl/">Instagram</a></li>
           <li><a href="mailto:searchcentralflorida@gmail.com">Email us</a></li>
-          <li>Have an event? Send it to us on Instagram.</li>
+          <li class="footer-note">Have an event? Send it to us on Instagram.</li>
         </ul>
       </div>
     </div>

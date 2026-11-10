@@ -49,6 +49,9 @@ const TIERS = [
 
 function buildMailclubBanner(spot) {
   const root = spot.dataset.root || "";
+  // Normally the headline is an <h2>. The mail club page puts the banner at
+  // the very top and adds data-heading="1", so it becomes the page's <h1>.
+  const headingTag = spot.dataset.heading === "1" ? "h1" : "h2";
 
   // Each tier tile is a link to the mail club page, e.g.
   // mailclub.html?tier=print#tiers  ("#tiers" scrolls to the envelopes).
@@ -73,7 +76,7 @@ function buildMailclubBanner(spot) {
         '<div class="mcb-inner">' +
           '<div class="mcb-text">' +
             '<p class="mcb-eyebrow">SEARCH: a snail mail club</p>' +
-            '<h2 class="mcb-title">Art in your mailbox, every month.</h2>' +
+            "<" + headingTag + ' class="mcb-title">Art in your mailbox, every month.</' + headingTag + ">" +
             '<p class="mcb-sub">a new central florida artist every month, plus perks from local businesses. from $6.99 a month.</p>' +
             '<a class="button mcb-button" href="' + root + 'mailclub.html#tiers">Join the club</a>' +
           "</div>" +

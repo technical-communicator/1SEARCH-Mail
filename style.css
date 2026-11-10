@@ -1184,44 +1184,7 @@ body:has(.event-dialog[open]) {
    of mail, and the tiers as envelopes you can open.
    ========================================================= */
 
-/* The masthead here has the stamp beside the words. */
-.mc-lead {
-  display: grid;
-  gap: 1.5rem;
-  align-items: center;
-}
-
-.mc-lead .masthead-intro + .masthead-intro {
-  margin-top: 0.75rem;
-}
-
-.mc-stamp {
-  width: min(50vw, 240px);
-  justify-self: center;
-  transform: rotate(-8deg);
-}
-
-/* ---- Scrolling handwritten banner ----
-   The words are written twice in a row; the strip slides left by half
-   its width, over and over, so it loops without a gap. */
-.marquee {
-  overflow: hidden;
-  margin: 0 -1rem 1.5rem;  /* runs to the edges of the screen on phones */
-}
-
-.marquee-track {
-  display: flex;
-  width: max-content;
-  animation: marquee 40s linear infinite;
-}
-
-.marquee-track span {
-  font-family: var(--font-script);
-  font-size: clamp(1.8rem, 5vw, 3rem);
-  color: var(--red-bright);
-  white-space: nowrap;
-}
-
+/* The scrolling loop used by the banner's ticker (section 15). */
 @keyframes marquee {
   to { transform: translateX(-50%); }
 }
@@ -1898,8 +1861,10 @@ body:has(.event-dialog[open]) {
 
 /* =========================================================
    12. Footer
-   Dark ink background, the logo and a short line about SCF, three
-   columns of links, and a thin bar along the bottom.
+   Phones get a compact footer: the logo, one wrapped row of links, the
+   Instagram and email links, and a slim bottom bar. Wider screens get the
+   full version: a short description and three labelled link columns
+   (see "Wider screens").
    ========================================================= */
 .site-footer {
   background: var(--ink);
@@ -1907,15 +1872,13 @@ body:has(.event-dialog[open]) {
   font-size: 0.95rem;
 }
 
-/* On phones: the brand on top, Explore and Mail club side by side,
-   then Say hi underneath. */
 .footer-inner {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
   max-width: 72rem;
   margin: 0 auto;
-  padding: 2.5rem 1rem 2rem;
+  padding: 1.25rem 1rem 0.75rem;
 }
 
 .site-footer a {
@@ -1935,53 +1898,52 @@ body:has(.event-dialog[open]) {
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
   text-decoration: none;
 }
 
 .footer-logo img {
-  width: 48px;
+  width: 40px;
   height: auto;
 }
 
 .footer-logo span {
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   letter-spacing: 0.06em;
 }
 
-.footer-brand,
-.footer-col:last-child {
-  grid-column: 1 / -1;  /* full width on phones */
+/* Hidden on phones to keep the footer short. */
+.footer-brand p,
+.footer-col-mail,
+.footer-note {
+  display: none;
 }
 
-.footer-brand p {
-  max-width: 24rem;
-  margin: 0;
-  color: #bdb7ab;
-}
-
-/* Column headings: small, uppercase, with a pink rule underneath. */
+/* Column headings: hidden on phones (but still read by screen readers). */
 .footer-col h2 {
-  margin: 0 0 0.75rem;
-  padding-bottom: 0.4rem;
-  border-bottom: 2px solid var(--pink);
-  font-family: var(--font-type);
-  font-size: 0.85rem;
-  font-weight: bold;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: #ffffff;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
+/* On phones each list is one row of links that wraps. */
 .footer-col ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 1.25rem;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.footer-col li {
-  padding: 0.3rem 0;
-  overflow-wrap: anywhere;  /* lets the long email address wrap on phones */
+/* Each link is tall enough to tap easily. */
+.footer-col a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.5rem;
 }
 
 /* The thin bar along the bottom: copyright and "Back to top". */
@@ -1989,13 +1951,13 @@ body:has(.event-dialog[open]) {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  gap: 0.5rem;
+  align-items: center;
+  gap: 0 1rem;
   max-width: 72rem;
   margin: 0 auto;
-  padding: 0.5rem 1rem;
+  padding: 0.25rem 1rem;
   border-top: 1px solid #3a3a3a;
-  align-items: center;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: #bdb7ab;
 }
 
@@ -2003,7 +1965,6 @@ body:has(.event-dialog[open]) {
   margin: 0;
 }
 
-/* Tall enough to tap easily on a phone. */
 .footer-top {
   display: inline-flex;
   align-items: center;
@@ -2035,14 +1996,63 @@ body:has(.event-dialog[open]) {
     padding: 2rem 1.5rem 4rem;
   }
 
-  /* Footer: the brand gets a wide column, then the three link columns. */
+  /* Footer: the full version, with the description and three labelled
+     columns (brand, Explore, Mail club, Say hi). */
   .footer-inner {
+    display: grid;
     grid-template-columns: 1fr 1fr;
+    gap: 2rem;
     padding: 3rem 1.5rem 2.5rem;
   }
 
+  .footer-brand p,
+  .footer-col-mail,
+  .footer-note {
+    display: block;
+  }
+
+  .footer-brand p {
+    max-width: 24rem;
+    margin: 0.75rem 0 0;
+    color: #bdb7ab;
+  }
+
+  .footer-logo img {
+    width: 48px;
+  }
+
+  .footer-col h2 {
+    position: static;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip-path: none;
+    margin: 0 0 0.75rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 2px solid var(--pink);
+    font-family: var(--font-type);
+    font-size: 0.85rem;
+    font-weight: bold;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #ffffff;
+  }
+
+  .footer-col ul {
+    display: block;
+  }
+
+  .footer-col a {
+    min-height: 2rem;
+  }
+
+  .footer-note {
+    padding-top: 0.3rem;
+  }
+
   .footer-bottom {
-    padding: 1rem 1.5rem;
+    padding: 0.5rem 1.5rem;
+    font-size: 0.85rem;
   }
 
   /* All seven day tiles fit in one row, no swiping needed. */
@@ -2115,12 +2125,6 @@ body:has(.event-dialog[open]) {
     padding: 0.7rem 1.2rem;
   }
 
-  /* Words on the left, picture on the right. */
-  .mc-lead {
-    grid-template-columns: 3fr 2fr;
-    gap: 2rem;
-  }
-
   .lead-story {
     grid-template-columns: 2fr 3fr;
     gap: 2rem;
@@ -2144,10 +2148,6 @@ body:has(.event-dialog[open]) {
     gap: 2rem;
   }
 
-  .marquee {
-    margin-left: -1.5rem;
-    margin-right: -1.5rem;
-  }
 
 }
 
@@ -2171,10 +2171,7 @@ body:has(.event-dialog[open]) {
     grid-template-columns: 2fr 1fr 1fr 1.3fr;
   }
 
-  .footer-brand,
-  .footer-col:last-child {
-    grid-column: auto;
-  }
+
 
   .event-list,
   .post-grid {
@@ -2208,8 +2205,7 @@ body:has(.event-dialog[open]) {
   }
 
   .slide-in,
-  .dialog-card,
-  .marquee-track {
+  .dialog-card {
     animation: none;
   }
 
@@ -2235,6 +2231,16 @@ body:has(.event-dialog[open]) {
   margin-top: 3rem;
 }
 
+/* On the mail club page the banner is at the very top, under the header. */
+.page-mailclub .mcb {
+  margin-top: 0;
+}
+
+/* Its headline is the page's <h1> there; keep the same size as the <h2>. */
+h1.mcb-title {
+  margin-top: 0;
+}
+
 /* ---- The black ticker strip ---- */
 .mcb-ticker {
   overflow: hidden;
@@ -2256,13 +2262,11 @@ body:has(.event-dialog[open]) {
   white-space: nowrap;
 }
 
-/* ---- The big pink banner, with halftone dots ---- */
+/* ---- The big pink banner, on the SCF pink halftone ---- */
 .mcb-main {
   overflow: hidden;  /* keeps the tilted picture inside the banner */
-  /* Pink with white halftone dots, drawn by CSS so there's nothing to download. */
-  background-color: var(--pink);
-  background-image: radial-gradient(rgba(255, 255, 255, 0.35) 2px, transparent 2.6px);
-  background-size: 12px 12px;
+  /* The SCF pink halftone texture from the brand artwork. */
+  background: var(--pink) url("images/bg-pink.webp") center / cover;
   border-top: var(--border);
   border-bottom: var(--border);
 }

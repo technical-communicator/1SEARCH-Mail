@@ -2,10 +2,9 @@
 <!-- mailclub.html: the SEARCH snail mail club page.
      Its job is to get visitors to join on Patreon.
 
-     It uses the same design system as the rest of the site (masthead,
-     Anton headlines, typewriter text, thin rules), plus some cutesy mail
-     touches: a scrolling handwritten banner, a red polka-dot envelope with
-     a collage of mail, and the tiers as envelopes you can open.
+     It opens with the pink mail club banner (from banner.js), then the
+     tiers as envelopes you can open, then the details: what's inside,
+     how it works, the artists and perks, a letter, past mailers and FAQ.
      The styles are in style.css, section "9. Mail club page".
 
      THE PATREON LINK: every "Join" button gets its address from
@@ -48,34 +47,71 @@
     </nav>
   </header>
 
-  <main>
-    <!-- ===== MASTHEAD: words on the left, the stamp on the right ===== -->
-    <section class="masthead mc-lead">
-      <div>
-        <p class="section-chip">Snail mail club</p>
-        <h1>SEARCH: a snail mail club</h1>
-        <p class="masthead-intro">hi everyone! welcome to SEARCH: a snail mail club by <a href="https://www.instagram.com/searchcentralfl/">@searchcentralfl</a>.</p>
-        <p class="masthead-intro">interested in supporting local artists and creative businesses in central florida? get original art from a different local artist in your mailbox every month.</p>
-        <div class="buttons">
-          <a class="button" href="https://www.patreon.com/" data-patreon>Join on Patreon</a>
-          <!-- "#tiers" jumps down to the part of this page with id="tiers". -->
-          <a class="button button-outline" href="#tiers">See the tiers</a>
-        </div>
-      </div>
-      <img class="mc-stamp" src="images/stamp.webp" width="600" height="600"
-           alt="SEARCH: a snail mail club stamp featuring the mascot">
-    </section>
+  <!-- ===== THE BANNER, AT THE TOP =====
+       The same pink mail club banner that ends every other page, used here
+       as this page's big welcome. data-heading="1" makes its headline the
+       page's main <h1>. banner.js fills in this empty spot. -->
+  <div data-mailclub-banner data-root="" data-heading="1"></div>
+  <script src="banner.js"></script>
 
-    <!-- ===== SCROLLING BANNER =====
-         The words are written twice in a row so the loop has no gap.
-         aria-hidden="true" because the same facts are elsewhere on the page,
-         and screen readers don't need to hear them twice. -->
-    <div class="marquee" aria-hidden="true">
-      <div class="marquee-track">
-        <span>$450 given to local artists! &bull; a new central florida artist every month! &bull; art in your mailbox! &bull; join SEARCH: a snail mail club! &bull;&nbsp;</span>
-        <span>$450 given to local artists! &bull; a new central florida artist every month! &bull; art in your mailbox! &bull; join SEARCH: a snail mail club! &bull;&nbsp;</span>
+  <main>
+    <!-- ===== CHOOSE YOUR TIER: envelopes you can open =====
+         Each envelope is a tab. Tapping one "pulls out" its letter below with
+         the details and a Join button. The script at the bottom of this page
+         makes the tabs work. Without JavaScript, all three letters simply
+         show one after another. -->
+    <section id="tiers">
+      <h2 class="section-head">Choose your subscription</h2>
+      <p class="reading">hi everyone! welcome to SEARCH: a snail mail club by <a href="https://www.instagram.com/searchcentralfl/">@searchcentralfl</a>. pick an envelope to see what's inside each tier.</p>
+
+      <div class="envelope-tabs" role="tablist" aria-label="Subscription tiers">
+        <button class="env-tab" type="button" role="tab" id="tab-sticker"
+                aria-controls="panel-sticker" aria-selected="true">
+          <span class="env-card"><span class="env-name">sticker supporter</span><span class="env-price">$6.99</span></span>
+        </button>
+        <button class="env-tab" type="button" role="tab" id="tab-print"
+                aria-controls="panel-print" aria-selected="false">
+          <span class="env-card"><span class="env-name">print collector</span><span class="env-price">$8.99</span></span>
+        </button>
+        <button class="env-tab" type="button" role="tab" id="tab-curator"
+                aria-controls="panel-curator" aria-selected="false">
+          <span class="env-card"><span class="env-name">print &amp; sticker curator</span><span class="env-price">$12.99</span></span>
+        </button>
       </div>
-    </div>
+
+      <!-- The three letters. Only the chosen one shows (the others get "hidden"). -->
+      <div class="tier-letter" role="tabpanel" id="panel-sticker" aria-labelledby="tab-sticker">
+        <h3>sticker supporter <span>$6.99/month</span></h3>
+        <ul>
+          <li>vinyl sticker or sticker sheet by the featured artist</li>
+          <li>a discount to one of our favorite local businesses</li>
+          <li>the @searchcentralfl newsletter</li>
+        </ul>
+        <a class="button" href="https://www.patreon.com/" data-patreon>Join as a sticker supporter</a>
+      </div>
+
+      <div class="tier-letter" role="tabpanel" id="panel-print" aria-labelledby="tab-print">
+        <h3>print collector <span>$8.99/month</span></h3>
+        <ul>
+          <li>4x6 art print by the featured artist</li>
+          <li>a discount to one of our favorite local businesses</li>
+          <li>the @searchcentralfl newsletter</li>
+        </ul>
+        <a class="button" href="https://www.patreon.com/" data-patreon>Join as a print collector</a>
+      </div>
+
+      <div class="tier-letter" role="tabpanel" id="panel-curator" aria-labelledby="tab-curator">
+        <p class="tier-flag">the complete monthly drop</p>
+        <h3>print &amp; sticker curator <span>$12.99/month</span></h3>
+        <ul>
+          <li>art print AND sticker from the featured artist</li>
+          <li>a discount to one of our favorite local businesses</li>
+          <li>the @searchcentralfl newsletter</li>
+          <li>first dibs on any future curator-tier perks we roll out</li>
+        </ul>
+        <a class="button" href="https://www.patreon.com/" data-patreon>Join as a curator</a>
+      </div>
+    </section>
 
     <!-- ===== WHAT'S INSIDE: the back of a red polka-dot envelope ===== -->
     <section class="mc-envelope">
@@ -152,62 +188,6 @@
       <p>build your art collection with the talent right here in central florida.</p>
     </div>
 
-    <!-- ===== CHOOSE YOUR TIER: envelopes you can open =====
-         Each envelope is a tab. Tapping one "pulls out" its letter below with
-         the details and a Join button. The script at the bottom of this page
-         makes the tabs work. Without JavaScript, all three letters simply
-         show one after another. -->
-    <section id="tiers">
-      <h2 class="section-head">Choose your subscription</h2>
-
-      <div class="envelope-tabs" role="tablist" aria-label="Subscription tiers">
-        <button class="env-tab" type="button" role="tab" id="tab-sticker"
-                aria-controls="panel-sticker" aria-selected="true">
-          <span class="env-card"><span class="env-name">sticker supporter</span><span class="env-price">$6.99</span></span>
-        </button>
-        <button class="env-tab" type="button" role="tab" id="tab-print"
-                aria-controls="panel-print" aria-selected="false">
-          <span class="env-card"><span class="env-name">print collector</span><span class="env-price">$8.99</span></span>
-        </button>
-        <button class="env-tab" type="button" role="tab" id="tab-curator"
-                aria-controls="panel-curator" aria-selected="false">
-          <span class="env-card"><span class="env-name">print &amp; sticker curator</span><span class="env-price">$12.99</span></span>
-        </button>
-      </div>
-
-      <!-- The three letters. Only the chosen one shows (the others get "hidden"). -->
-      <div class="tier-letter" role="tabpanel" id="panel-sticker" aria-labelledby="tab-sticker">
-        <h3>sticker supporter <span>$6.99/month</span></h3>
-        <ul>
-          <li>vinyl sticker or sticker sheet by the featured artist</li>
-          <li>a discount to one of our favorite local businesses</li>
-          <li>the @searchcentralfl newsletter</li>
-        </ul>
-        <a class="button" href="https://www.patreon.com/" data-patreon>Join as a sticker supporter</a>
-      </div>
-
-      <div class="tier-letter" role="tabpanel" id="panel-print" aria-labelledby="tab-print">
-        <h3>print collector <span>$8.99/month</span></h3>
-        <ul>
-          <li>4x6 art print by the featured artist</li>
-          <li>a discount to one of our favorite local businesses</li>
-          <li>the @searchcentralfl newsletter</li>
-        </ul>
-        <a class="button" href="https://www.patreon.com/" data-patreon>Join as a print collector</a>
-      </div>
-
-      <div class="tier-letter" role="tabpanel" id="panel-curator" aria-labelledby="tab-curator">
-        <p class="tier-flag">the complete monthly drop</p>
-        <h3>print &amp; sticker curator <span>$12.99/month</span></h3>
-        <ul>
-          <li>art print AND sticker from the featured artist</li>
-          <li>a discount to one of our favorite local businesses</li>
-          <li>the @searchcentralfl newsletter</li>
-          <li>first dibs on any future curator-tier perks we roll out</li>
-        </ul>
-        <a class="button" href="https://www.patreon.com/" data-patreon>Join as a curator</a>
-      </div>
-    </section>
 
     <!-- ===== WHY: a letter from the founders ===== -->
     <h2 class="section-head">Why a snail mail club?</h2>
@@ -260,10 +240,6 @@
 
   </main>
 
-  <!-- The full-width mail club banner. banner.js fills in this empty spot.
-       To change the monthly artist, edit banner.js (one file for the whole site). -->
-  <div data-mailclub-banner data-root=""></div>
-  <script src="banner.js"></script>
 
   <!-- The site footer. It's the same on every page: if you change it,
        change it in index.html, events.html, mailclub.html, about.html
@@ -288,7 +264,8 @@
         </ul>
       </nav>
 
-      <nav class="footer-col" aria-label="Mail club">
+      <!-- footer-col-mail is hidden on phones to keep the footer short. -->
+      <nav class="footer-col footer-col-mail" aria-label="Mail club">
         <h2>Mail club</h2>
         <ul>
           <li><a href="mailclub.html?tier=sticker#tiers">Sticker supporter</a></li>
@@ -301,9 +278,9 @@
       <div class="footer-col">
         <h2>Say hi</h2>
         <ul>
-          <li><a href="https://www.instagram.com/searchcentralfl/">Instagram: @searchcentralfl</a></li>
+          <li><a href="https://www.instagram.com/searchcentralfl/">Instagram</a></li>
           <li><a href="mailto:searchcentralflorida@gmail.com">Email us</a></li>
-          <li>Have an event? Send it to us on Instagram.</li>
+          <li class="footer-note">Have an event? Send it to us on Instagram.</li>
         </ul>
       </div>
     </div>
