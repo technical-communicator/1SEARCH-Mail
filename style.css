@@ -991,26 +991,27 @@ body:has(.event-dialog[open]) {
   font-size: 0.95rem;
 }
 
-/* ---- The collage of cut-out mail ----
+/* ---- The collage: this month's real mailer ----
    Each piece is placed by hand with position: absolute and tilted a
-   little, like things pasted into a scrapbook. */
+   little, like things just tipped out of the envelope onto a table.
+   Widths are percentages, so the whole collage shrinks on phones. */
 .collage {
   position: relative;
-  aspect-ratio: 1 / 0.9;  /* height follows width, so it shrinks on phones */
+  aspect-ratio: 1 / 1.05;  /* height follows width */
 }
 
 .collage > * {
   position: absolute;
-  box-shadow: var(--soft-shadow);
 }
 
-/* An envelope: a cream rectangle with a darker V-shaped flap. */
+/* An empty envelope behind everything: cream with a V-shaped flap. */
 .c-envelope {
-  left: 12%;
-  bottom: 6%;
-  width: 58%;
+  left: 18%;
+  bottom: 4%;
+  width: 62%;
   aspect-ratio: 1.5;
   background: #f4ecdc;
+  box-shadow: var(--soft-shadow);
 }
 
 .c-envelope::before {
@@ -1022,92 +1023,51 @@ body:has(.event-dialog[open]) {
   clip-path: polygon(0 0, 100% 0, 50% 100%);
 }
 
-/* A red postmark circle on the envelope. */
-.c-envelope::after {
-  content: "";
-  position: absolute;
-  right: 10%;
-  bottom: 14%;
-  width: 22%;
-  aspect-ratio: 1;
-  border: 3px double var(--red-bright);
-  border-radius: 50%;
-  opacity: 0.7;
-}
-
-/* A pink letter on lined paper. */
+/* The pink letter from SEARCH, peeking out on the left. */
 .c-letter {
-  left: 2%;
-  top: 4%;
-  width: 44%;
-  aspect-ratio: 0.75;
-  padding: 0.6rem;
-  background-color: #f9cfdb;
-  background-image: repeating-linear-gradient(transparent 0 14px, rgba(200, 22, 60, 0.25) 14px 15px);
-  transform: rotate(-6deg);
-}
-
-.c-letter span {
-  font-family: var(--font-script);
-  font-size: clamp(1rem, 3vw, 1.4rem);
-  color: var(--red-bright);
-}
-
-/* The art print: our mascot artwork with a white photo border. */
-.c-print {
-  right: 4%;
+  left: 0;
   top: 2%;
-  width: 44%;
-  border: 8px solid #ffffff;
-  transform: rotate(5deg);
+  width: 36%;
+  box-shadow: var(--soft-shadow);
+  transform: rotate(-7deg);
 }
 
-/* A postage stamp. The dotted border in the letter's blue looks like
-   the little perforated holes around a real stamp. */
-.c-stamp {
-  right: 6%;
-  bottom: 4%;
+/* Xine Hann's art print, the star of the mailer. */
+.c-print {
+  left: 30%;
+  top: 0;
+  width: 42%;
+  box-shadow: 4px 6px 0 rgba(0, 0, 0, 0.25);
+  transform: rotate(3deg);
+}
+
+/* The Florida Coffee Festival perk card. */
+.c-perk {
+  right: 0;
+  top: 22%;
   width: 30%;
-  padding: 3%;
-  background: #ffffff;
-  border: 6px dotted var(--dusty);
-  transform: rotate(9deg);
+  box-shadow: var(--soft-shadow);
+  transform: rotate(8deg);
 }
 
-.c-stamp img {
-  display: block;
-  width: 100%;
+/* The two die-cut stickers. They have see-through backgrounds, so they
+   get a drop-shadow that follows their shape instead of a box shadow. */
+.c-sticker {
+  filter: drop-shadow(2px 3px 0 rgba(0, 0, 0, 0.3));
 }
 
-/* A little coupon for the local business perk. */
-.c-coupon {
-  left: 38%;
-  top: 44%;
-  padding: 0.3rem 0.6rem;
-  background: var(--yellow);
-  border: 2px dashed var(--ink);
-  font-size: 0.8rem;
-  line-height: 1.2;
-  text-align: center;
+.c-sticker-1 {
+  left: 6%;
+  bottom: 2%;
+  width: 26%;
   transform: rotate(-10deg);
 }
 
-/* A round die-cut sticker of the mascot. */
-.c-sticker {
-  left: 2%;
-  bottom: 2%;
-  width: 22%;
-  aspect-ratio: 1;
-  display: grid;
-  place-items: center;
-  background: var(--purple);
-  border: 4px solid #ffffff;
-  border-radius: 50%;
-  transform: rotate(-12deg);
-}
-
-.c-sticker img {
-  width: 65%;
+.c-sticker-2 {
+  right: 10%;
+  bottom: 0;
+  width: 27%;
+  transform: rotate(12deg);
 }
 
 /* ---- Two side-by-side notes: the artists and the local perks ---- */
@@ -1887,11 +1847,22 @@ body:has(.event-dialog[open]) {
 
 .mcb-print {
   display: block;
-  width: 85%;
+  width: 70%;
   margin-left: auto;
   border: 10px solid #ffffff;
   box-shadow: var(--soft-shadow);
   transform: rotate(4deg);
+}
+
+/* One of this month's stickers, stuck on the print's corner. */
+.mcb-sticker {
+  position: absolute;
+  z-index: 1;
+  right: -4%;
+  top: 38%;
+  width: 38%;
+  filter: drop-shadow(2px 3px 0 rgba(0, 0, 0, 0.3));
+  transform: rotate(12deg);
 }
 
 /* Little four-pointed sparkles, like the stars on a shop banner. */
