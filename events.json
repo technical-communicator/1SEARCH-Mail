@@ -152,6 +152,111 @@
     "link": "https://www.instagram.com/4res0nance/"
   },
   {
+    "title": "Fall Museum Open House",
+    "date": "2026-11-13",
+    "start_time": "18:30",
+    "end_time": "20:30",
+    "venue": "Art & History Museums of Maitland",
+    "category": "Art",
+    "description": "A free evening of local art, live music and creative inspiration in the museum gardens.",
+    "link": "https://www.eventbrite.com/e/1992659286567"
+  },
+  {
+    "title": "Clothing Swap & Groove",
+    "date": "2026-11-13",
+    "start_time": "19:00",
+    "end_time": "23:00",
+    "venue": "Austin's Coffee",
+    "category": "Community",
+    "description": "Swap clothes and stay for the music at Austin's Coffee in Winter Park.",
+    "link": "https://www.instagram.com/austinscoffee/"
+  },
+  {
+    "title": "Diaspora: Photo Exhibition",
+    "date": "2026-11-13",
+    "start_time": "19:00",
+    "end_time": "22:00",
+    "venue": "Not Another Film Lab",
+    "category": "Art",
+    "description": "A photo exhibition at Not Another Film Lab, the film developing lab and creative hub in the Milk District.",
+    "link": "https://www.instagram.com/notanotherfilmlab/"
+  },
+  {
+    "title": "Dyke Night: A Heroes Journey",
+    "date": "2026-11-13",
+    "start_time": "20:00",
+    "end_time": "00:00",
+    "venue": "Conduit",
+    "category": "Community",
+    "description": "A Dyke Nite party at Conduit in Winter Park, from Florida's DIY queer event collective."
+  },
+  {
+    "title": "The Orlando Pottery Festival",
+    "date": "2026-11-14",
+    "start_time": "09:00",
+    "end_time": "16:00",
+    "venue": "2809 S Ferncreek Ave, Orlando",
+    "category": "Markets",
+    "description": "Browse and buy handmade work from local ceramic artists.",
+    "link": "https://theorlandopotteryfestival.org/"
+  },
+  {
+    "title": "CitrusMRKT",
+    "date": "2026-11-14",
+    "start_time": "17:00",
+    "end_time": "22:00",
+    "venue": "1500 Hillcrest St, Orlando",
+    "category": "Markets",
+    "description": "An evening market on Hillcrest Street."
+  },
+  {
+    "title": "The Pheromones Show",
+    "date": "2026-11-14",
+    "start_time": "20:00",
+    "venue": "The Renaissance Theatre",
+    "category": "Music",
+    "description": "Queer-led Orlando punk band The Pheromones play the Ren.",
+    "link": "https://rentheatre.com/"
+  },
+  {
+    "title": "Hellhound Communion",
+    "date": "2026-11-14",
+    "start_time": "20:00",
+    "venue": "Austin's Coffee",
+    "category": "Comedy",
+    "description": "A late show at Austin's Coffee in Winter Park.",
+    "link": "https://www.instagram.com/austinscoffee/"
+  },
+  {
+    "title": "Fall Festival & Plant Sale",
+    "date": "2026-11-15",
+    "start_time": "09:00",
+    "end_time": "15:00",
+    "venue": "Mead Botanical Garden",
+    "category": "Community",
+    "description": "Shop plants from local vendors at Mead Garden's yearly fall festival in Winter Park.",
+    "link": "https://www.meadgarden.org/"
+  },
+  {
+    "title": "Brunch & Beats Jazz",
+    "date": "2026-11-15",
+    "start_time": "11:00",
+    "end_time": "14:00",
+    "venue": "Bynx Cafe",
+    "category": "Music",
+    "description": "Brunch with live jazz at Bynx downtown.",
+    "link": "https://www.instagram.com/bynxorlando/"
+  },
+  {
+    "title": "Bubbles & Babes Burlesque",
+    "date": "2026-11-15",
+    "start_time": "11:00",
+    "venue": "Anthem Orlando",
+    "category": "Comedy",
+    "description": "A burlesque brunch show at Anthem Orlando.",
+    "link": "https://www.instagram.com/anthemorlando/"
+  },
+  {
     "title": "Florida Coffee Festival",
     "date": "2026-11-15",
     "start_time": "11:00",
