@@ -29,7 +29,8 @@
    11. About page
    12. Footer
    13. Wider screens
-   14. Reduced motion */
+   14. Reduced motion
+   15. Mail club banner (the full-width promo at the bottom of every page) */
 
 
 /* =========================================================
@@ -930,8 +931,7 @@ body:has(.event-dialog[open]) {
 /* ---- The red polka-dot envelope ----
    Two layers of round dots (radial gradients) make the polka dots.
    clip-path cuts the top into a point, like an envelope flap. */
-.mc-envelope,
-.mc-final {
+.mc-envelope {
   background-color: var(--red-bright);
   background-image:
     radial-gradient(circle, var(--red-dark) 0 9px, transparent 10px),
@@ -1400,21 +1400,6 @@ body:has(.event-dialog[open]) {
   padding: 0 0 1rem;
 }
 
-/* ---- Final call to action: the envelope front, with a V notch on top ---- */
-.mc-final {
-  margin: 3rem -1rem -3rem;  /* runs to the edges and down to the footer */
-  padding: 5rem 1rem 3rem;
-  text-align: center;
-  clip-path: polygon(0 0, 50% 3rem, 100% 0, 100% 100%, 0 100%);
-}
-
-.mc-final p {
-  margin: 0 0 1.25rem;
-  font-family: var(--font-display);
-  font-size: clamp(2rem, 6vw, 3rem);
-  line-height: 1.1;
-  color: #ffffff;
-}
 
 
 /* =========================================================
@@ -1596,19 +1581,6 @@ body:has(.event-dialog[open]) {
   line-height: 1.6;
 }
 
-/* The mail club nudge at the end of every post. */
-.post-cta {
-  max-width: 40rem;
-  margin: 3rem auto 0;
-  padding: 1.5rem;
-  background: #ffe1ea;
-  border: var(--rule);
-}
-
-.post-cta p {
-  margin-top: 0;
-}
-
 .more-posts {
   margin-top: 4rem;
   padding-top: 1rem;
@@ -1762,9 +1734,6 @@ body:has(.event-dialog[open]) {
     margin-right: -1.5rem;
   }
 
-  .mc-final {
-    margin: 3rem -1.5rem -4rem;
-  }
 }
 
 /* Laptops and up (768px+) */
@@ -1824,3 +1793,234 @@ body:has(.event-dialog[open]) {
     transition: none;
   }
 }
+
+
+/* =========================================================
+   15. Mail club banner
+   The full-width promo near the bottom of every page, built by banner.js.
+   Like a shop's product banner: a black ticker, a big pink banner, and a
+   row of colour tiles, one per tier. It sits outside <main>, so it can
+   run the whole width of the screen.
+   ========================================================= */
+.mcb {
+  margin-top: 3rem;
+}
+
+/* ---- The black ticker strip ---- */
+.mcb-ticker {
+  overflow: hidden;
+  padding: 0.5rem 0;
+  background: var(--ink);
+  color: #ffffff;
+}
+
+.mcb-ticker-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 35s linear infinite;  /* same loop as the mail club banner */
+}
+
+.mcb-ticker-track span {
+  font-size: 0.85rem;
+  font-weight: bold;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+/* ---- The big pink banner, on the SCF pink halftone ---- */
+.mcb-main {
+  overflow: hidden;  /* keeps the tilted picture inside the banner */
+  background: var(--pink) url("images/bg-pink.webp") center / cover;
+  border-top: var(--border);
+  border-bottom: var(--border);
+}
+
+.mcb-inner {
+  display: grid;
+  gap: 2rem;
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 2.5rem 1rem 3rem;
+}
+
+/* The small black label above the headline. */
+.mcb-eyebrow {
+  display: inline-block;
+  margin: 0 0 0.75rem;
+  padding: 0.1rem 0.6rem;
+  background: var(--ink);
+  color: #ffffff;
+  font-size: 0.85rem;
+  font-weight: bold;
+}
+
+.mcb-title {
+  margin: 0 0 1rem;
+  font-size: clamp(2.75rem, 9vw, 5.5rem);
+  line-height: 0.95;
+  text-transform: uppercase;
+}
+
+.mcb-sub {
+  max-width: 32rem;
+  margin: 0 0 1.5rem;
+  font-size: 1.1rem;
+}
+
+/* A black "add to cart" style button. */
+.mcb-button {
+  background: var(--ink);
+  box-shadow: 4px 4px 0 #ffffff;
+  font-size: 1.1rem;
+}
+
+.mcb-button:hover {
+  background: var(--red);
+}
+
+/* ---- The picture side: the mascot print, sparkles and the artist card ---- */
+.mcb-visual {
+  position: relative;
+  justify-self: center;
+  width: min(80vw, 22rem);
+}
+
+.mcb-print {
+  display: block;
+  width: 85%;
+  margin-left: auto;
+  border: 10px solid #ffffff;
+  box-shadow: var(--soft-shadow);
+  transform: rotate(4deg);
+}
+
+/* Little four-pointed sparkles, like the stars on a shop banner. */
+.mcb-sparkle {
+  position: absolute;
+  z-index: 1;
+  color: var(--blue);
+  font-size: 2.5rem;
+  line-height: 1;
+  text-shadow: 2px 2px 0 var(--ink);
+}
+
+.mcb-sparkle-1 {
+  top: -0.75rem;
+  left: 0;
+}
+
+.mcb-sparkle-2 {
+  right: -0.5rem;
+  bottom: 30%;
+  color: var(--yellow);
+  font-size: 1.75rem;
+}
+
+/* The "this month's artist" card, overlapping the print's corner. */
+.mcb-card {
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  bottom: -1.5rem;
+  display: flex;
+  flex-direction: column;
+  width: 10.5rem;
+  padding: 0.5rem 0.5rem 0.6rem;
+  background: #ffffff;
+  color: var(--ink);
+  border: var(--border);
+  border-radius: 12px;
+  box-shadow: 4px 4px 0 var(--ink);
+  text-decoration: none;
+  transform: rotate(-3deg);
+}
+
+.mcb-card:hover {
+  color: var(--ink);
+  transform: rotate(-3deg) translateY(-3px);
+}
+
+.mcb-card img {
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.mcb-card-label {
+  margin-top: 0.4rem;
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.mcb-card-name {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  line-height: 1.1;
+}
+
+/* ---- The row of tier tiles across the whole screen ---- */
+.mcb-tiles {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.mcb-tile {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.25rem;
+  min-height: 7rem;
+  padding: 1rem 0.5rem;
+  color: var(--ink);
+  border-right: var(--border);
+  text-align: center;
+  text-decoration: none;
+}
+
+.mcb-tile:last-child {
+  border-right: 0;
+}
+
+.mcb-tile:hover {
+  color: var(--ink);
+  filter: brightness(0.93);
+}
+
+.mcb-tile-name {
+  font-family: var(--font-display);
+  font-size: clamp(1.1rem, 3.6vw, 2rem);
+  line-height: 1.05;
+  text-transform: uppercase;
+}
+
+.mcb-tile-price {
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+/* On blog pages, keep the tiles clear of the fixed section tabs. */
+.page-blog .mcb {
+  margin-bottom: 0;
+}
+
+/* Wider screens: words on the left, picture on the right, taller tiles. */
+@media (min-width: 48rem) {
+  .mcb-inner {
+    grid-template-columns: 3fr 2fr;
+    align-items: center;
+    padding: 3.5rem 1.5rem 4rem;
+  }
+
+  .mcb-tile {
+    min-height: 10rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mcb-ticker-track {
+    animation: none;
+  }
+}
+

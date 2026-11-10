@@ -177,7 +177,12 @@ def head(prefix, title, description, url, og_type, extra="", image="images/masco
 
 
 def footer(prefix):
-    return f"""  <footer class="site-footer">
+    """The mail club banner (filled in by banner.js) and the site footer."""
+    return f"""  <!-- The full-width mail club banner. banner.js fills in this empty spot. -->
+  <div data-mailclub-banner data-root="{prefix}"></div>
+  <script src="{prefix}banner.js"></script>
+
+  <footer class="site-footer">
     <img src="{prefix}images/stamp.png" alt="" width="600" height="600">
     <p>Follow us on Instagram: <a href="https://www.instagram.com/searchcentralfl/">@searchcentralfl</a></p>
   </footer>"""
@@ -332,11 +337,6 @@ def build_post_page(post, all_posts):
 {post["body_html"]}
       </div>
 
-      <!-- Every post ends with a nudge toward the mail club. -->
-      <aside class="post-cta">
-        <p><strong>want local art in your mailbox?</strong> every month, SEARCH: a snail mail club sends you work from a different central florida artist, plus perks from local businesses.</p>
-        <a class="button" href="../mailclub.html">Join the mail club</a>
-      </aside>
     </article>
 {more}  </main>
 

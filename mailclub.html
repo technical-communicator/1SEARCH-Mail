@@ -255,12 +255,12 @@
       </details>
     </div>
 
-    <!-- ===== Final call to action, on the red polka dots again ===== -->
-    <section class="mc-final">
-      <p>ready to get art in your mailbox?</p>
-      <a class="button button-outline" href="https://www.patreon.com/" data-patreon>Join SEARCH on Patreon</a>
-    </section>
   </main>
+
+  <!-- The full-width mail club banner. banner.js fills in this empty spot.
+       To change the monthly artist, edit banner.js (one file for the whole site). -->
+  <div data-mailclub-banner data-root=""></div>
+  <script src="banner.js"></script>
 
   <footer class="site-footer">
     <img src="images/stamp.png" alt="" width="600" height="600">
@@ -314,8 +314,12 @@
       });
     });
 
-    // Start with the first envelope open.
-    chooseTab(tabs[0]);
+    // Which envelope starts open? Links can ask for one, like
+    // mailclub.html?tier=print (the tier tiles in the banner do this).
+    // Otherwise, start with the first envelope.
+    const askedFor = new URLSearchParams(location.search).get("tier");
+    const startTab = document.getElementById("tab-" + askedFor) || tabs[0];
+    chooseTab(startTab);
   </script>
 </body>
 </html>
