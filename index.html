@@ -117,7 +117,10 @@
       <ol class="today-list" id="today-list">
         <li class="today-empty">Loading today's events...</li>
       </ol>
-      <a class="button button-outline" href="events.html">See the full week</a>
+      <div class="buttons">
+        <a class="button button-outline" href="events.html">See the full week</a>
+        <a class="button button-outline" href="submit.html">+ Submit an event</a>
+      </div>
     </section>
   </main>
 
@@ -146,6 +149,7 @@
           <li><a href="mailclub.html">Snail mail club</a></li>
           <li><a href="blog.html">Blog</a></li>
           <li><a href="about.html">About us</a></li>
+          <li><a href="submit.html">Submit an event</a></li>
         </ul>
       </nav>
 
@@ -165,7 +169,7 @@
         <ul>
           <li><a href="https://www.instagram.com/searchcentralfl/">Instagram</a></li>
           <li><a href="mailto:searchcentralflorida@gmail.com">Email us</a></li>
-          <li class="footer-note">Have an event? Send it to us on Instagram.</li>
+          <li class="footer-note">Have an event? <a href="submit.html">Submit it here</a>.</li>
         </ul>
       </div>
     </div>
@@ -176,10 +180,13 @@
     </div>
   </footer>
 
+  <!-- Site settings (Supabase), and the event code shared with other pages. -->
+  <script src="config.js"></script>
+  <script src="events-common.js"></script>
   <script>
     // ------------------------------------------------------------------
     // TODAY'S EVENTS ON THE HOME PAGE
-    // Reads events.json, finds today's events (Orlando time), and shows up
+    // Loads the events, finds today's events (Orlando time), and shows up
     // to four of them, sorted by start time. It also puts today's count
     // on the Events tile in the hero.
     // ------------------------------------------------------------------
@@ -187,25 +194,12 @@
     const todayList = document.getElementById("today-list");
     const todayCount = document.getElementById("today-count");
 
-    // Today's date in Orlando as "YYYY-MM-DD" ("en-CA" writes dates that way).
-    const today = new Intl.DateTimeFormat("en-CA", { timeZone: "America/New_York" }).format(new Date());
+    // Today's date in Orlando. (todayInOrlando, formatTime, make and
+    // loadEvents come from events-common.js.)
+    const today = todayInOrlando();
 
-    // "19:30" becomes "7:30 PM".
-    function formatTime(timeText) {
-      const [hours, minutes] = timeText.split(":").map(Number);
-      return (hours % 12 || 12) + ":" + String(minutes).padStart(2, "0") + (hours >= 12 ? " PM" : " AM");
-    }
-
-    // Make an element with a class and some text (textContent keeps it safe).
-    function make(tag, className, text) {
-      const element = document.createElement(tag);
-      element.className = className;
-      element.textContent = text;
-      return element;
-    }
-
-    fetch("events.json")
-      .then(function (response) { return response.json(); })
+    // events.json plus approved submissions.
+    loadEvents()
       .then(function (events) {
         const todays = events
           .filter(function (event) { return event.date === today; })

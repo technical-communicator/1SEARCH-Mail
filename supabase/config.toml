@@ -1,0 +1,13 @@
+# The project name used by the Supabase command-line tool (any name works).
+project_id = "search-central-florida"
+
+# Settings for the Supabase command-line tool (only needed if you deploy
+# the functions with the CLI instead of the Supabase website).
+
+[functions.submit-event]
+# People submitting events don't log in, so don't require a login token.
+verify_jwt = false
+
+[functions.approve-event]
+# Only a logged-in reviewer can approve.
+verify_jwt = true

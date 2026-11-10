@@ -202,6 +202,7 @@ def footer(prefix):
           <li><a href="{prefix}mailclub.html">Snail mail club</a></li>
           <li><a href="{prefix}blog.html">Blog</a></li>
           <li><a href="{prefix}about.html">About us</a></li>
+          <li><a href="{prefix}submit.html">Submit an event</a></li>
         </ul>
       </nav>
 
@@ -221,7 +222,7 @@ def footer(prefix):
         <ul>
           <li><a href="https://www.instagram.com/searchcentralfl/">Instagram</a></li>
           <li><a href="mailto:searchcentralflorida@gmail.com">Email us</a></li>
-          <li class="footer-note">Have an event? Send it to us on Instagram.</li>
+          <li class="footer-note">Have an event? <a href="{prefix}submit.html">Submit it here</a>.</li>
         </ul>
       </div>
     </div>

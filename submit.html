@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<!-- submit.html: the public form for sending an event to the calendar.
+     No account needed. Submissions are saved as "pending" until a reviewer
+     approves them in admin.html. See README.md for the setup. -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Submit an event | Orlando events calendar | Search Central Florida</title>
+  <meta name="description" content="Hosting an event in Orlando? Submit it to the Search Central Florida events calendar. It's free, takes two minutes and needs no account.">
+  <!-- Little mascot icon in the browser tab. -->
+  <link rel="icon" type="image/png" href="images/favicon.png">
+
+  <!-- Fonts from Google Fonts: Anton for headlines, Courier Prime (typewriter) for text,
+       Yellowtail (handwriting) for small accents. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Yellowtail&display=swap">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<!-- "page-events" gives this page the Events colour, blue (see style.css). -->
+<body class="page-events">
+  <header class="site-header" id="top">
+    <!-- The logo (mascot head + name) links back to the home page. -->
+    <a class="logo" href="index.html">
+      <!-- alt="" because the words next to it already name the link. -->
+      <img src="images/mascot-head-color.webp" alt="" width="213" height="240">
+      <span class="logo-text">
+        <span class="logo-name">SEARCH</span>
+        <span class="logo-sub">Central Florida</span>
+      </span>
+    </a>
+    <nav>
+      <a href="events.html">Events</a>
+      <a href="mailclub.html">Mail Club</a>
+      <a href="blog.html">Blog</a>
+      <a href="about.html">About</a>
+    </nav>
+  </header>
+
+  <main>
+    <header class="masthead">
+      <p class="section-chip">Submit an event</p>
+      <h1>Add your event</h1>
+      <p class="masthead-intro">we curate this calendar for the vibe of our community. every submission is read by a real person, and if it's a good fit, we'll add it. we can't promise every event gets approved, or featured on our instagram, but we read them all. no account needed.</p>
+    </header>
+
+    <!-- The form (left) and the live preview (right, or below on phones). -->
+    <div class="submit-layout" id="submit-layout">
+      <!-- "novalidate" turns off the browser's own pop-up warnings, so we
+           can show friendlier ones under each field instead. -->
+      <form class="submit-form" id="submit-form" novalidate>
+        <p class="form-note"><span class="req" aria-hidden="true">*</span> means required.</p>
+
+        <fieldset>
+          <legend>The basics</legend>
+
+          <div class="field">
+            <label for="f-title">Event name <span class="req" aria-hidden="true">*</span></label>
+            <input id="f-title" name="title" type="text" required data-max="60" maxlength="60" autocomplete="off"
+                   aria-describedby="c-title e-title" placeholder="e.g. Jazz Night on the Patio">
+            <p class="counter" id="c-title"></p>
+            <p class="field-error" id="e-title"></p>
+          </div>
+
+          <div class="field">
+            <label for="f-category">Category <span class="req" aria-hidden="true">*</span></label>
+            <select id="f-category" name="category" required aria-describedby="e-category">
+              <option value="">Choose one...</option>
+              <option>Music</option>
+              <option>Art</option>
+              <option>Markets</option>
+              <option>Food and Drink</option>
+              <option>Film</option>
+              <option>Comedy</option>
+              <option>Community</option>
+              <option>Workshops</option>
+            </select>
+            <p class="field-error" id="e-category"></p>
+          </div>
+
+          <div class="field">
+            <label for="f-short">Short description <span class="req" aria-hidden="true">*</span></label>
+            <textarea id="f-short" name="short_description" rows="3" required data-max="200" maxlength="200"
+                      aria-describedby="h-short c-short e-short_description"></textarea>
+            <p class="field-hint" id="h-short">One or two sentences. This shows on the card.</p>
+            <p class="counter" id="c-short"></p>
+            <p class="field-error" id="e-short_description"></p>
+          </div>
+
+          <div class="field">
+            <label for="f-long">More details <span class="optional">(optional)</span></label>
+            <textarea id="f-long" name="long_description" rows="5" data-max="1000" maxlength="1000"
+                      aria-describedby="h-long c-long e-long_description"></textarea>
+            <p class="field-hint" id="h-long">Anything else people should know. Shows when someone opens your event.</p>
+            <p class="counter" id="c-long"></p>
+            <p class="field-error" id="e-long_description"></p>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>When</legend>
+          <div class="field-row">
+            <div class="field">
+              <label for="f-date">Date <span class="req" aria-hidden="true">*</span></label>
+              <input id="f-date" name="date" type="date" required aria-describedby="e-date">
+              <p class="field-error" id="e-date"></p>
+            </div>
+            <div class="field">
+              <label for="f-start">Starts <span class="req" aria-hidden="true">*</span></label>
+              <input id="f-start" name="start_time" type="time" required aria-describedby="e-start_time">
+              <p class="field-error" id="e-start_time"></p>
+            </div>
+            <div class="field">
+              <label for="f-end">Ends <span class="optional">(optional)</span></label>
+              <input id="f-end" name="end_time" type="time" aria-describedby="e-end_time">
+              <p class="field-error" id="e-end_time"></p>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Where</legend>
+          <div class="field">
+            <label for="f-venue">Venue name <span class="req" aria-hidden="true">*</span></label>
+            <input id="f-venue" name="venue_name" type="text" required data-max="60" maxlength="60"
+                   aria-describedby="c-venue e-venue_name" placeholder="e.g. Bynx Cafe">
+            <p class="counter" id="c-venue"></p>
+            <p class="field-error" id="e-venue_name"></p>
+          </div>
+          <div class="field">
+            <label for="f-address">Street address <span class="req" aria-hidden="true">*</span></label>
+            <input id="f-address" name="address" type="text" required maxlength="200" autocomplete="street-address"
+                   aria-describedby="h-address e-address" placeholder="e.g. 420 E Church St, Orlando, FL 32801">
+            <p class="field-hint" id="h-address">The full address, so we can put it on the map.</p>
+            <p class="field-error" id="e-address"></p>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Links &amp; contact</legend>
+          <div class="field">
+            <label for="f-link">Tickets or more info <span class="req" aria-hidden="true">*</span></label>
+            <input id="f-link" name="link" type="url" required maxlength="500" inputmode="url"
+                   aria-describedby="h-link e-link" placeholder="https://">
+            <p class="field-hint" id="h-link">A ticket page, website or Instagram post about the event.</p>
+            <p class="field-error" id="e-link"></p>
+          </div>
+          <div class="field">
+            <label for="f-instagram">Instagram handle <span class="optional">(optional)</span></label>
+            <input id="f-instagram" name="instagram_handle" type="text" maxlength="31" autocomplete="off"
+                   aria-describedby="e-instagram_handle" placeholder="@yourhandle">
+            <p class="field-error" id="e-instagram_handle"></p>
+          </div>
+          <div class="field">
+            <label for="f-email">Your email <span class="optional">(optional)</span></label>
+            <input id="f-email" name="submitter_email" type="email" maxlength="254" autocomplete="email"
+                   aria-describedby="h-email e-submitter_email">
+            <p class="field-hint" id="h-email">Only so we can ask a question if we need to. It's private and never shown on the site.</p>
+            <p class="field-error" id="e-submitter_email"></p>
+          </div>
+        </fieldset>
+
+        <!-- A trap for spam bots: people never see this box, bots fill it in. -->
+        <div class="hp" aria-hidden="true">
+          <label for="f-website">Leave this empty</label>
+          <input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off">
+        </div>
+
+        <!-- The Cloudflare Turnstile spam check appears here. -->
+        <div class="turnstile" id="turnstile"></div>
+
+        <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+        <button class="button submit-button" type="submit" id="submit-button">Send it in</button>
+      </form>
+
+      <!-- The live preview of the card. -->
+      <aside class="submit-preview" aria-labelledby="preview-heading">
+        <h2 id="preview-heading">Live preview</h2>
+        <p class="preview-note">This is how your event will look on the calendar.</p>
+        <p class="preview-date" id="preview-date"></p>
+        <div id="preview"></div>
+      </aside>
+    </div>
+
+    <!-- The thank-you screen, shown after sending. -->
+    <section class="thanks" id="thanks" hidden tabindex="-1">
+      <h2>Thanks! Your event is in.</h2>
+      <p>here's what happens next:</p>
+      <ol class="steps">
+        <li><strong>we read it.</strong> a real person reviews every submission, usually within a few days.</li>
+        <li><strong>if it's a fit, it goes live.</strong> your event shows up on the calendar and the map. if you left your email, we may reach out with a question.</li>
+        <li><strong>no guarantees.</strong> we can't approve everything, and the calendar is separate from our instagram features. thanks for understanding!</li>
+      </ol>
+      <div class="buttons">
+        <a class="button" href="events.html">Back to the calendar</a>
+        <a class="button button-outline" href="submit.html">Submit another</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- The full-width mail club banner. banner.js fills in this empty spot.
+       To change the monthly artist, edit banner.js (one file for the whole site). -->
+  <div data-mailclub-banner data-root=""></div>
+  <script src="banner.js"></script>
+
+  <!-- The site footer. It's the same on every page: if you change it,
+       change it in index.html, events.html, mailclub.html, about.html
+       AND in footer() in tools/build_blog.py (for the blog pages). -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a class="footer-logo" href="index.html">
+          <img loading="lazy" decoding="async" src="images/mascot-head-color.webp" alt="" width="213" height="240">
+          <span><strong>SEARCH</strong> Central Florida</span>
+        </a>
+        <p>A hyperlocal guide to Orlando arts, culture and small businesses. Find something good, close the app and go.</p>
+      </div>
+
+      <nav class="footer-col" aria-label="Explore">
+        <h2>Explore</h2>
+        <ul>
+          <li><a href="events.html">Events this week</a></li>
+          <li><a href="mailclub.html">Snail mail club</a></li>
+          <li><a href="blog.html">Blog</a></li>
+          <li><a href="about.html">About us</a></li>
+          <li><a href="submit.html">Submit an event</a></li>
+        </ul>
+      </nav>
+
+      <!-- footer-col-mail is hidden on phones to keep the footer short. -->
+      <nav class="footer-col footer-col-mail" aria-label="Mail club">
+        <h2>Mail club</h2>
+        <ul>
+          <li><a href="mailclub.html?tier=sticker#tiers">Sticker supporter</a></li>
+          <li><a href="mailclub.html?tier=print#tiers">Print collector</a></li>
+          <li><a href="mailclub.html?tier=curator#tiers">Print &amp; sticker curator</a></li>
+          <li><a href="mailclub.html#past-mailers">Past mailers</a></li>
+        </ul>
+      </nav>
+
+      <div class="footer-col">
+        <h2>Say hi</h2>
+        <ul>
+          <li><a href="https://www.instagram.com/searchcentralfl/">Instagram</a></li>
+          <li><a href="mailto:searchcentralflorida@gmail.com">Email us</a></li>
+          <li class="footer-note">Have an event? <a href="submit.html">Submit it here</a>.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; 2026 Search Central Florida. Made in Orlando.</p>
+      <a href="#top" class="footer-top">Back to top &uarr;</a>
+    </div>
+  </footer>
+  <!-- Site settings, and the shared event card code (for the preview). -->
+  <script src="config.js"></script>
+  <script src="events-common.js"></script>
+  <script>
+    // ------------------------------------------------------------------
+    // THE SUBMIT FORM
+    //  - live character counters
+    //  - a live preview of the card, using the same card as the calendar
+    //  - friendly checks under each field
+    //  - the Cloudflare Turnstile spam check
+    //  - sending it to the "submit-event" function in Supabase
+    // ------------------------------------------------------------------
+    const config = window.SCF_CONFIG || {};
+    const form = document.getElementById("submit-form");
+    const statusLine = document.getElementById("form-status");
+    const submitButton = document.getElementById("submit-button");
+    const isSetUp = Boolean(config.supabaseUrl && config.supabaseAnonKey && config.turnstileSiteKey);
+
+    // The date can't be in the past: the date picker starts from today.
+    document.getElementById("f-date").min = todayInOrlando();
+
+    // Read every field into one object (trimmed).
+    function readForm() {
+      const values = {};
+      new FormData(form).forEach(function (value, name) { values[name] = String(value).trim(); });
+      values.instagram_handle = (values.instagram_handle || "").replace(/^@/, "");
+      return values;
+    }
+
+    // ---------- Counters ----------
+    form.querySelectorAll("[data-max]").forEach(function (field) {
+      const counter = field.parentElement.querySelector(".counter");
+      function update() {
+        const used = field.value.length, max = Number(field.dataset.max);
+        counter.textContent = used + " / " + max;
+        counter.classList.toggle("is-near", used >= max * 0.9);
+      }
+      field.addEventListener("input", update);
+      update();
+    });
+
+    // ---------- Live preview ----------
+    const preview = document.getElementById("preview");
+    const previewDate = document.getElementById("preview-date");
+
+    function updatePreview() {
+      const v = readForm();
+      // Placeholder words until the fields are filled in.
+      const event = {
+        title: v.title || "Your event name",
+        venue: v.venue_name || "Venue name",
+        category: v.category || "Category",
+        description: v.short_description || "Your short description shows here.",
+        start_time: v.start_time || "19:00",
+        end_time: v.end_time,
+        link: /^https?:\/\/\S+\.\S+/i.test(v.link) ? v.link : "",
+      };
+      preview.replaceChildren(buildEventCard(event));
+      previewDate.textContent = v.date
+        ? formatDate(v.date, { weekday: "long", month: "long", day: "numeric" })
+        : "Pick a date";
+    }
+    form.addEventListener("input", updatePreview);
+    form.addEventListener("change", updatePreview);
+    updatePreview();
+
+    // ---------- Checks (the same rules the server uses) ----------
+    function check(v) {
+      const errors = {};
+      if (!v.title) errors.title = "Please add the event's name.";
+      if (!v.category) errors.category = "Please choose a category.";
+      if (!v.short_description) errors.short_description = "Please add a short description.";
+      if (!v.date) errors.date = "Please pick a date.";
+      else if (v.date < todayInOrlando()) errors.date = "This date has already passed.";
+      if (!v.start_time) errors.start_time = "Please pick a start time.";
+      if (!v.venue_name) errors.venue_name = "Please add the venue's name.";
+      if (!v.address || v.address.length < 5) errors.address = "Please add the full street address.";
+      if (!/^https?:\/\/[^\s.]+\.[^\s]+$/i.test(v.link)) errors.link = "Please add a full web address, starting with https://";
+      if (v.instagram_handle && !/^[A-Za-z0-9._]{1,30}$/.test(v.instagram_handle)) {
+        errors.instagram_handle = "Instagram handles use letters, numbers, dots and underscores.";
+      }
+      if (v.submitter_email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.submitter_email)) {
+        errors.submitter_email = "That email address doesn't look right.";
+      }
+      return errors;
+    }
+
+    // Show (or clear) the message under each field.
+    function showErrors(errors, onlyField) {
+      form.querySelectorAll("[name]").forEach(function (field) {
+        if (onlyField && field.name !== onlyField) return;
+        const box = document.getElementById("e-" + field.name);
+        if (!box) return;
+        const message = errors[field.name] || "";
+        box.textContent = message;
+        field.setAttribute("aria-invalid", message ? "true" : "false");
+      });
+    }
+
+    // Check a field when you leave it (not while you're still typing).
+    form.querySelectorAll("[name]").forEach(function (field) {
+      field.addEventListener("blur", function () {
+        if (field.value) showErrors(check(readForm()), field.name);
+      });
+    });
+
+    // ---------- The spam check (Cloudflare Turnstile) ----------
+    let turnstileToken = "";
+    if (config.turnstileSiteKey) {
+      window.onTurnstileLoad = function () {
+        window.turnstile.render("#turnstile", {
+          sitekey: config.turnstileSiteKey,
+          theme: "light",
+          callback: function (token) { turnstileToken = token; },
+          "expired-callback": function () { turnstileToken = ""; },
+          "error-callback": function () { turnstileToken = ""; },
+        });
+      };
+      const script = document.createElement("script");
+      script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=onTurnstileLoad";
+      script.async = true;
+      document.head.append(script);
+    }
+
+    // ---------- Sending ----------
+    function say(message, isError) {
+      statusLine.textContent = message;
+      statusLine.classList.toggle("is-error", Boolean(isError));
+    }
+
+    form.addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const values = readForm();
+      const errors = check(values);
+      showErrors(errors);
+      if (Object.keys(errors).length) {
+        say("A few things need fixing. They're marked above.", true);
+        // Jump to the first field with a problem.
+        const first = form.querySelector('[aria-invalid="true"]');
+        if (first) first.focus();
+        return;
+      }
+      if (!isSetUp) {
+        say("Submissions aren't switched on just yet. In the meantime, send your event to us on Instagram: @searchcentralfl", true);
+        return;
+      }
+      if (!turnstileToken) {
+        say("Please complete the quick spam check above the button.", true);
+        return;
+      }
+
+      submitButton.disabled = true;
+      say("Sending...");
+      try {
+        const headers = { "Content-Type": "application/json", apikey: config.supabaseAnonKey };
+        // Older Supabase "anon" keys also go in the Authorization header.
+        if (config.supabaseAnonKey.startsWith("eyJ")) headers.Authorization = "Bearer " + config.supabaseAnonKey;
+        const response = await fetch(config.supabaseUrl + "/functions/v1/submit-event", {
+          method: "POST",
+          headers: headers,
+          body: JSON.stringify({ ...values, turnstileToken: turnstileToken }),
+        });
+        const result = await response.json().catch(function () { return {}; });
+
+        if (response.ok && result.ok) {
+          // Done: swap the form for the thank-you screen.
+          document.getElementById("submit-layout").hidden = true;
+          const thanks = document.getElementById("thanks");
+          thanks.hidden = false;
+          thanks.focus();
+          window.scrollTo({ top: 0, behavior: "smooth" });
+          return;
+        }
+        if (result.errors) {
+          showErrors(result.errors);
+          say("A few things need fixing. They're marked above.", true);
+        } else {
+          say(result.error || "Something went wrong. Please try again in a minute.", true);
+        }
+      } catch (error) {
+        say("We couldn't reach the server. Check your connection and try again.", true);
+      }
+      // Each spam check can only be used once, so get a fresh one.
+      if (window.turnstile) window.turnstile.reset("#turnstile");
+      turnstileToken = "";
+      submitButton.disabled = false;
+    });
+  </script>
+</body>
+</html>

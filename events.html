@@ -48,6 +48,9 @@
       <p class="section-chip">Orlando events</p>
       <h1>Events</h1>
       <p class="masthead-intro">Hand-picked things to do around Orlando. Pick a day, then tap an event for the details.</p>
+      <div class="buttons">
+        <a class="button button-outline" href="submit.html">+ Submit an event</a>
+      </div>
     </header>
 
     <!-- ===== DAY STRIP =====
@@ -89,6 +92,16 @@
       <!-- The days again, so you can change day without scrolling back up. -->
       <div class="map-days" id="map-days" role="group" aria-label="Choose a day"></div>
     </section>
+
+    <!-- ===== CALL TO ACTION: submit an event ===== -->
+    <aside class="submit-cta">
+      <div>
+        <p class="submit-cta-kicker">Hosting something soon?</p>
+        <p class="submit-cta-title">Put your event on the calendar.</p>
+        <p class="submit-cta-text">It's free, takes about two minutes, and you don't need an account. Every event is reviewed by a real person.</p>
+      </div>
+      <a class="button" href="submit.html">Submit an event</a>
+    </aside>
   </main>
 
   <!-- The full-width mail club banner. banner.js fills in this empty spot.
@@ -145,6 +158,7 @@
           <li><a href="mailclub.html">Snail mail club</a></li>
           <li><a href="blog.html">Blog</a></li>
           <li><a href="about.html">About us</a></li>
+          <li><a href="submit.html">Submit an event</a></li>
         </ul>
       </nav>
 
@@ -164,7 +178,7 @@
         <ul>
           <li><a href="https://www.instagram.com/searchcentralfl/">Instagram</a></li>
           <li><a href="mailto:searchcentralflorida@gmail.com">Email us</a></li>
-          <li class="footer-note">Have an event? Send it to us on Instagram.</li>
+          <li class="footer-note">Have an event? <a href="submit.html">Submit it here</a>.</li>
         </ul>
       </div>
     </div>
@@ -176,6 +190,9 @@
   </footer>
 
   <script src="vendor/leaflet/leaflet.js"></script>
+  <!-- Site settings (Supabase), and the event code shared with other pages. -->
+  <script src="config.js"></script>
+  <script src="events-common.js"></script>
   <script>
     // ------------------------------------------------------------------
     // HOW THIS PAGE WORKS
@@ -200,8 +217,8 @@
     // All events, filled in once events.json loads.
     let allEvents = [];
 
-    // The eight main categories, in the order the filter buttons show them.
-    const CATEGORIES = ["Music", "Art", "Markets", "Food and Drink", "Film", "Comedy", "Community", "Workshops"];
+    // (CATEGORIES, the date helpers, make() and buildEventCard() come from
+    // events-common.js, which this page loads first.)
 
     // What the visitor has chosen. "All" means no filter.
     let chosenCategory = "All";
@@ -211,68 +228,6 @@
     // Does this event match the chosen category?
     function matchesFilter(event) {
       return chosenCategory === "All" || event.category === chosenCategory;
-    }
-
-    // ---------- Date helpers ----------
-
-    // Today's date in Orlando, as "YYYY-MM-DD".
-    // We ask for Eastern time on purpose, so "Today" is right even if
-    // someone in another time zone visits. ("en-CA" formats dates as YYYY-MM-DD.)
-    function todayInOrlando() {
-      return new Intl.DateTimeFormat("en-CA", { timeZone: "America/New_York" }).format(new Date());
-    }
-
-    // Turn "YYYY-MM-DD" into a Date object at noon UTC. Using noon (and UTC)
-    // means daylight saving time can never nudge it into the wrong day.
-    function toDate(isoDate) {
-      return new Date(isoDate + "T12:00:00Z");
-    }
-
-    // Add some number of days to a "YYYY-MM-DD" date.
-    function addDays(isoDate, days) {
-      const date = toDate(isoDate);
-      date.setUTCDate(date.getUTCDate() + days);
-      return date.toISOString().slice(0, 10); // back to "YYYY-MM-DD"
-    }
-
-    // Format a "YYYY-MM-DD" date in different ways, e.g.
-    // { weekday: "short" } gives "Sat", { day: "numeric" } gives "14".
-    function formatDate(isoDate, options) {
-      return toDate(isoDate).toLocaleDateString("en-US", { timeZone: "UTC", ...options });
-    }
-
-    // Turn "19:30" (24-hour time) into "7:30 PM".
-    function formatTime(timeText) {
-      const [hours, minutes] = timeText.split(":").map(Number);
-      const suffix = hours >= 12 ? "PM" : "AM";
-      const hours12 = hours % 12 || 12; // 0 becomes 12, 13 becomes 1, and so on
-      return hours12 + ":" + String(minutes).padStart(2, "0") + " " + suffix;
-    }
-
-    // Small helper: make an element with a class and some text.
-    // We always use textContent (never innerHTML) so text from events.json
-    // is shown as plain text and can never break the page.
-    function make(tag, className, text) {
-      const element = document.createElement(tag);
-      if (className) element.className = className;
-      if (text) element.textContent = text;
-      return element;
-    }
-
-    // "Food and Drink" becomes "cat-food-and-drink", the CSS class that
-    // colours the card (see the category colours in style.css).
-    function categoryClass(category) {
-      return "cat-" + category.toLowerCase().replace(/\s+/g, "-");
-    }
-
-    // The time "chips", like showtime buttons: "8:00 PM" and "until 11:00 PM".
-    function makeTimes(event) {
-      const times = make("div", "times");
-      times.append(make("span", "time-chip", formatTime(event.start_time)));
-      if (event.end_time) {
-        times.append(make("span", "time-until", "until " + formatTime(event.end_time)));
-      }
-      return times;
     }
 
     // ---------- The day strip ----------
@@ -374,64 +329,12 @@
       });
     }
 
-    // ---------- Links ----------
-
-    // Each event can have a "link" in events.json: its Instagram, ticket
-    // page or website. This picks a short button label from the address.
-    function linkLabel(url) {
-      if (url.includes("instagram.com")) return "Instagram";
-      if (url.includes("eventbrite.") || url.includes("ticket")) return "Tickets";
-      return "Website";
-    }
-
-    // Make the link button, or return null if the event has no link.
-    // target="_blank" opens it in a new tab so the calendar stays open.
-    // rel="noopener" is a standard safety setting for links to other sites.
-    function makeLink(event, className) {
-      if (!event.link) return null;
-      const link = make("a", className, linkLabel(event.link) + " \u2197"); // \u2197 is the ↗ arrow
-      link.href = event.link;
-      link.target = "_blank";
-      link.rel = "noopener";
-      // Screen readers hear the full meaning, e.g. "Tasty Takeover on Instagram, opens in a new tab".
-      link.setAttribute("aria-label", event.title + ": " + linkLabel(event.link) + ", opens in a new tab");
-      return link;
-    }
-
     // ---------- Cards ----------
 
-    // Build one card. The whole card can be clicked: the title is a real
-    // <button> (so it works with the keyboard too), and CSS stretches its
-    // clickable area over the entire card.
+    // Build one card with the shared buildEventCard() from events-common.js.
+    // Tapping it opens the big pop-up.
     function makeCard(event) {
-      const card = make("article", "event-card " + categoryClass(event.category));
-
-      // Top half: coloured band with category, title and venue.
-      const top = make("div", "card-top");
-      const title = make("h3");
-      const openButton = make("button", "card-open", event.title);
-      openButton.type = "button";
-      openButton.addEventListener("click", function () {
-        openEvent(event, openButton);
-      });
-      title.append(openButton);
-      top.append(make("span", "event-category", event.category), title, make("p", "event-venue", event.venue));
-
-      // Bottom half: short description, time chips, then a row with the
-      // event's link (if it has one) and a "Details" hint.
-      const footer = make("div", "card-footer");
-      const link = makeLink(event, "event-link");
-      if (link) footer.append(link);
-      footer.append(make("span", "card-details", "Details"));
-
-      const bottom = make("div", "card-bottom");
-      bottom.append(
-        make("p", "event-description", event.description),
-        makeTimes(event),
-        footer
-      );
-
-      card.append(top, bottom);
+      const card = buildEventCard(event, function (button) { openEvent(event, button); });
 
       // Hovering a card in the list lights up its pin on the map.
       card.addEventListener("mouseenter", function () { highlightPin(event, true); });
@@ -492,9 +395,9 @@
         // Friendly message for an empty day.
         const empty = make("div", "panel empty-day");
         empty.append(make("p", "", "Nothing on the calendar for this day yet. Check back soon!"));
-        const tip = make("p", "", "Know a good event? Send it to us on Instagram: ");
-        const link = make("a", "", "@searchcentralfl");
-        link.href = "https://www.instagram.com/searchcentralfl/";
+        const tip = make("p", "", "Know a good event? ");
+        const link = make("a", "", "Submit it to the calendar");
+        link.href = "submit.html";
         tip.append(link);
         empty.append(tip);
         list.append(empty);
@@ -755,7 +658,9 @@
         formatDate(event.date, { weekday: "long", month: "long", day: "numeric", year: "numeric" });
       // Swap in this event's time chips (replaceChildren clears the old ones first).
       document.getElementById("dialog-times").replaceChildren(...makeTimes(event).children);
-      document.getElementById("dialog-description").textContent = event.description;
+      // Submitted events can have a longer description; show it here if so.
+      document.getElementById("dialog-description").textContent = event.long_description || event.description;
+      if (event.address) document.getElementById("dialog-venue").textContent = event.venue + " \u00b7 " + event.address;
 
       // The big link button: show it with this event's link, or hide it.
       const dialogLink = document.getElementById("dialog-link");
@@ -812,11 +717,8 @@
 
     async function start() {
       try {
-        const response = await fetch("events.json");
-        if (!response.ok) {
-          throw new Error("Could not load events.json (status " + response.status + ")");
-        }
-        allEvents = await response.json();
+        // events.json plus approved submissions (see events-common.js).
+        allEvents = await loadEvents();
       } catch (error) {
         // If something goes wrong (a typo in events.json, for example),
         // show a message on the page and the details in the browser console.

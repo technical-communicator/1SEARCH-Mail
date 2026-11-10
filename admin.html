@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<!-- admin.html: the private review dashboard. Log in to approve or reject
+     submitted events. Hidden from search engines (see the "robots" tag).
+     Not linked from the site. -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Review events | Search Central Florida</title>
+  <meta name="description" content="Private review dashboard.">
+  <!-- Keep this page out of Google and other search engines. -->
+  <meta name="robots" content="noindex, nofollow">
+  <!-- Little mascot icon in the browser tab. -->
+  <link rel="icon" type="image/png" href="images/favicon.png">
+
+  <!-- Fonts from Google Fonts: Anton for headlines, Courier Prime (typewriter) for text,
+       Yellowtail (handwriting) for small accents. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Yellowtail&display=swap">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<!-- "page-events" gives this page the Events colour, blue (see style.css). -->
+<body class="page-events">
+  <header class="site-header" id="top">
+    <!-- The logo (mascot head + name) links back to the home page. -->
+    <a class="logo" href="index.html">
+      <!-- alt="" because the words next to it already name the link. -->
+      <img src="images/mascot-head-color.webp" alt="" width="213" height="240">
+      <span class="logo-text">
+        <span class="logo-name">SEARCH</span>
+        <span class="logo-sub">Central Florida</span>
+      </span>
+    </a>
+    <nav>
+      <a href="events.html">Events</a>
+      <a href="mailclub.html">Mail Club</a>
+      <a href="blog.html">Blog</a>
+      <a href="about.html">About</a>
+    </nav>
+  </header>
+
+  <main>
+    <header class="masthead">
+      <p class="section-chip">Reviewers only</p>
+      <h1>Review events</h1>
+      <p class="masthead-intro">Check submitted events, fix anything that needs it, then approve or reject. Approved events show on the calendar right away.</p>
+    </header>
+
+    <!-- Shown if config.js hasn't been filled in yet. -->
+    <p class="panel" id="setup-note" hidden>The review dashboard isn't connected yet. Follow the steps in README.md, then fill in config.js.</p>
+
+    <!-- ===== LOG IN ===== -->
+    <section class="admin-login" id="login" hidden>
+      <h2 class="section-head">Log in</h2>
+      <form id="login-form" class="submit-form">
+        <div class="field">
+          <label for="l-email">Email</label>
+          <input id="l-email" type="email" autocomplete="username" required>
+        </div>
+        <div class="field">
+          <label for="l-password">Password</label>
+          <input id="l-password" type="password" autocomplete="current-password" required>
+        </div>
+        <p class="form-status" id="login-status" role="status" aria-live="polite"></p>
+        <button class="button" type="submit">Log in</button>
+      </form>
+    </section>
+
+    <!-- ===== THE DASHBOARD ===== -->
+    <section id="dashboard" hidden>
+      <div class="admin-bar">
+        <p>Logged in as <strong id="who"></strong></p>
+        <button class="button button-outline" type="button" id="sign-out">Log out</button>
+      </div>
+
+      <!-- Three tabs. The script fills in the counts and the list. -->
+      <div class="admin-tabs" role="tablist" aria-label="Submissions">
+        <button class="admin-tab" type="button" role="tab" data-status="pending" aria-selected="true">Pending <span class="tab-count"></span></button>
+        <button class="admin-tab" type="button" role="tab" data-status="approved" aria-selected="false">Approved <span class="tab-count"></span></button>
+        <button class="admin-tab" type="button" role="tab" data-status="rejected" aria-selected="false">Rejected <span class="tab-count"></span></button>
+      </div>
+
+      <p class="form-status" id="list-status" role="status" aria-live="polite"></p>
+      <div class="review-list" id="review-list" role="tabpanel"></div>
+    </section>
+  </main>
+
+
+  <!-- The site footer. It's the same on every page: if you change it,
+       change it in index.html, events.html, mailclub.html, about.html
+       AND in footer() in tools/build_blog.py (for the blog pages). -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a class="footer-logo" href="index.html">
+          <img loading="lazy" decoding="async" src="images/mascot-head-color.webp" alt="" width="213" height="240">
+          <span><strong>SEARCH</strong> Central Florida</span>
+        </a>
+        <p>A hyperlocal guide to Orlando arts, culture and small businesses. Find something good, close the app and go.</p>
+      </div>
+
+      <nav class="footer-col" aria-label="Explore">
+        <h2>Explore</h2>
+        <ul>
+          <li><a href="events.html">Events this week</a></li>
+          <li><a href="mailclub.html">Snail mail club</a></li>
+          <li><a href="blog.html">Blog</a></li>
+          <li><a href="about.html">About us</a></li>
+          <li><a href="submit.html">Submit an event</a></li>
+        </ul>
+      </nav>
+
+      <!-- footer-col-mail is hidden on phones to keep the footer short. -->
+      <nav class="footer-col footer-col-mail" aria-label="Mail club">
+        <h2>Mail club</h2>
+        <ul>
+          <li><a href="mailclub.html?tier=sticker#tiers">Sticker supporter</a></li>
+          <li><a href="mailclub.html?tier=print#tiers">Print collector</a></li>
+          <li><a href="mailclub.html?tier=curator#tiers">Print &amp; sticker curator</a></li>
+          <li><a href="mailclub.html#past-mailers">Past mailers</a></li>
+        </ul>
+      </nav>
+
+      <div class="footer-col">
+        <h2>Say hi</h2>
+        <ul>
+          <li><a href="https://www.instagram.com/searchcentralfl/">Instagram</a></li>
+          <li><a href="mailto:searchcentralflorida@gmail.com">Email us</a></li>
+          <li class="footer-note">Have an event? <a href="submit.html">Submit it here</a>.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; 2026 Search Central Florida. Made in Orlando.</p>
+      <a href="#top" class="footer-top">Back to top &uarr;</a>
+    </div>
+  </footer>
+  <!-- The Supabase library (kept in our own vendor/ folder), site settings,
+       and the shared event card code. -->
+  <script src="vendor/supabase/supabase.js"></script>
+  <script src="config.js"></script>
+  <script src="events-common.js"></script>
+  <script>
+    // ------------------------------------------------------------------
+    // THE REVIEW DASHBOARD
+    // 1. Log in with the reviewer's email and password (Supabase Auth).
+    // 2. Show submissions in three tabs: Pending, Approved, Rejected.
+    // 3. Each one shows its card and every field, which you can edit.
+    //    - Save changes: saves the edits.
+    //    - Approve: saves, then asks the "approve-event" function to find
+    //      the address on the map and publish it.
+    //    - Reject / Unpublish: hides it from the calendar.
+    // The database rules (supabase/schema.sql) only let reviewers do this.
+    // ------------------------------------------------------------------
+    // Everything sits inside this (function () { ... })() wrapper so we can
+    // stop early with "return" if the site isn't connected yet.
+    (function () {
+    const config = window.SCF_CONFIG || {};
+    const $ = function (id) { return document.getElementById(id); };
+
+    if (!config.supabaseUrl || !config.supabaseAnonKey) {
+      $("setup-note").hidden = false;
+      return;  // not connected yet: stop here
+    }
+
+    const db = window.supabase.createClient(config.supabaseUrl, config.supabaseAnonKey);
+    let currentTab = "pending";
+
+    // ---------- Logging in and out ----------
+    $("login-form").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      $("login-status").textContent = "Logging in...";
+      const { error } = await db.auth.signInWithPassword({
+        email: $("l-email").value.trim(),
+        password: $("l-password").value,
+      });
+      $("login-status").textContent = error ? "That email and password didn't work." : "";
+    });
+
+    $("sign-out").addEventListener("click", function () { db.auth.signOut(); });
+
+    // Runs on page load and whenever you log in or out.
+    db.auth.onAuthStateChange(function (_event, session) {
+      // (Supabase asks us not to wait on other calls inside this one.)
+      setTimeout(function () { showFor(session); }, 0);
+    });
+
+    async function showFor(session) {
+      if (!session) {
+        $("login").hidden = false;
+        $("dashboard").hidden = true;
+        return;
+      }
+      // Logged in, but is this person a reviewer?
+      const { data: isReviewer } = await db.rpc("is_reviewer");
+      if (!isReviewer) {
+        $("login").hidden = false;
+        $("dashboard").hidden = true;
+        $("login-status").textContent = "This account isn't on the reviewers list.";
+        await db.auth.signOut();
+        return;
+      }
+      $("who").textContent = session.user.email;
+      $("login").hidden = true;
+      $("dashboard").hidden = false;
+      loadTab(currentTab);
+    }
+
+    // ---------- Tabs ----------
+    document.querySelectorAll(".admin-tab").forEach(function (tab) {
+      tab.addEventListener("click", function () { loadTab(tab.dataset.status); });
+    });
+
+    async function updateCounts() {
+      const { data } = await db.from("events").select("status");
+      const counts = { pending: 0, approved: 0, rejected: 0 };
+      (data || []).forEach(function (row) { counts[row.status]++; });
+      document.querySelectorAll(".admin-tab").forEach(function (tab) {
+        tab.querySelector(".tab-count").textContent = "(" + counts[tab.dataset.status] + ")";
+      });
+    }
+
+    async function loadTab(status) {
+      currentTab = status;
+      document.querySelectorAll(".admin-tab").forEach(function (tab) {
+        tab.setAttribute("aria-selected", tab.dataset.status === status ? "true" : "false");
+      });
+      $("list-status").textContent = "Loading...";
+      // Pending: newest first. Approved / rejected: by event date.
+      let query = db.from("events").select("*").eq("status", status);
+      query = status === "pending"
+        ? query.order("created_at", { ascending: false })
+        : query.order("date", { ascending: true });
+      const { data, error } = await query;
+      updateCounts();
+
+      const list = $("review-list");
+      list.innerHTML = "";
+      if (error) {
+        $("list-status").textContent = "Couldn't load submissions: " + error.message;
+        return;
+      }
+      $("list-status").textContent = data.length ? "" : "Nothing here right now.";
+      data.forEach(function (row) { list.append(makeReviewItem(row)); });
+    }
+
+    // ---------- One submission ----------
+    // The editable fields: [database name, label, type, extra settings]
+    const FIELDS = [
+      ["title", "Event name", "text", { maxlength: 60 }],
+      ["category", "Category", "select"],
+      ["date", "Date", "date"],
+      ["start_time", "Starts", "time"],
+      ["end_time", "Ends", "time"],
+      ["venue_name", "Venue", "text", { maxlength: 60 }],
+      ["address", "Address", "text", { maxlength: 200 }],
+      ["short_description", "Short description", "textarea", { maxlength: 200, rows: 3 }],
+      ["long_description", "More details", "textarea", { maxlength: 1000, rows: 4 }],
+      ["link", "Link", "url", { maxlength: 500 }],
+      ["instagram_handle", "Instagram", "text", { maxlength: 31 }],
+      ["latitude", "Map pin: latitude", "number", { step: "any" }],
+      ["longitude", "Map pin: longitude", "number", { step: "any" }],
+    ];
+
+    function makeReviewItem(row) {
+      const item = make("article", "review-item");
+
+      // Left: the card, as it will look on the calendar.
+      const left = make("div", "review-preview");
+      const when = make("p", "preview-date");
+      const cardSpot = make("div");
+      left.append(when, cardSpot);
+
+      // Right: every field, editable.
+      const form = make("form", "review-form submit-form");
+      form.noValidate = true;
+      FIELDS.forEach(function (f) {
+        const [name, label, type, extra] = f;
+        // Long fields (descriptions, address, link) use the full width.
+        const wide = type === "textarea" || name === "address" || name === "link";
+        const field = make("div", "field" + (wide ? " field-wide" : ""));
+        const id = "r-" + row.id + "-" + name;
+        const labelEl = make("label", "", label);
+        labelEl.htmlFor = id;
+        let input;
+        if (type === "select") {
+          input = make("select");
+          CATEGORIES.forEach(function (c) { const o = make("option", "", c); input.append(o); });
+        } else if (type === "textarea") {
+          input = make("textarea");
+        } else {
+          input = make("input");
+          input.type = type;
+        }
+        input.id = id;
+        input.name = name;
+        Object.assign(input, extra || {});
+        let value = row[name] == null ? "" : String(row[name]);
+        if (type === "time") value = value.slice(0, 5);   // "18:30:00" -> "18:30"
+        input.value = value;
+        field.append(labelEl, input);
+        form.append(field);
+      });
+
+      // Who sent it and when (the email is private: only reviewers see it).
+      const sent = new Date(row.created_at).toLocaleString("en-US", {
+        timeZone: "America/New_York", month: "short", day: "numeric", hour: "numeric", minute: "2-digit",
+      });
+      const meta = make("p", "review-meta", "Sent " + sent + (row.submitter_email ? " by " + row.submitter_email + " (private)" : ""));
+
+      const buttons = make("div", "buttons");
+      const save = make("button", "button button-outline", "Save changes");
+      save.type = "button";
+      const approve = make("button", "button", row.status === "approved" ? "Re-publish" : "Approve & publish");
+      approve.type = "button";
+      const reject = make("button", "button button-outline", row.status === "approved" ? "Unpublish" : "Reject");
+      reject.type = "button";
+      buttons.append(save);
+      if (row.status !== "approved") buttons.append(approve);
+      if (row.status !== "rejected") buttons.append(reject);
+      const status = make("p", "form-status");
+      status.setAttribute("role", "status");
+
+      form.append(meta, buttons, status);
+      item.append(left, form);
+
+      // Keep the preview in step with the fields.
+      function readFields() {
+        const v = {};
+        new FormData(form).forEach(function (value, name) { v[name] = String(value).trim(); });
+        return v;
+      }
+      function refreshPreview() {
+        const v = readFields();
+        when.textContent = v.date ? formatDate(v.date, { weekday: "long", month: "long", day: "numeric", year: "numeric" }) : "";
+        cardSpot.replaceChildren(buildEventCard({
+          title: v.title, venue: v.venue_name, category: v.category, description: v.short_description,
+          start_time: v.start_time, end_time: v.end_time, link: v.link,
+        }));
+      }
+      form.addEventListener("input", refreshPreview);
+      refreshPreview();
+
+      // Turn the fields into what the database expects (blank -> empty).
+      function changes() {
+        const v = readFields();
+        return {
+          title: v.title, category: v.category, date: v.date, start_time: v.start_time,
+          end_time: v.end_time || null, venue_name: v.venue_name, address: v.address,
+          short_description: v.short_description, long_description: v.long_description || null,
+          link: v.link, instagram_handle: v.instagram_handle.replace(/^@/, "") || null,
+          latitude: v.latitude === "" ? null : Number(v.latitude),
+          longitude: v.longitude === "" ? null : Number(v.longitude),
+        };
+      }
+
+      async function saveChanges() {
+        const { error } = await db.from("events").update(changes()).eq("id", row.id);
+        if (error) throw new Error(error.message);
+      }
+
+      save.addEventListener("click", async function () {
+        status.textContent = "Saving...";
+        try { await saveChanges(); status.textContent = "Saved."; }
+        catch (error) { status.textContent = "Couldn't save: " + error.message; }
+      });
+
+      approve.addEventListener("click", async function () {
+        status.textContent = "Publishing...";
+        try {
+          await saveChanges();
+          const { data, error } = await db.functions.invoke("approve-event", { body: { id: row.id } });
+          if (error) throw new Error(error.message);
+          status.textContent = data.onMap ? "Published, with a map pin." : "Published (no map pin: add one with the latitude and longitude boxes).";
+          setTimeout(function () { loadTab(currentTab); }, 1200);
+        } catch (error) {
+          status.textContent = "Couldn't publish: " + error.message;
+        }
+      });
+
+      reject.addEventListener("click", async function () {
+        status.textContent = "Saving...";
+        const { error } = await db.from("events")
+          .update({ status: "rejected", reviewed_at: new Date().toISOString() }).eq("id", row.id);
+        if (error) { status.textContent = "Couldn't update: " + error.message; return; }
+        loadTab(currentTab);
+      });
+
+      return item;
+    }
+    })();
+  </script>
+</body>
+</html>

@@ -30,7 +30,8 @@
    12. Footer
    13. Wider screens
    14. Reduced motion
-   15. Mail club banner (the full-width promo at the bottom of every page) */
+   15. Mail club banner (the full-width promo at the bottom of every page)
+   16. Submitting events: the form, the call to action, the review dashboard */
 
 
 /* =========================================================
@@ -2861,6 +2862,348 @@ h1.mcb-title {
 @media (prefers-reduced-motion: reduce) {
   .mcb-ticker-track {
     animation: none;
+  }
+}
+
+
+/* =========================================================
+   16. Submitting events
+   The submit form (submit.html), the "submit your event" call to action
+   on the events page, and the review dashboard (admin.html).
+   ========================================================= */
+
+/* ---- Call to action band (events page) ---- */
+.submit-cta {
+  display: grid;
+  gap: 1rem;
+  align-items: center;
+  margin-top: 3rem;
+  padding: 1.5rem;
+  background: var(--blue);
+  border: var(--border);
+  box-shadow: 4px 4px 0 var(--ink);
+}
+
+.submit-cta p {
+  margin: 0;
+}
+
+.submit-cta-kicker {
+  display: inline-block;
+  padding: 0 0.5rem;
+  background: var(--ink);
+  color: #ffffff;
+  font-size: 0.8rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.submit-cta-title {
+  margin: 0.4rem 0 !important;
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 6vw, 2.6rem);
+  line-height: 1.05;
+}
+
+.submit-cta .button {
+  justify-self: start;
+  background: var(--ink);
+  box-shadow: 3px 3px 0 #ffffff;
+}
+
+/* ---- The form ---- */
+.submit-layout {
+  display: grid;
+  gap: 2rem;
+}
+
+.submit-form fieldset {
+  margin: 0 0 1.5rem;
+  padding: 0;
+  border: 0;
+  border-top: var(--rule);
+}
+
+.submit-form legend {
+  padding: 0.75rem 0 0.25rem;
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+}
+
+.field {
+  margin: 0 0 1rem;
+}
+
+.field label {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-weight: bold;
+}
+
+/* Every kind of input looks the same: paper box, ink border. */
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  min-height: 2.9rem;  /* easy to tap */
+  padding: 0.55rem 0.7rem;
+  background: var(--cream);
+  color: var(--ink);
+  border: var(--border);
+  border-radius: 0;
+  font: inherit;
+  font-size: 1rem;     /* 16px+ stops iPhones zooming in on the field */
+}
+
+.field textarea {
+  resize: vertical;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  outline: 3px solid var(--blue);
+  outline-offset: 1px;
+}
+
+.field [aria-invalid="true"] {
+  border-color: var(--red);
+  background: #fff3f3;
+}
+
+/* Three short fields (date, start, end) side by side on wider screens. */
+.field-row {
+  display: grid;
+  gap: 0 1rem;
+}
+
+.req {
+  color: var(--red);
+}
+
+.optional,
+.field-hint,
+.form-note {
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: normal;
+}
+
+.field-hint {
+  margin: 0.3rem 0 0;
+  line-height: 1.5;
+}
+
+.form-note {
+  margin: 0 0 0.5rem;
+}
+
+/* The "37 / 60" character counter, turning red when nearly full. */
+.counter {
+  margin: 0.2rem 0 0;
+  font-size: 0.8rem;
+  text-align: right;
+  color: var(--muted);
+}
+
+.counter.is-near {
+  color: var(--red);
+  font-weight: bold;
+}
+
+.field-error {
+  margin: 0.25rem 0 0;
+  color: var(--red);
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+.field-error:empty {
+  display: none;
+}
+
+/* The spam-bot trap: moved off screen so people never see it. */
+.hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.turnstile {
+  margin: 0.5rem 0 1rem;
+}
+
+.form-status {
+  margin: 0 0 1rem;
+  font-weight: bold;
+}
+
+.form-status:empty {
+  display: none;
+}
+
+.form-status.is-error {
+  color: var(--red);
+}
+
+.submit-button {
+  font-size: 1.1rem;
+  padding: 0.85rem 1.6rem;
+}
+
+.submit-button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+/* ---- The live preview ---- */
+.submit-preview h2 {
+  margin: 0 0 0.25rem;
+  font-size: 1.6rem;
+}
+
+.preview-note {
+  margin: 0 0 1rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.preview-date {
+  margin: 0 0 0.5rem;
+  font-weight: bold;
+}
+
+/* ---- Thank-you screen ---- */
+.thanks {
+  max-width: 42rem;
+}
+
+.thanks h2 {
+  margin: 0 0 0.5rem;
+  font-size: clamp(2rem, 7vw, 3rem);
+}
+
+.thanks:focus {
+  outline: none;
+}
+
+/* ---- Review dashboard ---- */
+.admin-login {
+  max-width: 26rem;
+}
+
+.admin-bar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.admin-bar p {
+  margin: 0;
+}
+
+.admin-tabs {
+  display: flex;
+  gap: 0.4rem;
+  overflow-x: auto;
+  margin-bottom: 1rem;
+  border-bottom: var(--border);
+}
+
+.admin-tab {
+  flex: none;
+  min-height: 2.75rem;
+  padding: 0.4rem 1rem;
+  background: var(--cream);
+  color: var(--ink);
+  border: var(--border);
+  border-bottom: 0;
+  font-family: var(--font-type);
+  font-size: 0.95rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.admin-tab[aria-selected="true"] {
+  background: var(--blue);
+}
+
+.review-list {
+  display: grid;
+  gap: 2rem;
+}
+
+/* One submission: its card on top (or left), its fields below (or right). */
+.review-item {
+  display: grid;
+  gap: 1.25rem;
+  padding: 1.25rem;
+  background: var(--cream);
+  border: var(--rule);
+}
+
+.review-form {
+  display: grid;
+  gap: 0 1rem;
+}
+
+.review-form .field {
+  margin-bottom: 0.75rem;
+}
+
+.review-meta {
+  margin: 0.5rem 0 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+  overflow-wrap: anywhere;
+}
+
+.review-form .buttons {
+  margin-top: 0.75rem;
+}
+
+/* Wider screens */
+@media (min-width: 48rem) {
+  .submit-cta {
+    grid-template-columns: 1fr auto;
+    padding: 2rem 2.5rem;
+  }
+
+  .field-row {
+    grid-template-columns: 1.4fr 1fr 1fr;
+  }
+
+  /* Form on the left, preview on the right, staying in view as you scroll. */
+  .submit-layout {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    align-items: start;
+  }
+
+  .submit-preview {
+    position: sticky;
+    top: 1rem;
+  }
+
+  .review-item {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    align-items: start;
+  }
+
+  .review-form {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* Long fields, the details line, buttons and messages use both columns. */
+  .review-form .field-wide,
+  .review-form .review-meta,
+  .review-form .buttons,
+  .review-form .form-status {
+    grid-column: 1 / -1;
   }
 }
 
