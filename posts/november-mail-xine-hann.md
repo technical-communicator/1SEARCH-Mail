@@ -14,7 +14,7 @@ Onto the exciting stuff, here’s what’s waiting in your mailbox this month!
 
 ## Featured artist: Xine Hann
 
-This month’s featured artist is Xine Hann! Xine is a mom, graphic designer, and the founder and director of Orlando Collage Club; you may have already been to one of their events! Make sure to head over to [@xine_hann](https://www.instagram.com/xine_hann/) on Instagram to show your support, and if you haven’t made it to a Collage Club event yet, definitely check one out!
+This month’s featured artist is [Xine Hann](featured-artist-xine-hann.html)! Xine is a mom, graphic designer, and the founder and director of [Orlando Collage Club](https://www.instagram.com/orlandocollageclub/); you may have already been to one of their events! Make sure to head over to [@xine_hann](https://www.instagram.com/xine_hann/) on Instagram to show your support, and if you haven’t made it to a Collage Club event yet, definitely check one out!
 
 ## Featured business: Florida Coffee Festival
 

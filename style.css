@@ -1019,6 +1019,16 @@ body:has(.event-dialog[open]) {
   border-left: 8px solid var(--red);
 }
 
+/* Quotes (in Markdown, lines starting with >), like a note pinned on. */
+.prose blockquote {
+  margin: 1.5rem 0;
+  padding: 0.75rem 1.25rem;
+  background: #ffffff;
+  border: 2px solid var(--ink);
+  border-left: 8px solid var(--purple);
+  font-style: italic;
+}
+
 /* A small "Source:" credit line under quoted info. */
 .source {
   color: var(--muted);
