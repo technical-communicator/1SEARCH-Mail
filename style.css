@@ -129,11 +129,37 @@ h2 {
   border-bottom: var(--border);
 }
 
-/* The white "SEARCH Central Florida" wordmark. */
+/* The logo: the white mascot head with the name typed beside it. */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: #ffffff;
+  text-decoration: none;
+}
+
 .logo img {
   display: block;
-  height: 48px;
+  height: 52px;
   width: auto;
+}
+
+.logo-text {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-type);
+  line-height: 1.1;
+}
+
+.logo-name {
+  font-size: 1.6rem;
+  font-weight: bold;
+  letter-spacing: 0.12em;
+}
+
+.logo-sub {
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
 }
 
 .site-header nav {
@@ -248,54 +274,321 @@ main {
   color: var(--ink);
 }
 
-/* ---------- Event cards ---------- */
+/* ---------- Events page: day strip ----------
+   Inspired by a movie theater's showtimes bar: a row of date tiles.
+   On phones about four fit and you swipe for the rest; on wider
+   screens all seven fit (see the @media rules at the bottom). */
+.day-strip {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;              /* swipe sideways on small screens */
+  scroll-snap-type: x mandatory; /* tiles snap neatly into place */
+  padding: 4px 10px 12px 4px;    /* room for the selected tile's shadow */
+  margin: 0 0 1rem;
+}
+
+.day {
+  flex: 0 0 calc((100% - 1.5rem) / 4.3); /* about 4.3 tiles visible on phones */
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 0 0.4rem;
+  background: var(--ink);
+  color: var(--cream);
+  border: var(--border);
+  font-family: var(--font-type);
+  cursor: pointer;
+}
+
+/* The small label band at the top of each tile ("Today", "Sat"...). */
+.day-name {
+  align-self: stretch;
+  padding: 0.15rem 0;
+  font-size: 0.85rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.day-number {
+  font-size: 2rem;
+  font-weight: bold;
+  line-height: 1.1;
+}
+
+.day-count {
+  font-size: 0.7rem;
+}
+
+.day:hover {
+  background: #333333;
+}
+
+.day:focus-visible {
+  outline: 3px solid var(--red);
+  outline-offset: 2px;
+}
+
+/* The selected day: paper coloured, lifted up, with a red label band. */
+.day[aria-pressed="true"] {
+  background: var(--cream);
+  color: var(--ink);
+  box-shadow: var(--shadow);
+  transform: translate(-2px, -2px);
+}
+
+.day[aria-pressed="true"] .day-name {
+  background: var(--red);
+  color: #ffffff;
+}
+
+/* "Saturday, November 14" above the cards. */
+.day-heading {
+  display: table;
+  margin: 0 0 1.5rem;
+  padding: 0.25rem 0.75rem;
+  background: var(--ink);
+  color: var(--cream);
+  font-size: 1.2rem;
+}
+
+/* ---------- Event cards ----------
+   Like a movie listing: a coloured "poster" band on top with the title,
+   then the details and time chips underneath. */
 .event-list {
   display: grid;
   gap: 1.5rem;
 }
 
+/* When you pick a new day, the cards slide in from the right. */
+.slide-in {
+  animation: slide-in 0.25s ease-out;
+}
+
+@keyframes slide-in {
+  from { opacity: 0; transform: translateX(24px); }
+  to   { opacity: 1; transform: none; }
+}
+
 .event-card {
   /* Each category sets --cat-colour below; grey is the fallback. */
   --cat-colour: #5c5c5c;
-  position: relative;
+  position: relative;  /* lets the title button stretch over the whole card */
+  display: flex;
+  flex-direction: column;
   background: var(--cream);
   border: var(--border);
-  border-top: 10px solid var(--cat-colour);
   box-shadow: var(--shadow);
-  padding: 1.5rem 1.25rem 1.25rem;
+  transition: transform 0.15s, box-shadow 0.15s;
 }
 
-.event-card h2 {
-  font-size: 1.3rem;
-  margin: 0.25rem 0 0.5rem;
+/* Lift the card a little on hover, to show it can be clicked. */
+.event-card:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 8px 8px 0 var(--ink);
 }
 
-.event-card p {
-  margin: 0.25rem 0;
+/* Keyboard users see an outline around the whole card. */
+.event-card:focus-within {
+  outline: 3px solid var(--ink);
+  outline-offset: 4px;
 }
 
-/* The category label sticks up over the top edge like a piece of tape. */
-.event-category {
-  position: absolute;
-  top: -1.1rem;
-  left: 1rem;
-  padding: 0.1rem 0.6rem;
-  background: var(--cat-colour);
+/* Top half: category colour with a light halftone dot pattern on it,
+   drawn with a repeating radial gradient (no image needed). */
+.card-top {
+  padding: 1rem 1.25rem;
+  background-color: var(--cat-colour);
+  background-image: radial-gradient(rgba(255, 255, 255, 0.16) 1.2px, transparent 1.6px);
+  background-size: 8px 8px;
+  border-bottom: var(--border);
   color: #ffffff;
+}
+
+.card-top h2,
+.card-top h3 {
+  margin: 0.6rem 0 0.25rem;
+  font-family: var(--font-type);
+  font-size: 1.35rem;
+  line-height: 1.2;
+}
+
+.card-top .event-venue {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+/* The category label, like a sticker on the poster. */
+.event-category {
+  display: inline-block;
+  padding: 0.05rem 0.5rem;
+  background: var(--cream);
+  color: var(--ink);
   border: 2px solid var(--ink);
   font-family: var(--font-type);
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: bold;
   text-transform: uppercase;
   transform: rotate(-2deg);
 }
 
-.event-when {
+/* The title is a button with its look reset so it reads like a heading.
+   Its ::after layer covers the whole card, so a tap anywhere opens it. */
+.card-open {
+  padding: 0;
+  background: none;
+  border: 0;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.card-open::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.card-open:focus-visible {
+  outline: none;  /* the whole card gets the outline instead (see above) */
+}
+
+/* Bottom half: description, time chips and the "Details" hint. */
+.card-bottom {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem 1.25rem;
+}
+
+.event-description {
+  margin: 0;
+}
+
+.times {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* The start time, like a showtime button. */
+.time-chip {
+  padding: 0.3rem 0.75rem;
+  background: var(--ink);
+  color: #ffffff;
+  border-radius: 4px;
+  font-family: var(--font-type);
+  font-size: 1.1rem;
   font-weight: bold;
 }
 
-.event-venue {
+.time-until {
   color: var(--muted);
+  font-family: var(--font-type);
+}
+
+.card-details {
+  align-self: flex-end;
+  margin-top: auto;
+  padding: 0.1rem 0.75rem;
+  background: var(--yellow);
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  font-family: var(--font-type);
+  font-size: 0.8rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+/* The message on a day with no events. */
+.empty-day {
+  grid-column: 1 / -1;  /* stretch across every column */
+}
+
+/* ---------- Enlarged event pop-up ---------- */
+.event-dialog {
+  width: min(92vw, 36rem);
+  max-height: 90vh;
+  padding: 0 10px 10px 0;  /* room for the card's shadow */
+  background: transparent;
+  border: 0;
+  overflow: auto;
+}
+
+/* The dark layer behind the pop-up. */
+.event-dialog::backdrop {
+  background: rgba(20, 20, 20, 0.75);
+}
+
+/* Stop the page behind from scrolling while the pop-up is open. */
+body:has(.event-dialog[open]) {
+  overflow: hidden;
+}
+
+/* The big card: same look as the small one, scaled up. It "pops" in. */
+.dialog-card {
+  --cat-colour: #5c5c5c;
+  position: relative;
+  background: var(--cream);
+  border: var(--border);
+  box-shadow: 8px 8px 0 var(--ink);
+  animation: pop 0.2s ease-out;
+}
+
+@keyframes pop {
+  from { opacity: 0; transform: scale(0.85); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.dialog-card .card-top {
+  padding: 1.5rem 3.5rem 1.25rem 1.5rem;  /* extra right space for the × */
+}
+
+.dialog-card .card-top h2 {
+  font-size: 1.9rem;
+}
+
+.dialog-card .card-bottom {
+  gap: 1rem;
+  padding: 1.5rem;
+}
+
+.dialog-date {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: bold;
+}
+
+.dialog-card .time-chip {
+  font-size: 1.3rem;
+}
+
+.dialog-description {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.dialog-close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  background: var(--cream);
+  color: var(--ink);
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  font-size: 1.6rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.dialog-close:focus-visible {
+  outline: 3px solid var(--yellow);
+  outline-offset: 2px;
 }
 
 /* One colour per category. The class names come from the JavaScript in
@@ -628,7 +921,14 @@ main {
   }
 
   .logo img {
-    height: 60px;
+    height: 64px;
+  }
+
+  /* All seven day tiles fit in one row, no swiping needed. */
+  .day-strip {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    overflow: visible;
   }
 
   /* Two columns of event cards on tablets. */
@@ -667,9 +967,15 @@ main {
   }
 }
 
-/* People who turn on "reduce motion" don't get the button press effect. */
+/* People who turn on "reduce motion" don't get the movement effects. */
 @media (prefers-reduced-motion: reduce) {
-  .button:hover {
+  .button:hover,
+  .event-card:hover {
     transform: none;
+  }
+
+  .slide-in,
+  .dialog-card {
+    animation: none;
   }
 }

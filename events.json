@@ -1,7 +1,33 @@
 [
   {
+    "title": "Zine Making Workshop",
+    "date": "2026-11-10",
+    "start_time": "18:30",
+    "end_time": "20:30",
+    "venue": "Orlando Public Library",
+    "category": "Workshops",
+    "description": "Cut, paste and staple your own mini zine. All supplies provided."
+  },
+  {
+    "title": "Open Mic Comedy Night",
+    "date": "2026-11-11",
+    "start_time": "20:00",
+    "end_time": "22:00",
+    "venue": "The Milk District",
+    "category": "Comedy",
+    "description": "Local comics try out new material. Sign up at the door or just come to laugh."
+  },
+  {
+    "title": "Open Studio Night",
+    "date": "2026-11-12",
+    "start_time": "19:00",
+    "venue": "Ivanhoe Village Art Studios",
+    "category": "Art",
+    "description": "Wander through working studios and meet the artists behind the work."
+  },
+  {
     "title": "Jazz Night at The Wall Street Cellar",
-    "date": "2026-11-14",
+    "date": "2026-11-13",
     "start_time": "20:00",
     "end_time": "23:00",
     "venue": "The Wall Street Cellar",
@@ -10,7 +36,7 @@
   },
   {
     "title": "Mills 50 Makers Market",
-    "date": "2026-11-15",
+    "date": "2026-11-14",
     "start_time": "10:00",
     "end_time": "15:00",
     "venue": "Mills 50 District",
@@ -18,25 +44,8 @@
     "description": "Local makers selling prints, candles, ceramics and vintage finds."
   },
   {
-    "title": "Zine Making Workshop",
-    "date": "2026-11-12",
-    "start_time": "18:30",
-    "end_time": "20:30",
-    "venue": "Orlando Public Library",
-    "category": "Workshops",
-    "description": "Cut, paste and staple your own mini zine. All supplies provided."
-  },
-  {
-    "title": "Open Studio Night",
-    "date": "2026-11-13",
-    "start_time": "19:00",
-    "venue": "Ivanhoe Village Art Studios",
-    "category": "Art",
-    "description": "Wander through working studios and meet the artists behind the work."
-  },
-  {
     "title": "Taco Pop-Up in Audubon Park",
-    "date": "2026-11-15",
+    "date": "2026-11-14",
     "start_time": "17:00",
     "end_time": "21:00",
     "venue": "Audubon Park Garden District",
@@ -44,11 +53,29 @@
     "description": "A one-night taco pop-up from a local chef, with agua fresca and music."
   },
   {
+    "title": "Community Garden Workday",
+    "date": "2026-11-15",
+    "start_time": "09:00",
+    "end_time": "12:00",
+    "venue": "Mead Botanical Garden",
+    "category": "Community",
+    "description": "Help plant, weed and mulch, then hang out with neighbors. Gloves provided."
+  },
+  {
     "title": "Outdoor Movie on the Lawn",
-    "date": "2026-11-18",
+    "date": "2026-11-15",
     "start_time": "19:30",
     "venue": "Lake Eola Park",
     "category": "Film",
     "description": "Bring a blanket for a free outdoor screening of a classic film."
+  },
+  {
+    "title": "Vinyl Listening Party",
+    "date": "2026-11-15",
+    "start_time": "21:00",
+    "end_time": "23:30",
+    "venue": "Downtown Record Shop",
+    "category": "Music",
+    "description": "Hear a new local album start to finish on the big speakers."
   }
 ]

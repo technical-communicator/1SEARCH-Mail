@@ -19,8 +19,15 @@
 <!-- "page-pink" gives this page the pink halftone background (see style.css). -->
 <body class="page-pink">
   <header class="site-header">
-    <!-- The logo links back to the home page. The alt text is what screen readers say. -->
-    <a class="logo" href="index.html"><img src="images/wordmark-white.webp" alt="SEARCH Central Florida, home" width="700" height="245"></a>
+    <!-- The logo (mascot head + name) links back to the home page. -->
+    <a class="logo" href="index.html">
+      <!-- alt="" because the words next to it already name the link. -->
+      <img src="images/mascot-head-white.webp" alt="" width="178" height="200">
+      <span class="logo-text">
+        <span class="logo-name">SEARCH</span>
+        <span class="logo-sub">Central Florida</span>
+      </span>
+    </a>
     <nav>
       <a href="events.html">Events</a>
       <!-- aria-current tells screen readers (and our CSS) which page you're on. -->

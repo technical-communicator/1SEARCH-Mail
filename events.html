@@ -1,7 +1,9 @@
 <!DOCTYPE html>
-<!-- events.html: lists the events from events.json as cards.
-     The HTML here is just an empty container. The JavaScript at the bottom
-     loads the events and builds the cards. -->
+<!-- events.html: the events calendar, laid out like a movie theater's
+     showtimes page. A strip of days across the top, cards for the chosen day
+     below, and tapping a card opens it big in a pop-up.
+     The HTML here is mostly empty containers. The JavaScript at the bottom
+     loads events.json and fills them in. -->
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -21,8 +23,15 @@
 <!-- "page-blue" gives this page the blue halftone background (see style.css). -->
 <body class="page-blue">
   <header class="site-header">
-    <!-- The logo links back to the home page. The alt text is what screen readers say. -->
-    <a class="logo" href="index.html"><img src="images/wordmark-white.webp" alt="SEARCH Central Florida, home" width="700" height="245"></a>
+    <!-- The logo (mascot head + name) links back to the home page. -->
+    <a class="logo" href="index.html">
+      <!-- alt="" because the words next to it already name the link. -->
+      <img src="images/mascot-head-white.webp" alt="" width="178" height="200">
+      <span class="logo-text">
+        <span class="logo-name">SEARCH</span>
+        <span class="logo-sub">Central Florida</span>
+      </span>
+    </a>
     <nav>
       <a href="events.html" aria-current="page">Events</a>
       <a href="mailclub.html">Mail Club</a>
@@ -30,17 +39,45 @@
     </nav>
   </header>
 
-  <main>
+  <main class="events-main">
     <h1>Events</h1>
     <!-- "lede" puts the intro on a paper strip so it reads clearly over the dots. -->
-    <p class="lede">Hand-picked things to do around Orlando.</p>
+    <p class="lede">Hand-picked things to do around Orlando. Pick a day, then tap an event for the details.</p>
 
-    <!-- The cards get added inside this element by the script below.
-         aria-live makes screen readers announce it when the cards appear. -->
+    <!-- ===== DAY STRIP =====
+         "Today" plus the next six days, like the date bar on a movie
+         theater's showtimes page. The script below fills in the buttons. -->
+    <div id="day-strip" class="day-strip" role="group" aria-label="Choose a day"></div>
+
+    <!-- The heading for the chosen day, e.g. "Saturday, November 14". -->
+    <h2 id="day-heading" class="day-heading"></h2>
+
+    <!-- The cards for the chosen day get added inside here.
+         aria-live makes screen readers announce it when the cards change. -->
     <div id="event-list" class="event-list" aria-live="polite">
       <p>Loading events...</p>
     </div>
   </main>
+
+  <!-- ===== ENLARGED EVENT =====
+       A <dialog> is a pop-up built into the browser. It stays hidden until
+       the script calls showModal(). The Esc key closes it automatically. -->
+  <dialog id="event-dialog" class="event-dialog" aria-labelledby="dialog-title">
+    <article id="dialog-card" class="dialog-card">
+      <div class="card-top">
+        <span id="dialog-category" class="event-category"></span>
+        <h2 id="dialog-title"></h2>
+        <p id="dialog-venue" class="event-venue"></p>
+      </div>
+      <div class="card-bottom">
+        <p id="dialog-date" class="dialog-date"></p>
+        <div id="dialog-times" class="times"></div>
+        <p id="dialog-description" class="dialog-description"></p>
+      </div>
+      <!-- The close button. "×" is the multiplication sign, used as an X. -->
+      <button id="dialog-close" class="dialog-close" type="button" aria-label="Close">×</button>
+    </article>
+  </dialog>
 
   <footer class="site-footer">
     <!-- alt="" because the stamp is decoration; the text below says the same thing. -->
@@ -49,19 +86,55 @@
   </footer>
 
   <script>
-    // Find the empty container where the cards will go.
-    const list = document.getElementById("event-list");
+    // ------------------------------------------------------------------
+    // HOW THIS PAGE WORKS
+    // 1. Load every event from events.json.
+    // 2. Build the day strip: today plus the next 6 days.
+    // 3. Show the cards for the chosen day.
+    // 4. Tapping a card opens it big in a pop-up (the <dialog>).
+    //
+    // Dates are written like "2026-11-14" everywhere. Text in that format
+    // sorts and compares correctly, which keeps the code simple.
+    // ------------------------------------------------------------------
 
-    // Turn "2026-11-14" into something friendly like "Saturday, November 14".
-    // We add "T00:00" so the browser reads it as local time, not UTC.
-    // (Without it, the date can show up one day early in Florida.)
-    function formatDate(dateText) {
-      const date = new Date(dateText + "T00:00");
-      return date.toLocaleDateString("en-US", {
-        weekday: "long",
-        month: "long",
-        day: "numeric",
-      });
+    // How many days the strip shows (today counts as one).
+    const DAYS_TO_SHOW = 7;
+
+    // Grab the elements we'll fill in.
+    const strip = document.getElementById("day-strip");
+    const dayHeading = document.getElementById("day-heading");
+    const list = document.getElementById("event-list");
+    const dialog = document.getElementById("event-dialog");
+
+    // All events, filled in once events.json loads.
+    let allEvents = [];
+
+    // ---------- Date helpers ----------
+
+    // Today's date in Orlando, as "YYYY-MM-DD".
+    // We ask for Eastern time on purpose, so "Today" is right even if
+    // someone in another time zone visits. ("en-CA" formats dates as YYYY-MM-DD.)
+    function todayInOrlando() {
+      return new Intl.DateTimeFormat("en-CA", { timeZone: "America/New_York" }).format(new Date());
+    }
+
+    // Turn "YYYY-MM-DD" into a Date object at noon UTC. Using noon (and UTC)
+    // means daylight saving time can never nudge it into the wrong day.
+    function toDate(isoDate) {
+      return new Date(isoDate + "T12:00:00Z");
+    }
+
+    // Add some number of days to a "YYYY-MM-DD" date.
+    function addDays(isoDate, days) {
+      const date = toDate(isoDate);
+      date.setUTCDate(date.getUTCDate() + days);
+      return date.toISOString().slice(0, 10); // back to "YYYY-MM-DD"
+    }
+
+    // Format a "YYYY-MM-DD" date in different ways, e.g.
+    // { weekday: "short" } gives "Sat", { day: "numeric" } gives "14".
+    function formatDate(isoDate, options) {
+      return toDate(isoDate).toLocaleDateString("en-US", { timeZone: "UTC", ...options });
     }
 
     // Turn "19:30" (24-hour time) into "7:30 PM".
@@ -72,80 +145,220 @@
       return hours12 + ":" + String(minutes).padStart(2, "0") + " " + suffix;
     }
 
-    // Build one card for one event and return it.
-    // We use textContent (not innerHTML) so any text in events.json is
-    // shown as plain text and can never break the page.
-    function makeCard(event) {
-      const card = document.createElement("article");
-      card.className = "event-card";
-      // The category becomes a CSS class like "cat-food-and-drink",
-      // which style.css uses to colour the card.
-      card.classList.add("cat-" + event.category.toLowerCase().replace(/\s+/g, "-"));
+    // Small helper: make an element with a class and some text.
+    // We always use textContent (never innerHTML) so text from events.json
+    // is shown as plain text and can never break the page.
+    function make(tag, className, text) {
+      const element = document.createElement(tag);
+      if (className) element.className = className;
+      if (text) element.textContent = text;
+      return element;
+    }
 
-      const category = document.createElement("span");
-      category.className = "event-category";
-      category.textContent = event.category;
+    // "Food and Drink" becomes "cat-food-and-drink", the CSS class that
+    // colours the card (see the category colours in style.css).
+    function categoryClass(category) {
+      return "cat-" + category.toLowerCase().replace(/\s+/g, "-");
+    }
 
-      const title = document.createElement("h2");
-      title.textContent = event.title;
-
-      // Show "7:30 PM" or "7:30 PM to 10:00 PM" if there's an end time.
-      let timeText = formatTime(event.start_time);
+    // The time "chips", like showtime buttons: "8:00 PM" and "until 11:00 PM".
+    function makeTimes(event) {
+      const times = make("div", "times");
+      times.append(make("span", "time-chip", formatTime(event.start_time)));
       if (event.end_time) {
-        timeText += " to " + formatTime(event.end_time);
+        times.append(make("span", "time-until", "until " + formatTime(event.end_time)));
       }
+      return times;
+    }
 
-      const when = document.createElement("p");
-      when.className = "event-when";
-      when.textContent = formatDate(event.date) + " · " + timeText;
+    // ---------- The day strip ----------
 
-      const venue = document.createElement("p");
-      venue.className = "event-venue";
-      venue.textContent = event.venue;
+    function buildDayStrip(days, chosenDay) {
+      strip.innerHTML = "";
 
-      const description = document.createElement("p");
-      description.textContent = event.description;
+      days.forEach(function (day, index) {
+        // How many events are on this day?
+        const count = allEvents.filter(function (event) { return event.date === day; }).length;
 
-      card.append(category, title, when, venue, description);
+        const button = make("button", "day");
+        button.type = "button";
+        button.dataset.day = day; // remember which day this button is for
+
+        // aria-pressed tells screen readers which day is selected.
+        button.setAttribute("aria-pressed", day === chosenDay ? "true" : "false");
+
+        button.append(
+          make("span", "day-name", index === 0 ? "Today" : formatDate(day, { weekday: "short" })),
+          make("span", "day-number", formatDate(day, { day: "numeric" })),
+          make("span", "day-count", count === 1 ? "1 event" : count + " events")
+        );
+
+        // Give screen readers the full date, e.g. "Saturday, November 14, 2 events".
+        button.setAttribute("aria-label",
+          formatDate(day, { weekday: "long", month: "long", day: "numeric" }) + ", " +
+          (count === 1 ? "1 event" : count + " events"));
+
+        button.addEventListener("click", function () {
+          showDay(day);
+        });
+
+        strip.append(button);
+      });
+    }
+
+    // ---------- Cards ----------
+
+    // Build one card. The whole card can be clicked: the title is a real
+    // <button> (so it works with the keyboard too), and CSS stretches its
+    // clickable area over the entire card.
+    function makeCard(event) {
+      const card = make("article", "event-card " + categoryClass(event.category));
+
+      // Top half: coloured band with category, title and venue.
+      const top = make("div", "card-top");
+      const title = make("h3");
+      const openButton = make("button", "card-open", event.title);
+      openButton.type = "button";
+      openButton.addEventListener("click", function () {
+        openEvent(event, openButton);
+      });
+      title.append(openButton);
+      top.append(make("span", "event-category", event.category), title, make("p", "event-venue", event.venue));
+
+      // Bottom half: short description, time chips and a "Details" hint.
+      const bottom = make("div", "card-bottom");
+      bottom.append(
+        make("p", "event-description", event.description),
+        makeTimes(event),
+        make("span", "card-details", "Details")
+      );
+
+      card.append(top, bottom);
       return card;
     }
 
-    // Load events.json, sort it, and draw the cards.
-    // "async" lets us use "await", which waits for the file to download.
-    async function loadEvents() {
+    // Show the events for one day.
+    function showDay(day) {
+      // Update the day strip so the chosen day looks selected.
+      strip.querySelectorAll(".day").forEach(function (button) {
+        const isChosen = button.dataset.day === day;
+        button.setAttribute("aria-pressed", isChosen ? "true" : "false");
+
+        // On phones the strip scrolls sideways; make sure the chosen day is visible.
+        if (isChosen) button.scrollIntoView({ block: "nearest", inline: "nearest" });
+      });
+
+      // Put the day in the web address (e.g. events.html?day=2026-11-14)
+      // so you can copy the link and share that exact day.
+      history.replaceState(null, "", "?day=" + day);
+
+      dayHeading.textContent = formatDate(day, { weekday: "long", month: "long", day: "numeric" });
+
+      // Get this day's events, sorted by start time ("09:00" comes before "19:30").
+      const events = allEvents
+        .filter(function (event) { return event.date === day; })
+        .sort(function (a, b) { return a.start_time.localeCompare(b.start_time); });
+
+      list.innerHTML = "";
+
+      if (events.length === 0) {
+        // Friendly message for an empty day.
+        const empty = make("div", "panel empty-day");
+        empty.append(make("p", "", "Nothing on the calendar for this day yet. Check back soon!"));
+        const tip = make("p", "", "Know a good event? Send it to us on Instagram: ");
+        const link = make("a", "", "@searchcentralfl");
+        link.href = "https://www.instagram.com/searchcentralfl/";
+        tip.append(link);
+        empty.append(tip);
+        list.append(empty);
+      } else {
+        events.forEach(function (event) {
+          list.append(makeCard(event));
+        });
+      }
+
+      // Replay the little slide-in animation (CSS class "slide-in").
+      // Removing the class, reading offsetWidth, then adding it back
+      // forces the browser to start the animation again.
+      list.classList.remove("slide-in");
+      void list.offsetWidth;
+      list.classList.add("slide-in");
+    }
+
+    // ---------- The enlarged pop-up ----------
+
+    // Remember which card opened the pop-up, so we can put the keyboard
+    // focus back on it when the pop-up closes.
+    let lastOpener = null;
+
+    function openEvent(event, opener) {
+      lastOpener = opener;
+
+      // The pop-up uses the same category colour as the card.
+      document.getElementById("dialog-card").className = "dialog-card " + categoryClass(event.category);
+
+      document.getElementById("dialog-category").textContent = event.category;
+      document.getElementById("dialog-title").textContent = event.title;
+      document.getElementById("dialog-venue").textContent = event.venue;
+      document.getElementById("dialog-date").textContent =
+        formatDate(event.date, { weekday: "long", month: "long", day: "numeric", year: "numeric" });
+      // Swap in this event's time chips (replaceChildren clears the old ones first).
+      document.getElementById("dialog-times").replaceChildren(...makeTimes(event).children);
+      document.getElementById("dialog-description").textContent = event.description;
+
+      dialog.showModal();
+    }
+
+    // Close with the × button.
+    document.getElementById("dialog-close").addEventListener("click", function () {
+      dialog.close();
+    });
+
+    // Close when someone clicks the dark area outside the card.
+    // (Clicks inside the card land on the card, not on the dialog itself.)
+    dialog.addEventListener("click", function (clickEvent) {
+      if (clickEvent.target === dialog) dialog.close();
+    });
+
+    // However it closes (×, outside click or Esc), return focus to the card.
+    dialog.addEventListener("close", function () {
+      if (lastOpener) lastOpener.focus();
+    });
+
+    // ---------- Start everything ----------
+
+    async function start() {
       try {
         const response = await fetch("events.json");
         if (!response.ok) {
           throw new Error("Could not load events.json (status " + response.status + ")");
         }
-        const events = await response.json();
-
-        // Sort by date, then by start time for events on the same day.
-        // Dates like "2026-11-14" and times like "19:30" sort correctly as text.
-        events.sort(function (a, b) {
-          return (a.date + a.start_time).localeCompare(b.date + b.start_time);
-        });
-
-        // Clear the "Loading..." message.
-        list.innerHTML = "";
-
-        if (events.length === 0) {
-          list.textContent = "No events yet. Check back soon!";
-          return;
-        }
-
-        for (const event of events) {
-          list.appendChild(makeCard(event));
-        }
+        allEvents = await response.json();
       } catch (error) {
         // If something goes wrong (a typo in events.json, for example),
         // show a message on the page and the details in the browser console.
         console.error(error);
         list.textContent = "Sorry, the events couldn't be loaded right now.";
+        return;
       }
+
+      // Make the list of days: today, tomorrow, ... (7 in total).
+      const today = todayInOrlando();
+      const days = [];
+      for (let i = 0; i < DAYS_TO_SHOW; i++) {
+        days.push(addDays(today, i));
+      }
+
+      // If the link says ?day=2026-11-14 and that day is in the strip, open it.
+      // Otherwise start on today.
+      const dayFromLink = new URLSearchParams(location.search).get("day");
+      const chosenDay = days.includes(dayFromLink) ? dayFromLink : today;
+
+      buildDayStrip(days, chosenDay);
+      showDay(chosenDay);
     }
 
-    loadEvents();
+    start();
   </script>
 </body>
 </html>
