@@ -153,11 +153,8 @@
         <h3>A new local artist every month</h3>
         <p>every month we feature a different central florida artist. we spotlight their work, their story, and their place in the community.</p>
         <p>each artist receives a stipend to support their creative journey.</p>
-        <!-- The big number, styled like a postage stamp. -->
-        <p class="big-stamp">
-          <span class="big-stamp-number">$450</span>
-          given directly to local artists so far, and counting!
-        </p>
+        <!-- A quiet little stat line. -->
+        <p class="stat-line"><strong>$450</strong> given directly to local artists so far, and counting.</p>
       </div>
 
       <div class="mc-note mc-note-blue taped">
@@ -197,19 +194,33 @@
       <p class="signature">halley &amp; zach &lt;3</p>
     </div>
 
-    <!-- ===== PAST MAILERS =====
-         The list between the PAST-MAILERS markers is filled in automatically
-         by tools/build_blog.py from blog posts in the "Monthly Mail" series.
-         Don't edit inside the markers by hand. -->
-    <h2 class="section-head" id="past-mailers">Past mailers</h2>
-    <div class="reading">
-      <p>see what's been landing in mailboxes:</p>
-      <!-- PAST-MAILERS:START -->
+    <!-- ===== PAST FEATURES =====
+         Browse each month's featured artist and business. The months come
+         from mailers.json (edit that file to add a month or fill in a
+         placeholder). The script at the bottom of this page builds it. -->
+    <section id="past-mailers">
+      <h2 class="section-head">Past features</h2>
+      <p class="reading">every month we feature one local artist and one local business. pick a month:</p>
+
+      <!-- One button per month, filled in by the script. -->
+      <div class="month-picker" id="month-picker" role="group" aria-label="Choose a month"></div>
+
+      <!-- The chosen month's artist and business. aria-live lets screen
+           readers know when it changes. -->
+      <div class="feature-pair" id="feature-pair" aria-live="polite"></div>
+
+      <!-- The monthly recap posts. The list between the PAST-MAILERS
+           markers is filled in automatically by tools/build_blog.py from
+           blog posts in the "Monthly Mail" series. Don't edit it by hand. -->
+      <div class="reading recaps">
+        <p>read the monthly recaps:</p>
+        <!-- PAST-MAILERS:START -->
         <ul class="mailer-list">
           <li><a href="blog/november-mail-xine-hann.html">check your mailbox! | november&#x27;s mail</a> <span class="post-meta">November 2026</span></li>
         </ul>
         <!-- PAST-MAILERS:END -->
-    </div>
+      </div>
+    </section>
 
     <!-- ===== FAQ =====
          <details> and <summary> make a question you can tap to open,
@@ -337,6 +348,91 @@
         }
       });
     });
+
+    // ------------------------------------------------------------------
+    // PAST FEATURES
+    // Reads mailers.json and shows one month at a time: the featured
+    // artist on the left, the featured business on the right.
+    // Months marked "placeholder": true show grey "coming soon" boxes.
+    // ------------------------------------------------------------------
+    const monthPicker = document.getElementById("month-picker");
+    const featurePair = document.getElementById("feature-pair");
+
+    // Make an element with a class and some text (textContent keeps it safe).
+    function make(tag, className, text) {
+      const element = document.createElement(tag);
+      if (className) element.className = className;
+      if (text) element.textContent = text;
+      return element;
+    }
+
+    // One side of the month: the artist or the business.
+    function makeFeature(label, info, isPlaceholder) {
+      const card = make("article", "feature-card" + (isPlaceholder ? " is-placeholder" : ""));
+
+      // The picture, or a "coming soon" box if there isn't one yet.
+      if (info.image) {
+        const img = make("img", "feature-image");
+        img.src = info.image;
+        img.alt = label + ": " + info.name;
+        img.loading = "lazy";
+        card.append(img);
+      } else {
+        const box = make("div", "feature-image feature-image-empty");
+        box.append(make("span", "", "image coming soon"));
+        card.append(box);
+      }
+
+      const text = make("div", "feature-text");
+      text.append(make("p", "feature-label", label), make("h3", "", info.name), make("p", "feature-about", info.about));
+
+      // Links, only if they exist.
+      const links = make("p", "feature-links");
+      if (info.instagram) {
+        const ig = make("a", "", "Instagram \u2197");
+        ig.href = info.instagram;
+        ig.target = "_blank";
+        ig.rel = "noopener";
+        links.append(ig);
+      }
+      if (info.post) {
+        const post = make("a", "", "Read the story \u2192");
+        post.href = info.post;
+        links.append(post);
+      }
+      if (links.children.length) text.append(links);
+
+      card.append(text);
+      return card;
+    }
+
+    function showMonth(months, index) {
+      const month = months[index];
+      monthPicker.querySelectorAll("button").forEach(function (button, i) {
+        button.setAttribute("aria-pressed", i === index ? "true" : "false");
+      });
+      featurePair.replaceChildren(
+        makeFeature("Featured artist", month.artist, month.placeholder),
+        makeFeature("Featured business", month.business, month.placeholder)
+      );
+    }
+
+    fetch("mailers.json")
+      .then(function (response) { return response.json(); })
+      .then(function (months) {
+        months.forEach(function (month, i) {
+          // "November 2026" shows as "Nov 2026" on the button.
+          const button = make("button", "month-chip", month.month.slice(0, 3) + " " + month.month.split(" ")[1]);
+          button.type = "button";
+          button.setAttribute("aria-label", month.month);
+          button.addEventListener("click", function () { showMonth(months, i); });
+          monthPicker.append(button);
+        });
+        showMonth(months, 0);  // the newest month first
+      })
+      .catch(function () {
+        featurePair.textContent = "Couldn't load the past features right now.";
+      });
 
     // Which envelope starts open? Links can ask for one, like
     // mailclub.html?tier=print (the tier tiles in the banner do this).

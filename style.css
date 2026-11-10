@@ -1093,6 +1093,189 @@ main {
 }
 
 
+/* ---- The map ----
+   A Leaflet map in a thick ink frame, tinted toward our paper colour.
+   Pins are little tags in each category's colour showing the start time.
+   The card over the map uses the same .event-card style as the list. */
+.map-section {
+  margin-top: 1rem;
+}
+
+.map-note {
+  margin: 0 0 0.75rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.map-wrap {
+  position: relative;
+  border: var(--border);
+  box-shadow: 4px 4px 0 var(--ink);
+}
+
+.event-map {
+  height: 26rem;
+  background: var(--paper);  /* shows while the map pictures load */
+  font-family: var(--font-type);
+}
+
+/* Tint the map pictures warm, like old paper. */
+.event-map .leaflet-tile-pane {
+  filter: sepia(0.35) saturate(0.85) brightness(1.02);
+}
+
+/* Zoom buttons in our style. */
+.event-map .leaflet-bar {
+  border: var(--border);
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.event-map .leaflet-bar a {
+  width: 2.25rem;
+  height: 2.25rem;
+  line-height: 2.25rem;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--font-type);
+  border-radius: 0;
+}
+
+.event-map .leaflet-bar a:hover {
+  background: var(--yellow);
+}
+
+.event-map .leaflet-control-attribution {
+  font-family: var(--font-type);
+  font-size: 0.75rem;  /* the map credit line; required by the map makers */
+  background: rgba(255, 253, 247, 0.85);
+}
+
+/* Leaflet wraps each pin in a holder; we draw the pin ourselves. */
+.pin-holder {
+  background: none;
+  border: 0;
+}
+
+/* The pin: a tag with a little point at the bottom, sitting so the point
+   lands on the venue (translate moves it up and left by its own size). */
+.pin {
+  position: relative;
+  display: inline-block;
+  padding: 0.15rem 0.45rem;
+  background: var(--cat-colour, #5c5c5c);
+  color: #ffffff;
+  border: var(--border);
+  box-shadow: 2px 2px 0 var(--ink);
+  font-family: var(--font-type);
+  font-size: 0.8rem;
+  font-weight: bold;
+  white-space: nowrap;
+  transform: translate(-50%, calc(-100% - 8px));
+  transition: transform 0.15s;
+  cursor: pointer;
+}
+
+.pin::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -9px;
+  width: 10px;
+  height: 10px;
+  background: var(--cat-colour, #5c5c5c);
+  border-right: var(--border);
+  border-bottom: var(--border);
+  transform: translateX(-50%) rotate(45deg);
+}
+
+/* The pin being looked at grows a little and gets a yellow outline. */
+.pin-holder.is-active .pin,
+.pin-holder:focus-visible .pin {
+  transform: translate(-50%, calc(-100% - 8px)) scale(1.2);
+  outline: 3px solid var(--yellow);
+}
+
+.pin-holder:focus-visible {
+  outline: none;
+}
+
+/* The card shown over the map: along the bottom on phones. */
+.map-card {
+  position: absolute;
+  z-index: 1000;  /* above the map */
+  left: 0.6rem;
+  right: 0.6rem;
+  bottom: 0.6rem;
+  max-height: calc(100% - 1.2rem);
+  overflow: auto;
+}
+
+.map-card .event-card {
+  box-shadow: 4px 4px 0 var(--ink);
+}
+
+/* On phones the card over the map is shorter: no description, smaller
+   title, so you can still see the map around it. ("Details" opens the
+   full pop-up with everything.) */
+.map-card .event-description {
+  display: none;
+}
+
+.map-card .card-top {
+  padding: 0.75rem 3rem 0.75rem 1rem;
+}
+
+.map-card .card-top h3 {
+  font-size: 1.35rem;
+}
+
+.map-card .card-bottom {
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+}
+
+@media (min-width: 48rem) {
+  .map-card .event-description {
+    display: block;
+  }
+
+  .map-card .card-top h3 {
+    font-size: 1.7rem;
+  }
+}
+
+.map-card-close {
+  position: absolute;
+  z-index: 3;
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 2.25rem;
+  height: 2.25rem;
+  background: var(--cream);
+  color: var(--ink);
+  border: var(--border);
+  border-radius: 50%;
+  font-size: 1.3rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+/* Wider screens: a taller map, and the card in the top-left corner. */
+@media (min-width: 48rem) {
+  .event-map {
+    height: 34rem;
+  }
+
+  .map-card {
+    top: 0.75rem;
+    left: 3.5rem;      /* clear of the zoom buttons */
+    right: auto;
+    bottom: auto;
+    width: 21rem;
+  }
+}
+
 /* =========================================================
    8. Event pop-up
    ========================================================= */
@@ -1363,26 +1546,15 @@ body:has(.event-dialog[open]) {
   background: rgba(135, 209, 255, 0.8);  /* blue tape */
 }
 
-/* The "$450" callout, styled like a big postage stamp with a dashed edge. */
-.big-stamp {
-  max-width: 16rem;
-  margin: 1.75rem auto 0.75rem;
-  padding: 1.25rem;
-  background: var(--yellow);
-  border: 3px dashed var(--ink);
-  outline: 6px solid var(--yellow);  /* the solid colour outside the dashes */
-  box-shadow: 0 0 0 9px var(--ink);  /* thin ink line around the outside */
-  font-weight: bold;
-  line-height: 1.4;
-  text-align: center;
-  transform: rotate(-3deg);
+/* The "$450" line: a quiet stat under a dashed rule. */
+.stat-line {
+  margin: 1.25rem 0 0;
+  padding-top: 0.75rem;
+  border-top: 1px dashed rgba(20, 20, 20, 0.45);
+  font-size: 0.95rem;
 }
 
-.big-stamp-number {
-  display: block;
-  font-family: var(--font-display);
-  font-size: 3.5rem;
-  line-height: 1.1;
+.stat-line strong {
   color: var(--red);
 }
 
@@ -1597,6 +1769,126 @@ body:has(.event-dialog[open]) {
   font-size: 2.1rem;
   line-height: 1.2;
   color: var(--red-bright);
+}
+
+/* ---- Past features: pick a month, see its artist and business ---- */
+/* The month buttons: one row that scrolls sideways on phones. */
+.month-picker {
+  display: flex;
+  gap: 0.4rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+  margin: 0 0 1.25rem;
+  padding: 2px 2px 4px;
+}
+
+.month-picker::-webkit-scrollbar {
+  display: none;
+}
+
+.month-chip {
+  flex: none;
+  min-height: 2.5rem;
+  padding: 0.25rem 0.9rem;
+  background: var(--cream);
+  color: var(--ink);
+  border: var(--border);
+  border-radius: 999px;
+  font-family: var(--font-type);
+  font-size: 0.9rem;
+  font-weight: bold;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.month-chip:hover {
+  background: var(--yellow);
+}
+
+.month-chip[aria-pressed="true"] {
+  background: var(--pink);
+}
+
+/* The artist and the business, stacked on phones, side by side on wider screens. */
+.feature-pair {
+  display: grid;
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.feature-card {
+  display: grid;
+  grid-template-columns: 7rem 1fr;
+  gap: 1rem;
+  align-items: start;
+  padding: 1rem;
+  background: var(--cream);
+  border: var(--rule);
+}
+
+/* Pictures are shown whole (not cropped), on a soft background. */
+.feature-image {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: contain;
+  background: #ece6da;
+}
+
+/* The grey box shown until a picture is added. */
+.feature-image-empty {
+  display: grid;
+  place-items: center;
+  border: 2px dashed rgba(20, 20, 20, 0.35);
+  color: var(--muted);
+  font-size: 0.75rem;
+  text-align: center;
+}
+
+.feature-label {
+  display: inline-block;
+  margin: 0 0 0.4rem;
+  padding: 0 0.5rem;
+  background: var(--ink);
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.feature-card h3 {
+  margin: 0 0 0.4rem;
+  font-size: 1.7rem;
+}
+
+.feature-about {
+  margin: 0 0 0.5rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.feature-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 1rem;
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+.feature-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.5rem;  /* easy to tap */
+}
+
+/* Placeholder months are a little faded. */
+.feature-card.is-placeholder h3,
+.feature-card.is-placeholder .feature-about {
+  color: var(--muted);
+}
+
+.recaps {
+  margin-top: 0.5rem;
 }
 
 /* ---- The list of past mailers ---- */
@@ -2139,7 +2431,8 @@ body:has(.event-dialog[open]) {
     grid-template-columns: 1fr auto;
   }
 
-  .mc-notes {
+  .mc-notes,
+  .feature-pair {
     grid-template-columns: 1fr 1fr;
     align-items: start;
   }
@@ -2202,6 +2495,10 @@ body:has(.event-dialog[open]) {
 @media (prefers-reduced-motion: reduce) {
   .event-card:hover {
     transform: none;
+  }
+
+  .pin {
+    transition: none;
   }
 
   .slide-in,

@@ -19,6 +19,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Yellowtail&display=swap">
 
+  <!-- Leaflet, the map library, kept in our own vendor/ folder. -->
+  <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
   <link rel="stylesheet" href="style.css">
 </head>
 <!-- "page-events" gives this page its section colour, blue (see style.css). -->
@@ -66,6 +68,20 @@
     <div id="event-list" class="event-list" aria-live="polite">
       <p>Loading events...</p>
     </div>
+
+    <!-- ===== THE MAP =====
+         Shows a pin for each event in the list above, so it changes with
+         the chosen day and category. Hovering (or tapping) a pin shows that
+         event's card on top of the map. -->
+    <section class="map-section" aria-labelledby="map-heading">
+      <h2 class="section-head" id="map-heading">On the map</h2>
+      <p class="map-note" id="map-note"></p>
+      <div class="map-wrap">
+        <div id="event-map" class="event-map"></div>
+        <!-- The card shown over the map. Filled in by the script. -->
+        <div id="map-card" class="map-card" hidden></div>
+      </div>
+    </section>
   </main>
 
   <!-- The full-width mail club banner. banner.js fills in this empty spot.
@@ -147,6 +163,7 @@
     </div>
   </footer>
 
+  <script src="vendor/leaflet/leaflet.js"></script>
   <script>
     // ------------------------------------------------------------------
     // HOW THIS PAGE WORKS
@@ -367,6 +384,10 @@
       );
 
       card.append(top, bottom);
+
+      // Hovering a card in the list lights up its pin on the map.
+      card.addEventListener("mouseenter", function () { highlightPin(event, true); });
+      card.addEventListener("mouseleave", function () { highlightPin(event, false); });
       return card;
     }
 
@@ -429,6 +450,9 @@
         });
       }
 
+      // Show the same events on the map.
+      updateMap(events);
+
       // Replay the little slide-in animation (CSS class "slide-in").
       // Removing the class, reading offsetWidth, then adding it back
       // forces the browser to start the animation again.
@@ -436,6 +460,174 @@
       void list.offsetWidth;
       list.classList.add("slide-in");
     }
+
+    // ---------- The map ----------
+    // We use Leaflet (vendor/leaflet/) for the map, with a light map style
+    // from CARTO. CSS in style.css tints it to match our paper colour.
+
+    const mapNote = document.getElementById("map-note");
+    const mapCard = document.getElementById("map-card");
+    const ORLANDO = [28.548, -81.372];   // where the map starts (downtown)
+    let map = null;
+    let pinLayer = null;
+    let pinsByEvent = new Map();         // event -> its pin, for highlighting
+    let cardIsPinned = false;            // true after a pin is tapped/clicked
+    let hideTimer = null;                // the short wait before hiding the card
+
+    // On phones the card can appear right under the finger that tapped the
+    // pin, and the same tap would then "click" the card too. So the card
+    // ignores clicks for its first half-second.
+    let cardShownAt = 0;
+    mapCard.addEventListener("click", function (e) {
+      if (Date.now() - cardShownAt < 500) {
+        e.stopPropagation();
+        e.preventDefault();
+      }
+    }, true);  // "true" = catch the click before the card's own buttons do
+
+    // While the mouse is over the card, keep it open.
+    mapCard.addEventListener("mouseenter", function () { clearTimeout(hideTimer); });
+    mapCard.addEventListener("mouseleave", function () { if (!cardIsPinned) hideMapCard(); });
+
+    function startMap() {
+      // If the map library didn't load, hide the map section quietly.
+      if (!window.L) {
+        document.querySelector(".map-section").hidden = true;
+        return;
+      }
+      map = L.map("event-map", {
+        scrollWheelZoom: false,  // so scrolling the page doesn't zoom the map
+        zoomControl: true,
+      }).setView(ORLANDO, 12);
+
+      L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+      }).addTo(map);
+
+      pinLayer = L.layerGroup().addTo(map);
+
+      // Clicking empty map space hides the card.
+      map.on("click", hideMapCard);
+    }
+
+    // "19:30" -> "7:30pm" (short, to fit on a pin).
+    function shortTime(timeText) {
+      const [hours, minutes] = timeText.split(":").map(Number);
+      return (hours % 12 || 12) + (minutes ? ":" + String(minutes).padStart(2, "0") : "") + (hours >= 12 ? "pm" : "am");
+    }
+
+    // Make the little tag-shaped pin: the event's start time on its
+    // category colour.
+    function makePinIcon(event) {
+      const pin = make("span", "pin " + categoryClass(event.category), shortTime(event.start_time));
+      return L.divIcon({ html: pin, className: "pin-holder", iconSize: null, iconAnchor: [0, 0] });
+    }
+
+    // Draw the pins for a list of events and zoom the map to fit them.
+    function updateMap(events) {
+      if (!map) return;
+      pinLayer.clearLayers();
+      pinsByEvent = new Map();
+      hideMapCard();
+
+      const onMap = events.filter(function (event) { return event.lat && event.lng; });
+      const offMap = events.length - onMap.length;
+
+      // Events at the same place would sit exactly on top of each other,
+      // so we nudge the 2nd, 3rd... ones slightly around the first.
+      const seen = {};
+      const points = onMap.map(function (event) {
+        const key = event.lat + "," + event.lng;
+        const n = seen[key] || 0;
+        seen[key] = n + 1;
+        const nudge = 0.0009 * n;
+        return [event.lat + nudge * Math.cos(n * 2.1), event.lng + nudge * Math.sin(n * 2.1)];
+      });
+
+      onMap.forEach(function (event, i) {
+        const pin = L.marker(points[i], { icon: makePinIcon(event), title: event.title, riseOnHover: true, keyboard: true });
+        pin.addTo(pinLayer);
+        pinsByEvent.set(event, pin);
+
+        // How the pin reacts. "pointer" events tell us whether it's a mouse
+        // or a finger, so phones and computers each get what suits them:
+        //  - mouse hovers over the pin: show the card (it hides when you leave)
+        //  - click, tap or Enter key: show the card and keep it open
+        const spot = pin.getElement();
+        spot.addEventListener("pointerenter", function (e) {
+          if (e.pointerType !== "mouse") return;
+          clearTimeout(hideTimer);
+          if (!cardIsPinned) showMapCard(event, false);
+        });
+        spot.addEventListener("pointerleave", function (e) {
+          if (e.pointerType !== "mouse") return;
+          // Wait a moment before hiding, so the mouse can move onto the card.
+          if (!cardIsPinned) hideTimer = setTimeout(hideMapCard, 400);
+        });
+        spot.addEventListener("pointerup", function (e) {
+          e.stopPropagation();  // don't let the map's own click hide it again
+          clearTimeout(hideTimer);
+          showMapCard(event, true);
+        });
+        spot.addEventListener("keydown", function (e) {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            showMapCard(event, true);
+          }
+        });
+      });
+
+      // Zoom to fit the pins (or go back to downtown if there are none).
+      if (points.length === 1) {
+        map.setView(points[0], 14);
+      } else if (points.length > 1) {
+        map.fitBounds(points, { padding: [50, 50], maxZoom: 14 });
+      } else {
+        map.setView(ORLANDO, 12);
+      }
+
+      // A short note above the map.
+      if (events.length === 0) {
+        mapNote.textContent = "No events to show on the map for this day.";
+      } else {
+        mapNote.textContent = "Hover or tap a pin to see the event." +
+          (offMap ? " (" + offMap + (offMap === 1 ? " event isn't" : " events aren't") + " on the map yet: no address.)" : "");
+      }
+    }
+
+    // Show an event's card over the map. "pinned" means it stays until closed.
+    function showMapCard(event, pinned) {
+      cardIsPinned = pinned;
+      const close = make("button", "map-card-close", "\u00d7");  // ×
+      close.type = "button";
+      close.setAttribute("aria-label", "Close");
+      close.addEventListener("click", hideMapCard);
+      mapCard.replaceChildren(close, makeCard(event));
+      mapCard.hidden = false;
+      cardShownAt = Date.now();
+      pinsByEvent.forEach(function (pin, ev) { highlightPin(ev, ev === event); });
+    }
+
+    function hideMapCard() {
+      cardIsPinned = false;
+      mapCard.hidden = true;
+      mapCard.replaceChildren();
+      pinsByEvent.forEach(function (pin, ev) { highlightPin(ev, false); });
+    }
+
+    // Make a pin stand out (or stop standing out).
+    function highlightPin(event, on) {
+      const pin = pinsByEvent.get(event);
+      if (!pin || !pin.getElement()) return;
+      pin.getElement().classList.toggle("is-active", on);
+      pin.setZIndexOffset(on ? 1000 : 0);
+    }
+
+    // The Esc key closes the card over the map.
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && !mapCard.hidden && !dialog.open) hideMapCard();
+    });
 
     // ---------- The enlarged pop-up ----------
 
@@ -523,6 +715,7 @@
       if (CATEGORIES.includes(linkSettings.get("cat"))) chosenCategory = linkSettings.get("cat");
 
       shownDays = days;
+      startMap();
       buildFilter();
       buildDayStrip(days, chosenDay);
       showDay(chosenDay);

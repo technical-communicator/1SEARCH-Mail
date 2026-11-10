@@ -1,0 +1,73 @@
+[
+  {
+    "month": "November 2026",
+    "artist": {
+      "name": "Xine Hann",
+      "about": "A mom, graphic designer and the founder of Orlando Collage Club, known for her 3D collage work.",
+      "image": "images/mailer/xine-print-small.webp",
+      "instagram": "https://www.instagram.com/xine_hann/",
+      "post": "blog/featured-artist-xine-hann.html"
+    },
+    "business": {
+      "name": "Florida Coffee Festival",
+      "about": "Members got 20% off tickets to the third annual festival of local coffee, matcha and latte art.",
+      "image": "images/mailer/coffee-fest-thumb.webp",
+      "instagram": "https://www.instagram.com/flacoffeefestival/",
+      "post": "blog/featured-business-florida-coffee-festival.html"
+    }
+  },
+  {
+    "month": "October 2026",
+    "placeholder": true,
+    "artist": {
+      "name": "Artist name",
+      "about": "A short line about this month's artist goes here.",
+      "image": "",
+      "instagram": "",
+      "post": ""
+    },
+    "business": {
+      "name": "Business name",
+      "about": "A short line about this month's business and its perk goes here.",
+      "image": "",
+      "instagram": "",
+      "post": ""
+    }
+  },
+  {
+    "month": "September 2026",
+    "placeholder": true,
+    "artist": {
+      "name": "Artist name",
+      "about": "A short line about this month's artist goes here.",
+      "image": "",
+      "instagram": "",
+      "post": ""
+    },
+    "business": {
+      "name": "Business name",
+      "about": "A short line about this month's business and its perk goes here.",
+      "image": "",
+      "instagram": "",
+      "post": ""
+    }
+  },
+  {
+    "month": "August 2026",
+    "placeholder": true,
+    "artist": {
+      "name": "Artist name",
+      "about": "A short line about this month's artist goes here.",
+      "image": "",
+      "instagram": "",
+      "post": ""
+    },
+    "business": {
+      "name": "Business name",
+      "about": "A short line about this month's business and its perk goes here.",
+      "image": "",
+      "instagram": "",
+      "post": ""
+    }
+  }
+]
