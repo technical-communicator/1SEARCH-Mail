@@ -115,7 +115,12 @@
         <div id="dialog-times" class="times"></div>
         <p id="dialog-description" class="dialog-description"></p>
         <!-- Link to the event's Instagram or event page. Hidden if there isn't one. -->
-        <a id="dialog-link" class="button dialog-link" target="_blank" rel="noopener" hidden></a>
+        <!-- The two buttons at the bottom: the event's own link, and
+             "View on map", which scrolls down to the map and shows the pin. -->
+        <div class="dialog-buttons">
+          <a id="dialog-link" class="button dialog-link" target="_blank" rel="noopener" hidden></a>
+          <button id="dialog-map" class="button button-outline" type="button" hidden>View on map</button>
+        </div>
       </div>
     </article>
   </dialog>
@@ -734,6 +739,8 @@
     // Remember which card opened the pop-up, so we can put the keyboard
     // focus back on it when the pop-up closes.
     let lastOpener = null;
+    let dialogEvent = null;     // the event shown in the pop-up
+    let goingToMap = false;     // true when "View on map" closes the pop-up
 
     function openEvent(event, opener) {
       lastOpener = opener;
@@ -761,6 +768,10 @@
         dialogLink.hidden = true;
       }
 
+      // "View on map" only shows if the event has a place on the map.
+      dialogEvent = event;
+      document.getElementById("dialog-map").hidden = !(map && event.lat && event.lng);
+
       dialog.showModal();
       dialog.scrollTop = 0; // on short screens the pop-up scrolls; start at the top
     }
@@ -777,7 +788,23 @@
     });
 
     // However it closes (×, outside click or Esc), return focus to the card.
+    // "View on map": close the pop-up, scroll down to the map, and show
+    // this event's pin with its card.
+    document.getElementById("dialog-map").addEventListener("click", function () {
+      goingToMap = true;
+      dialog.close();
+    });
+
     dialog.addEventListener("close", function () {
+      if (goingToMap) {
+        goingToMap = false;
+        document.querySelector(".map-wrap").scrollIntoView({ behavior: "smooth", block: "center" });
+        focusPin(dialogEvent);
+        // Put the keyboard focus on the pin (without jumping the page).
+        const pin = pinsByEvent.get(dialogEvent);
+        if (pin && pin.getElement()) pin.getElement().focus({ preventScroll: true });
+        return;
+      }
       if (lastOpener) lastOpener.focus();
     });
 
