@@ -648,11 +648,12 @@ main {
   transform: rotate(5deg);
 }
 
+/* The sticker is to scale with the print: 2.1 in wide / 4 in = 53%. */
 .slide-mail .slide-sticker {
   position: absolute;
-  left: 15%;
-  bottom: -55%;
-  width: 75%;
+  left: -20%;
+  bottom: -12%;
+  width: 53%;
   border: 0;
   box-shadow: none;
   filter: drop-shadow(2px 3px 0 rgba(0, 0, 0, 0.3));
@@ -829,6 +830,70 @@ main {
 .day[aria-pressed="true"] .day-name {
   background: var(--ink);
   color: #ffffff;
+}
+
+/* ---- Category filter: a row of small buttons ----
+   On phones the row scrolls sideways, so it stays one line tall. */
+.filter {
+  display: flex;
+  gap: 0.4rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+  margin: 0 0 1.5rem;
+  padding: 2px 2px 4px;
+}
+
+.filter::-webkit-scrollbar {
+  display: none;
+}
+
+.filter-chip {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 2.5rem;  /* easy to tap */
+  padding: 0.25rem 0.8rem;
+  background: var(--cream);
+  color: var(--ink);
+  border: var(--border);
+  border-radius: 999px;
+  font-family: var(--font-type);
+  font-size: 0.85rem;
+  font-weight: bold;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+/* A little dot in the category's colour. ("All" has no dot.) */
+.filter-chip[class*="cat-"]::before {
+  content: "";
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 50%;
+  background: var(--cat-colour);
+}
+
+.filter-chip:hover {
+  background: var(--yellow);
+}
+
+/* The chosen filter is filled in black. */
+.filter-chip[aria-pressed="true"] {
+  background: var(--ink);
+  color: #ffffff;
+}
+
+.filter-chip[aria-pressed="true"]::before {
+  box-shadow: 0 0 0 2px #ffffff;
+}
+
+/* On wider screens the buttons wrap onto a second line if needed. */
+@media (min-width: 48rem) {
+  .filter {
+    flex-wrap: wrap;
+    overflow: visible;
+  }
 }
 
 /* "Saturday, November 14" above the cards. */
@@ -1224,25 +1289,34 @@ body:has(.event-dialog[open]) {
   font-size: 0.95rem;
 }
 
-/* ---- The collage: this month's real mailer ----
-   Each piece is placed by hand with position: absolute and tilted a
-   little, like things just tipped out of the envelope onto a table.
-   Widths are percentages, so the whole collage shrinks on phones. */
+/* ---- The collage: this month's real mailer, to scale ----
+   Everything is sized from its real size in inches, using one scale:
+   the collage is 13 inches wide, so 1 inch = 100% / 13 = about 7.7%.
+     letter          6 x 11 in   ->  width 46.2%
+     art print       4 x 6 in    ->  width 30.8%
+     coffee fest card 4 x 6 in   ->  width 30.8%
+     stickers        2.5 in at their longest side
+     envelope        a standard #10 envelope, 9.5 x 4.125 in -> width 73%
+   (The --in value below is "one inch". Change sizes by changing the
+   number of inches, e.g. width: calc(var(--in) * 4).)
+   Positions are hand-placed with a little tilt, like things tipped out
+   of the envelope onto a table. */
 .collage {
+  --in: calc(100% / 13);
   position: relative;
-  aspect-ratio: 1 / 1.05;  /* height follows width */
+  aspect-ratio: 1 / 1;
 }
 
 .collage > * {
   position: absolute;
 }
 
-/* An empty envelope behind everything: cream with a V-shaped flap. */
+/* The envelope, behind everything: cream with a V-shaped flap. */
 .c-envelope {
-  left: 18%;
-  bottom: 4%;
-  width: 62%;
-  aspect-ratio: 1.5;
+  left: 22%;
+  bottom: 2%;
+  width: calc(var(--in) * 9.5);
+  aspect-ratio: 9.5 / 4.125;
   background: #f4ecdc;
   box-shadow: var(--soft-shadow);
 }
@@ -1256,50 +1330,51 @@ body:has(.event-dialog[open]) {
   clip-path: polygon(0 0, 100% 0, 50% 100%);
 }
 
-/* The pink letter from SEARCH, peeking out on the left. */
+/* The 6 x 11 in letter from SEARCH. */
 .c-letter {
-  left: 0;
+  left: 1%;
   top: 2%;
-  width: 36%;
+  width: calc(var(--in) * 6);
   box-shadow: var(--soft-shadow);
-  transform: rotate(-7deg);
+  transform: rotate(-4deg);
 }
 
-/* Xine Hann's art print, the star of the mailer. */
+/* Xine Hann's 4 x 6 in art print. */
 .c-print {
-  left: 30%;
-  top: 0;
-  width: 42%;
+  left: 38%;
+  top: 4%;
+  width: calc(var(--in) * 4);
   box-shadow: 4px 6px 0 rgba(0, 0, 0, 0.25);
-  transform: rotate(3deg);
+  transform: rotate(4deg);
 }
 
-/* The Florida Coffee Festival perk card. */
+/* The 4 x 6 in Florida Coffee Festival card. */
 .c-perk {
-  right: 0;
-  top: 22%;
-  width: 30%;
+  right: 1%;
+  top: 26%;
+  width: calc(var(--in) * 4);
   box-shadow: var(--soft-shadow);
   transform: rotate(8deg);
 }
 
-/* The two die-cut stickers. They have see-through backgrounds, so they
-   get a drop-shadow that follows their shape instead of a box shadow. */
+/* The two 2.5 in stickers. Their widths are a bit under 2.5 in because
+   they're taller than they are wide. They have see-through backgrounds,
+   so the shadow follows their shape. */
 .c-sticker {
   filter: drop-shadow(2px 3px 0 rgba(0, 0, 0, 0.3));
 }
 
 .c-sticker-1 {
-  left: 6%;
-  bottom: 2%;
-  width: 26%;
+  left: 30%;
+  bottom: 6%;
+  width: calc(var(--in) * 1.8);   /* 400 x 555 picture: 1.8 x 2.5 in */
   transform: rotate(-10deg);
 }
 
 .c-sticker-2 {
-  right: 10%;
-  bottom: 0;
-  width: 27%;
+  left: 52%;
+  bottom: 3%;
+  width: calc(var(--in) * 2.1);   /* 400 x 474 picture: 2.1 x 2.5 in */
   transform: rotate(12deg);
 }
 
@@ -2031,9 +2106,8 @@ body:has(.event-dialog[open]) {
   }
 
   .slide-mail .slide-sticker {
-    left: -45%;
-    bottom: -12%;
-    width: 65%;
+    left: -30%;
+    bottom: -10%;
   }
 
   .slide-button {

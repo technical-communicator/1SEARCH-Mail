@@ -53,6 +53,11 @@
          theater's showtimes page. The script below fills in the buttons. -->
     <div id="day-strip" class="day-strip" role="group" aria-label="Choose a day"></div>
 
+    <!-- ===== CATEGORY FILTER =====
+         A row of buttons, one per category. Tapping one shows only that
+         kind of event. The script below fills in the buttons. -->
+    <div id="filter" class="filter" role="group" aria-label="Filter by category"></div>
+
     <!-- The heading for the chosen day, e.g. "Saturday, November 14". -->
     <h2 id="day-heading" class="day-heading"></h2>
 
@@ -165,6 +170,19 @@
     // All events, filled in once events.json loads.
     let allEvents = [];
 
+    // The eight main categories, in the order the filter buttons show them.
+    const CATEGORIES = ["Music", "Art", "Markets", "Food and Drink", "Film", "Comedy", "Community", "Workshops"];
+
+    // What the visitor has chosen. "All" means no filter.
+    let chosenCategory = "All";
+    let shownDays = [];   // the 7 days in the strip
+    let currentDay = "";  // the day being shown
+
+    // Does this event match the chosen category?
+    function matchesFilter(event) {
+      return chosenCategory === "All" || event.category === chosenCategory;
+    }
+
     // ---------- Date helpers ----------
 
     // Today's date in Orlando, as "YYYY-MM-DD".
@@ -233,8 +251,10 @@
       strip.innerHTML = "";
 
       days.forEach(function (day, index) {
-        // How many events are on this day?
-        const count = allEvents.filter(function (event) { return event.date === day; }).length;
+        // How many events are on this day (in the chosen category)?
+        const count = allEvents.filter(function (event) {
+          return event.date === day && matchesFilter(event);
+        }).length;
 
         const button = make("button", "day");
         button.type = "button";
@@ -259,6 +279,32 @@
         });
 
         strip.append(button);
+      });
+    }
+
+    // ---------- The category filter ----------
+
+    // Build the row of filter buttons: "All" plus one per category.
+    // Each category button gets a little dot in its colour.
+    function buildFilter() {
+      const filter = document.getElementById("filter");
+      filter.innerHTML = "";
+
+      ["All"].concat(CATEGORIES).forEach(function (category) {
+        const button = make("button", "filter-chip", category);
+        button.type = "button";
+        if (category !== "All") button.classList.add(categoryClass(category));
+        // aria-pressed tells screen readers which filter is on.
+        button.setAttribute("aria-pressed", category === chosenCategory ? "true" : "false");
+
+        button.addEventListener("click", function () {
+          chosenCategory = category;
+          buildFilter();                         // light up the new button
+          buildDayStrip(shownDays, currentDay);  // update each day's count
+          showDay(currentDay);                   // show the matching events
+        });
+
+        filter.append(button);
       });
     }
 
@@ -325,6 +371,8 @@
 
     // Show the events for one day.
     function showDay(day) {
+      currentDay = day;
+
       // Update the day strip so the chosen day looks selected.
       strip.querySelectorAll(".day").forEach(function (button) {
         const isChosen = button.dataset.day === day;
@@ -336,18 +384,35 @@
 
       // Put the day in the web address (e.g. events.html?day=2026-11-14)
       // so you can copy the link and share that exact day.
-      history.replaceState(null, "", "?day=" + day);
+      // The category goes in too, e.g. events.html?day=2026-11-14&cat=Music
+      let address = "?day=" + day;
+      if (chosenCategory !== "All") address += "&cat=" + encodeURIComponent(chosenCategory);
+      history.replaceState(null, "", address);
 
       dayHeading.textContent = formatDate(day, { weekday: "long", month: "long", day: "numeric" });
 
       // Get this day's events, sorted by start time ("09:00" comes before "19:30").
       const events = allEvents
-        .filter(function (event) { return event.date === day; })
+        .filter(function (event) { return event.date === day && matchesFilter(event); })
         .sort(function (a, b) { return a.start_time.localeCompare(b.start_time); });
 
       list.innerHTML = "";
 
-      if (events.length === 0) {
+      if (events.length === 0 && chosenCategory !== "All") {
+        // Nothing in the chosen category: say so, with a quick way back.
+        const empty = make("div", "panel empty-day");
+        empty.append(make("p", "", "No " + chosenCategory.toLowerCase() + " events on this day. Try another day, or:"));
+        const showAll = make("button", "button button-outline", "Show all categories");
+        showAll.type = "button";
+        showAll.addEventListener("click", function () {
+          chosenCategory = "All";
+          buildFilter();
+          buildDayStrip(shownDays, currentDay);
+          showDay(currentDay);
+        });
+        empty.append(showAll);
+        list.append(empty);
+      } else if (events.length === 0) {
         // Friendly message for an empty day.
         const empty = make("div", "panel empty-day");
         empty.append(make("p", "", "Nothing on the calendar for this day yet. Check back soon!"));
@@ -449,9 +514,15 @@
 
       // If the link says ?day=2026-11-14 and that day is in the strip, open it.
       // Otherwise start on today.
-      const dayFromLink = new URLSearchParams(location.search).get("day");
+      const linkSettings = new URLSearchParams(location.search);
+      const dayFromLink = linkSettings.get("day");
       const chosenDay = days.includes(dayFromLink) ? dayFromLink : today;
 
+      // If the link says &cat=Music (and that's a real category), start filtered.
+      if (CATEGORIES.includes(linkSettings.get("cat"))) chosenCategory = linkSettings.get("cat");
+
+      shownDays = days;
+      buildFilter();
       buildDayStrip(days, chosenDay);
       showDay(chosenDay);
     }
