@@ -16,12 +16,14 @@
   <meta property="og:image" content="https://technical-communicator.github.io/SEARCH-Mail/images/mascot.webp">
 
   <link rel="icon" type="image/png" href="images/favicon.png">
+  <!-- Fonts. The blog adds Anton (big condensed headlines) and
+       Source Serif 4 (easy-to-read body text) to the site's usual two. -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Rubik+Dirt&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Courier+Prime:wght@400;700&family=Rubik+Dirt&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="page-blog">
   <header class="site-header">
     <!-- The logo (mascot head + name) links back to the home page. -->
     <a class="logo" href="index.html">
@@ -40,31 +42,48 @@
     </nav>
   </header>
 
-  <main>
-    <h1>Blog</h1>
-    <p class="lede">Local artists, Orlando guides and news from the mail club.</p>
+  <main class="blog-main">
+    <h1 class="blog-title">Blog</h1>
+    <p class="blog-intro">local artists, orlando guides and news from SEARCH: a snail mail club.</p>
 
-    <div class="post-list">
+    <article class="lead-story">
+      <div class="lead-text">
+        <h2 class="lead-title"><a href="blog/featured-artist-xine-hann.html">featured artist of the month: Xine Hann</a></h2>
+        <p class="card-summary">November&#x27;s SEARCH featured artist is Xine Hann, an Orlando graphic designer, 3D collage artist and the founder of Orlando Collage Club.</p>
+        <p class="card-meta">
+          <a class="series-label series-blue" href="blog/series/featured-artist.html">Featured Artist</a>
+          <time datetime="2026-11-09">Nov 9, 2026</time>
+          <span>2 min read</span>
+        </p>
+      </div>
+      <img class="card-image" src="images/blog/xine-hann-collage.webp" alt="A collage of a large black and white eye with a Central Florida street map in the white of the eye, over a brain-like texture, above the cut-out words &quot;glad you did.&quot;" loading="eager">
+    </article>
+    <div class="post-grid">
       <article class="post-card">
-        <img class="post-card-cover" src="images/blog/xine-hann-collage.webp" alt="A collage of a large black and white eye with a Central Florida street map in the white of the eye, over a brain-like texture, above the cut-out words &quot;glad you did.&quot;"><span class="post-series">Featured Artist</span>
-        <h2><a href="blog/featured-artist-xine-hann.html">featured artist of the month: Xine Hann</a></h2>
-        <p class="post-meta"><time datetime="2026-11-09">November 9, 2026</time> &middot; 2 min read</p>
-        <p>November&#x27;s SEARCH featured artist is Xine Hann, an Orlando graphic designer, 3D collage artist and the founder of Orlando Collage Club.</p>
-        <ul class="tag-list" aria-label="Tags"><li>mail club</li><li>featured artist</li><li>collage</li><li>orlando artists</li></ul>
+        <img class="card-image" src="images/blog/florida-coffee-festival.webp" alt="The Florida Coffee Festival logo over a photo of a barista pouring a leaf of latte art into a pink cup" loading="lazy">
+        <h3 class="card-title">
+          <!-- The link's ::after layer (in style.css) makes the whole card clickable. -->
+          <a href="blog/featured-business-florida-coffee-festival.html">featured business of the month: florida coffee festival!!</a>
+          <span class="card-arrow" aria-hidden="true">&rarr;</span>
+        </h3>
+        <p class="card-summary">November&#x27;s SEARCH featured business is Florida Coffee Festival. Mail club members get 20% off tickets to the third annual festival on November 15 at Festival Park, Orlando.</p>
+        <p class="card-meta">
+          <a class="series-label series-yellow" href="blog/series/featured-business.html">Featured Business</a>
+          <time datetime="2026-11-09">Nov 9, 2026</time>
+        </p>
       </article>
       <article class="post-card">
-        <img class="post-card-cover" src="images/blog/florida-coffee-festival.webp" alt="The Florida Coffee Festival logo over a photo of a barista pouring a leaf of latte art into a pink cup"><span class="post-series">Featured Business</span>
-        <h2><a href="blog/featured-business-florida-coffee-festival.html">featured business of the month: florida coffee festival!!</a></h2>
-        <p class="post-meta"><time datetime="2026-11-09">November 9, 2026</time> &middot; 3 min read</p>
-        <p>November&#x27;s SEARCH featured business is Florida Coffee Festival. Mail club members get 20% off tickets to the third annual festival on November 15 at Festival Park, Orlando.</p>
-        <ul class="tag-list" aria-label="Tags"><li>mail club</li><li>featured business</li><li>coffee</li><li>orlando events</li></ul>
-      </article>
-      <article class="post-card">
-        <span class="post-series">Monthly Mail</span>
-        <h2><a href="blog/november-mail-xine-hann.html">check your mailbox! | november&#x27;s mail</a></h2>
-        <p class="post-meta"><time datetime="2026-11-09">November 9, 2026</time> &middot; 2 min read</p>
-        <p>November&#x27;s SEARCH snail mail club package is on its way, featuring Orlando artist Xine Hann of Orlando Collage Club and 20% off Florida Coffee Festival tickets.</p>
-        <ul class="tag-list" aria-label="Tags"><li>mail club</li><li>featured artist</li><li>local business</li></ul>
+        <div class="card-image card-image-blank series-pink"><img src="images/stamp.png" alt=""></div>
+        <h3 class="card-title">
+          <!-- The link's ::after layer (in style.css) makes the whole card clickable. -->
+          <a href="blog/november-mail-xine-hann.html">check your mailbox! | november&#x27;s mail</a>
+          <span class="card-arrow" aria-hidden="true">&rarr;</span>
+        </h3>
+        <p class="card-summary">November&#x27;s SEARCH snail mail club package is on its way, featuring Orlando artist Xine Hann of Orlando Collage Club and 20% off Florida Coffee Festival tickets.</p>
+        <p class="card-meta">
+          <a class="series-label series-pink" href="blog/series/monthly-mail.html">Monthly Mail</a>
+          <time datetime="2026-11-09">Nov 9, 2026</time>
+        </p>
       </article>
     </div>
   </main>
@@ -73,5 +92,17 @@
     <img src="images/stamp.png" alt="" width="600" height="600">
     <p>Follow us on Instagram: <a href="https://www.instagram.com/searchcentralfl/">@searchcentralfl</a></p>
   </footer>
+  <!-- Section tabs: each one opens a page with just that kind of post. -->
+  <nav class="series-tabs" aria-label="Blog sections">
+    <a class="series-red" href="blog.html" aria-current="page">All posts</a>
+    <a class="series-pink" href="blog/series/monthly-mail.html">Monthly Mail</a>
+    <a class="series-blue" href="blog/series/featured-artist.html">Featured Artist</a>
+    <a class="series-yellow" href="blog/series/featured-business.html">Featured Business</a>
+  </nav>
+  <script>
+    // On small phones the tabs scroll sideways. Slide the current tab into view.
+    const currentTab = document.querySelector(".series-tabs [aria-current]");
+    if (currentTab) currentTab.scrollIntoView({ block: "nearest", inline: "nearest" });
+  </script>
 </body>
 </html>

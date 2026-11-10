@@ -7,9 +7,9 @@ between two --- lines, for example:
     ---
     title: "check your mailbox! | november's mail"
     date: 2026-11-09
-    description: "One or two sentences for Google and link previews."
+    description: "One or two sentences. Shown under the title, on cards and in Google."
     tags: [mail club, featured artist]
-    series: Monthly Mail          # optional
+    series: Monthly Mail          # optional, one of the SERIES names below
     cover: images/blog/xyz.webp   # optional, path from the site root
     cover_alt: "What the image shows"   # required if there's a cover
     ---
@@ -18,8 +18,9 @@ between two --- lines, for example:
 
 Running this script:
   1. writes one page per post to blog/<file name>.html
-  2. rebuilds the post list in blog.html
-  3. refreshes the "Past mailers" list in mailclub.html
+  2. writes the blog front page, blog.html (all posts)
+  3. writes one page per series to blog/series/<series>.html
+  4. refreshes the "Past mailers" list in mailclub.html
      (posts whose series is "Monthly Mail")
 
 The output is plain HTML that gets committed, so GitHub Pages still just
@@ -42,9 +43,25 @@ import yaml
 ROOT = Path(__file__).resolve().parent.parent
 POSTS_DIR = ROOT / "posts"
 BLOG_DIR = ROOT / "blog"
+SERIES_DIR = BLOG_DIR / "series"
 SITE_URL = "https://technical-communicator.github.io/SEARCH-Mail/"
 MAIL_SERIES = "Monthly Mail"
 REQUIRED = ["title", "date", "description", "tags"]
+
+# The blog's sections, shown as the coloured tabs along the bottom of every
+# blog page. To add a series: add a line here, then use its name as the
+# "series:" in a post. Colours are names from style.css (series-<colour>).
+SERIES = [
+    # (name in posts,     page file name,      tab colour, one-line intro)
+    ("Monthly Mail",      "monthly-mail",      "pink",
+     "what's waiting in your mailbox each month from SEARCH: a snail mail club."),
+    ("Featured Artist",   "featured-artist",   "blue",
+     "the central florida artists we spotlight and send to your mailbox."),
+    ("Featured Business", "featured-business", "yellow",
+     "local businesses giving special perks to our mail club members."),
+]
+SERIES_BY_NAME = {name: (slug, colour, intro) for name, slug, colour, intro in SERIES}
+ALL_INTRO = "local artists, orlando guides and news from SEARCH: a snail mail club."
 
 
 def esc(text):
@@ -55,6 +72,11 @@ def esc(text):
 def nice_date(date):
     """2026-11-09 -> November 9, 2026"""
     return f"{date:%B} {date.day}, {date.year}"
+
+
+def short_date(date):
+    """2026-11-09 -> Nov 9, 2026"""
+    return f"{date:%b} {date.day}, {date.year}"
 
 
 def load_post(path):
@@ -71,6 +93,9 @@ def load_post(path):
             sys.exit(f"{path.name}: front matter is missing '{field}'")
     if meta.get("cover") and not meta.get("cover_alt"):
         sys.exit(f"{path.name}: has a cover image but no cover_alt text")
+    if meta.get("series") and meta["series"] not in SERIES_BY_NAME:
+        sys.exit(f"{path.name}: unknown series '{meta['series']}'. "
+                 f"Use one of {list(SERIES_BY_NAME)} or add it to SERIES in this script.")
 
     # House style: never use em dashes anywhere in site copy.
     for label, value in [("title", meta["title"]), ("description", meta["description"]), ("body", body_md)]:
@@ -96,8 +121,13 @@ def load_post(path):
     }
 
 
+# ---------------------------------------------------------------------------
+# Shared page parts
+# ---------------------------------------------------------------------------
+
 def header(prefix, current):
-    """The site header. prefix is "" for root pages, "../" for pages in blog/."""
+    """The site header. prefix is how to get back to the site root from this
+    page: "" for root pages, "../" for blog/, "../../" for blog/series/."""
     links = [("events.html", "Events"), ("mailclub.html", "Mail Club"),
              ("blog.html", "Blog"), ("about.html", "About")]
     nav = "\n".join(
@@ -137,9 +167,11 @@ def head(prefix, title, description, url, og_type, extra="", image="images/masco
   <meta property="og:image" content="{SITE_URL}{image}">
 
   <link rel="icon" type="image/png" href="{prefix}images/favicon.png">
+  <!-- Fonts. The blog adds Anton (big condensed headlines) and
+       Source Serif 4 (easy-to-read body text) to the site's usual two. -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Rubik+Dirt&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Courier+Prime:wght@400;700&family=Rubik+Dirt&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
   <link rel="stylesheet" href="{prefix}style.css">{extra}
 </head>"""
 
@@ -151,12 +183,85 @@ def footer(prefix):
   </footer>"""
 
 
-def tag_list(tags):
-    items = "".join(f"<li>{esc(t)}</li>" for t in tags)
-    return f'<ul class="tag-list" aria-label="Tags">{items}</ul>'
+def series_tabs(prefix, current):
+    """The coloured section tabs fixed along the bottom of every blog page.
+    current is a series name, "All" for blog.html, or None on a post page."""
+    tabs = [("All posts", f"{prefix}blog.html", "red", current == "All")]
+    for name, slug, colour, _ in SERIES:
+        tabs.append((name, f"{prefix}blog/series/{slug}.html", colour, current == name))
+    links = "\n".join(
+        f'    <a class="series-{colour}" href="{href}"{" aria-current=\"page\"" if active else ""}>{esc(name)}</a>'
+        for name, href, colour, active in tabs
+    )
+    return f"""  <!-- Section tabs: each one opens a page with just that kind of post. -->
+  <nav class="series-tabs" aria-label="Blog sections">
+{links}
+  </nav>
+  <script>
+    // On small phones the tabs scroll sideways. Slide the current tab into view.
+    const currentTab = document.querySelector(".series-tabs [aria-current]");
+    if (currentTab) currentTab.scrollIntoView({{ block: "nearest", inline: "nearest" }});
+  </script>"""
 
 
-def build_post_page(post):
+def series_label(post, prefix):
+    """A small coloured link to the post's series page (or nothing)."""
+    if not post["series"]:
+        return ""
+    slug, colour, _ = SERIES_BY_NAME[post["series"]]
+    return (f'<a class="series-label series-{colour}" '
+            f'href="{prefix}blog/series/{slug}.html">{esc(post["series"])}</a>')
+
+
+def card_image(post, prefix, loading="lazy"):
+    """The post's cover image. Posts without one get a block in their series
+    colour with the mail club stamp on it, so every card has a picture."""
+    if post["cover"]:
+        return (f'<img class="card-image" src="{prefix}{esc(post["cover"])}" '
+                f'alt="{esc(post["cover_alt"])}" loading="{loading}">')
+    colour = SERIES_BY_NAME[post["series"]][1] if post["series"] else "red"
+    return (f'<div class="card-image card-image-blank series-{colour}">'
+            f'<img src="{prefix}images/stamp.png" alt=""></div>')
+
+
+def post_card(post, prefix):
+    """One post in the grid: image, headline with arrow, summary, details."""
+    return f"""      <article class="post-card">
+        {card_image(post, prefix)}
+        <h3 class="card-title">
+          <!-- The link's ::after layer (in style.css) makes the whole card clickable. -->
+          <a href="{prefix}blog/{post["slug"]}.html">{esc(post["title"])}</a>
+          <span class="card-arrow" aria-hidden="true">&rarr;</span>
+        </h3>
+        <p class="card-summary">{esc(post["description"])}</p>
+        <p class="card-meta">
+          {series_label(post, prefix)}
+          <time datetime="{post["date"].isoformat()}">{short_date(post["date"])}</time>
+        </p>
+      </article>"""
+
+
+def lead_story(post, prefix):
+    """The newest post, shown big at the top: words on the left, picture on the right."""
+    return f"""    <article class="lead-story">
+      <div class="lead-text">
+        <h2 class="lead-title"><a href="{prefix}blog/{post["slug"]}.html">{esc(post["title"])}</a></h2>
+        <p class="card-summary">{esc(post["description"])}</p>
+        <p class="card-meta">
+          {series_label(post, prefix)}
+          <time datetime="{post["date"].isoformat()}">{short_date(post["date"])}</time>
+          <span>{post["minutes"]} min read</span>
+        </p>
+      </div>
+      {card_image(post, prefix, loading="eager")}
+    </article>"""
+
+
+# ---------------------------------------------------------------------------
+# Pages
+# ---------------------------------------------------------------------------
+
+def build_post_page(post, all_posts):
     url = f"{SITE_URL}blog/{post['slug']}.html"
 
     # Structured data so Google understands this page is a blog post.
@@ -176,14 +281,26 @@ def build_post_page(post):
              + json.dumps(json_ld, ensure_ascii=False).replace("</", "<\\/")
              + "\n  </script>")
 
-    cover = ""
+    hero = ""
     if post["cover"]:
-        cover = (f'\n      <img class="post-cover" src="../{esc(post["cover"])}" '
-                 f'alt="{esc(post["cover_alt"])}">')
+        hero = (f'\n    <img class="post-hero" src="../{esc(post["cover"])}" '
+                f'alt="{esc(post["cover_alt"])}">')
 
-    series = ""
-    if post["series"]:
-        series = f'<p class="post-series">{esc(post["series"])}</p>\n      '
+    tags = " &middot; ".join(esc(t) for t in post["tags"])
+
+    # Up to three other posts for the "More from the blog" section.
+    others = [p for p in all_posts if p["slug"] != post["slug"]][:3]
+    more = ""
+    if others:
+        cards = "\n".join(post_card(p, "../") for p in others)
+        more = f"""
+    <section class="more-posts">
+      <h2>More from the blog</h2>
+      <div class="post-grid">
+{cards}
+      </div>
+    </section>
+"""
 
     return f"""<!DOCTYPE html>
 <!-- GENERATED FILE: made by tools/build_blog.py from posts/{post['slug']}.md.
@@ -191,78 +308,91 @@ def build_post_page(post):
 <html lang="en">
 {head("../", post["title"] + " | SEARCH Central Florida blog", post["description"], url, "article", extra,
       post["cover"] or "images/mascot.webp")}
-<body>
+<body class="page-blog">
 {header("../", "Blog")}
 
-  <main class="post-main">
-    <p><a class="back-link" href="../blog.html">&larr; All posts</a></p>
-
+  <main class="blog-main">
     <article class="post">
-      {series}<h1>{esc(post["title"])}</h1>
-      <p class="post-meta">
-        <time datetime="{post["date"].isoformat()}">{nice_date(post["date"])}</time>
-        &middot; {post["minutes"]} min read
-      </p>
-      {tag_list(post["tags"])}{cover}
+      <header class="post-header">
+        <h1>{esc(post["title"])}</h1>
+        <p class="post-dek">{esc(post["description"])}</p>
+        <p class="post-byline">
+          <span>{series_label(post, "../") or "SEARCH Central Florida"}</span>
+          <span><time datetime="{post["date"].isoformat()}">{nice_date(post["date"])}</time> &middot; {post["minutes"]} min read</span>
+        </p>
+      </header>
+{hero}
+      <!-- Tags on the left, Share button on the right. -->
+      <div class="post-actions">
+        <p class="post-tags">{tags}</p>
+        <button class="share-button" type="button">Share</button>
+      </div>
 
-      <div class="panel prose">
+      <div class="post-body">
 {post["body_html"]}
       </div>
-    </article>
 
-    <!-- Every post ends with a nudge toward the mail club. -->
-    <aside class="post-cta panel">
-      <p><strong>Want local art in your mailbox?</strong> Every month, SEARCH: a snail mail club sends you work from a different Central Florida artist, plus perks from local businesses.</p>
-      <a class="button" href="../mailclub.html">Join the mail club</a>
-    </aside>
-  </main>
+      <!-- Every post ends with a nudge toward the mail club. -->
+      <aside class="post-cta">
+        <p><strong>want local art in your mailbox?</strong> every month, SEARCH: a snail mail club sends you work from a different central florida artist, plus perks from local businesses.</p>
+        <a class="button" href="../mailclub.html">Join the mail club</a>
+      </aside>
+    </article>
+{more}  </main>
 
 {footer("../")}
+{series_tabs("../", post["series"])}
+
+  <script>
+    // The Share button. On phones, navigator.share opens the phone's own
+    // share sheet (Messages, Instagram, etc). Browsers without it copy the
+    // link instead, and the button says "Link copied!" for two seconds.
+    const shareButton = document.querySelector(".share-button");
+    shareButton.addEventListener("click", async function () {{
+      const page = {{ title: document.title, url: location.href }};
+      try {{
+        if (navigator.share) {{
+          await navigator.share(page);
+        }} else {{
+          await navigator.clipboard.writeText(page.url);
+          shareButton.textContent = "Link copied!";
+          setTimeout(function () {{ shareButton.textContent = "Share"; }}, 2000);
+        }}
+      }} catch (error) {{
+        // Closing the share sheet without sharing counts as an error; ignore it.
+      }}
+    }});
+  </script>
 </body>
 </html>
 """
 
 
-def post_card(post, prefix):
-    """A card for one post, used on blog.html."""
-    cover = ""
-    if post["cover"]:
-        cover = f'<img class="post-card-cover" src="{prefix}{esc(post["cover"])}" alt="{esc(post["cover_alt"])}">'
-    series = f'<span class="post-series">{esc(post["series"])}</span>' if post["series"] else ""
-    return f"""      <article class="post-card">
-        {cover}{series}
-        <h2><a href="{prefix}blog/{post["slug"]}.html">{esc(post["title"])}</a></h2>
-        <p class="post-meta"><time datetime="{post["date"].isoformat()}">{nice_date(post["date"])}</time> &middot; {post["minutes"]} min read</p>
-        <p>{esc(post["description"])}</p>
-        {tag_list(post["tags"])}
-      </article>"""
-
-
-def build_index(posts):
-    url = f"{SITE_URL}blog.html"
+def build_listing(posts, prefix, title_text, intro, current, page_title, description, url):
+    """A list page: blog.html (all posts) or one series page."""
     if posts:
-        cards = "\n".join(post_card(p, "") for p in posts)
+        lead = lead_story(posts[0], prefix)
+        rest = "\n".join(post_card(p, prefix) for p in posts[1:])
+        grid = f'\n    <div class="post-grid">\n{rest}\n    </div>' if rest else ""
+        content = lead + grid
     else:
-        cards = '      <p class="panel">The first posts are coming soon!</p>'
+        content = '    <p class="blog-intro">no posts here yet. check back soon!</p>'
     return f"""<!DOCTYPE html>
 <!-- GENERATED FILE: made by tools/build_blog.py. Edit posts/*.md and run the script. -->
 <html lang="en">
-{head("", "Blog | Orlando local art, events and mail club news | SEARCH Central Florida",
-      "Guides, local artist spotlights and snail mail club news from Search Central Florida, your hyperlocal Orlando arts and culture guide.",
-      url, "website")}
-<body>
-{header("", "Blog")}
+{head(prefix, page_title, description, url, "website")}
+<body class="page-blog">
+{header(prefix, "Blog")}
 
-  <main>
-    <h1>Blog</h1>
-    <p class="lede">Local artists, Orlando guides and news from the mail club.</p>
+  <main class="blog-main">
+    <h1 class="blog-title">{esc(title_text)}</h1>
+    <p class="blog-intro">{esc(intro)}</p>
 
-    <div class="post-list">
-{cards}
-    </div>
+{content}
   </main>
 
-{footer("")}
+{footer(prefix)}
+{series_tabs(prefix, current)}
 </body>
 </html>
 """
@@ -296,12 +426,28 @@ def main():
     posts.sort(key=lambda p: p["date"], reverse=True)  # newest first
 
     BLOG_DIR.mkdir(exist_ok=True)
+    SERIES_DIR.mkdir(exist_ok=True)
+
     for post in posts:
-        (BLOG_DIR / f"{post['slug']}.html").write_text(build_post_page(post), encoding="utf-8")
+        (BLOG_DIR / f"{post['slug']}.html").write_text(build_post_page(post, posts), encoding="utf-8")
         print(f"built blog/{post['slug']}.html")
 
-    (ROOT / "blog.html").write_text(build_index(posts), encoding="utf-8")
+    (ROOT / "blog.html").write_text(build_listing(
+        posts, "", "Blog", ALL_INTRO, "All",
+        "Blog | Orlando local art, events and mail club news | SEARCH Central Florida",
+        "Guides, local artist spotlights and snail mail club news from Search Central Florida, your hyperlocal Orlando arts and culture guide.",
+        f"{SITE_URL}blog.html"), encoding="utf-8")
     print(f"built blog.html ({len(posts)} post{'' if len(posts) == 1 else 's'})")
+
+    for name, slug, _, intro in SERIES:
+        in_series = [p for p in posts if p["series"] == name]
+        (SERIES_DIR / f"{slug}.html").write_text(build_listing(
+            in_series, "../../", name, intro, name,
+            f"{name} | SEARCH Central Florida blog",
+            f"{name} posts from Search Central Florida: {intro}",
+            f"{SITE_URL}blog/series/{slug}.html"), encoding="utf-8")
+        print(f"built blog/series/{slug}.html ({len(in_series)})")
+
     update_mailclub(posts)
 
 

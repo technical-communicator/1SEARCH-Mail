@@ -17,15 +17,17 @@
   <meta property="og:image" content="https://technical-communicator.github.io/SEARCH-Mail/images/mascot.webp">
 
   <link rel="icon" type="image/png" href="../images/favicon.png">
+  <!-- Fonts. The blog adds Anton (big condensed headlines) and
+       Source Serif 4 (easy-to-read body text) to the site's usual two. -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Rubik+Dirt&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Courier+Prime:wght@400;700&family=Rubik+Dirt&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
   <link rel="stylesheet" href="../style.css">
   <script type="application/ld+json">
   {"@context": "https://schema.org", "@type": "BlogPosting", "headline": "check your mailbox! | november's mail", "description": "November's SEARCH snail mail club package is on its way, featuring Orlando artist Xine Hann of Orlando Collage Club and 20% off Florida Coffee Festival tickets.", "datePublished": "2026-11-09", "url": "https://technical-communicator.github.io/SEARCH-Mail/blog/november-mail-xine-hann.html", "image": "https://technical-communicator.github.io/SEARCH-Mail/images/mascot.webp", "author": {"@type": "Organization", "name": "Search Central Florida"}, "publisher": {"@type": "Organization", "name": "Search Central Florida", "url": "https://technical-communicator.github.io/SEARCH-Mail/"}}
   </script>
 </head>
-<body>
+<body class="page-blog">
   <header class="site-header">
     <!-- The logo (mascot head + name) links back to the home page. -->
     <a class="logo" href="../index.html">
@@ -44,19 +46,24 @@
     </nav>
   </header>
 
-  <main class="post-main">
-    <p><a class="back-link" href="../blog.html">&larr; All posts</a></p>
-
+  <main class="blog-main">
     <article class="post">
-      <p class="post-series">Monthly Mail</p>
-      <h1>check your mailbox! | november&#x27;s mail</h1>
-      <p class="post-meta">
-        <time datetime="2026-11-09">November 9, 2026</time>
-        &middot; 2 min read
-      </p>
-      <ul class="tag-list" aria-label="Tags"><li>mail club</li><li>featured artist</li><li>local business</li></ul>
+      <header class="post-header">
+        <h1>check your mailbox! | november&#x27;s mail</h1>
+        <p class="post-dek">November&#x27;s SEARCH snail mail club package is on its way, featuring Orlando artist Xine Hann of Orlando Collage Club and 20% off Florida Coffee Festival tickets.</p>
+        <p class="post-byline">
+          <span><a class="series-label series-pink" href="../blog/series/monthly-mail.html">Monthly Mail</a></span>
+          <span><time datetime="2026-11-09">November 9, 2026</time> &middot; 2 min read</span>
+        </p>
+      </header>
 
-      <div class="panel prose">
+      <!-- Tags on the left, Share button on the right. -->
+      <div class="post-actions">
+        <p class="post-tags">mail club &middot; featured artist &middot; local business</p>
+        <button class="share-button" type="button">Share</button>
+      </div>
+
+      <div class="post-body">
 <p>Hello friends!</p>
 <p>November’s mail package is on its way!! Keep an eye on your mailbox, since unclaimed letters do get sent back to us. If some time has passed and yours still hasn’t shown up, shoot us an email at <a href="mailto:searchcentralflorida@gmail.com">searchcentralflorida@gmail.com</a> and we’ll get it sorted.</p>
 <p>Onto the exciting stuff, here’s what’s waiting in your mailbox this month!</p>
@@ -71,18 +78,83 @@
 <p>let's chat again soon!</p>
 <p>-SEARCH &lt;3</p>
       </div>
+
+      <!-- Every post ends with a nudge toward the mail club. -->
+      <aside class="post-cta">
+        <p><strong>want local art in your mailbox?</strong> every month, SEARCH: a snail mail club sends you work from a different central florida artist, plus perks from local businesses.</p>
+        <a class="button" href="../mailclub.html">Join the mail club</a>
+      </aside>
     </article>
 
-    <!-- Every post ends with a nudge toward the mail club. -->
-    <aside class="post-cta panel">
-      <p><strong>Want local art in your mailbox?</strong> Every month, SEARCH: a snail mail club sends you work from a different Central Florida artist, plus perks from local businesses.</p>
-      <a class="button" href="../mailclub.html">Join the mail club</a>
-    </aside>
+    <section class="more-posts">
+      <h2>More from the blog</h2>
+      <div class="post-grid">
+      <article class="post-card">
+        <img class="card-image" src="../images/blog/xine-hann-collage.webp" alt="A collage of a large black and white eye with a Central Florida street map in the white of the eye, over a brain-like texture, above the cut-out words &quot;glad you did.&quot;" loading="lazy">
+        <h3 class="card-title">
+          <!-- The link's ::after layer (in style.css) makes the whole card clickable. -->
+          <a href="../blog/featured-artist-xine-hann.html">featured artist of the month: Xine Hann</a>
+          <span class="card-arrow" aria-hidden="true">&rarr;</span>
+        </h3>
+        <p class="card-summary">November&#x27;s SEARCH featured artist is Xine Hann, an Orlando graphic designer, 3D collage artist and the founder of Orlando Collage Club.</p>
+        <p class="card-meta">
+          <a class="series-label series-blue" href="../blog/series/featured-artist.html">Featured Artist</a>
+          <time datetime="2026-11-09">Nov 9, 2026</time>
+        </p>
+      </article>
+      <article class="post-card">
+        <img class="card-image" src="../images/blog/florida-coffee-festival.webp" alt="The Florida Coffee Festival logo over a photo of a barista pouring a leaf of latte art into a pink cup" loading="lazy">
+        <h3 class="card-title">
+          <!-- The link's ::after layer (in style.css) makes the whole card clickable. -->
+          <a href="../blog/featured-business-florida-coffee-festival.html">featured business of the month: florida coffee festival!!</a>
+          <span class="card-arrow" aria-hidden="true">&rarr;</span>
+        </h3>
+        <p class="card-summary">November&#x27;s SEARCH featured business is Florida Coffee Festival. Mail club members get 20% off tickets to the third annual festival on November 15 at Festival Park, Orlando.</p>
+        <p class="card-meta">
+          <a class="series-label series-yellow" href="../blog/series/featured-business.html">Featured Business</a>
+          <time datetime="2026-11-09">Nov 9, 2026</time>
+        </p>
+      </article>
+      </div>
+    </section>
   </main>
 
   <footer class="site-footer">
     <img src="../images/stamp.png" alt="" width="600" height="600">
     <p>Follow us on Instagram: <a href="https://www.instagram.com/searchcentralfl/">@searchcentralfl</a></p>
   </footer>
+  <!-- Section tabs: each one opens a page with just that kind of post. -->
+  <nav class="series-tabs" aria-label="Blog sections">
+    <a class="series-red" href="../blog.html">All posts</a>
+    <a class="series-pink" href="../blog/series/monthly-mail.html" aria-current="page">Monthly Mail</a>
+    <a class="series-blue" href="../blog/series/featured-artist.html">Featured Artist</a>
+    <a class="series-yellow" href="../blog/series/featured-business.html">Featured Business</a>
+  </nav>
+  <script>
+    // On small phones the tabs scroll sideways. Slide the current tab into view.
+    const currentTab = document.querySelector(".series-tabs [aria-current]");
+    if (currentTab) currentTab.scrollIntoView({ block: "nearest", inline: "nearest" });
+  </script>
+
+  <script>
+    // The Share button. On phones, navigator.share opens the phone's own
+    // share sheet (Messages, Instagram, etc). Browsers without it copy the
+    // link instead, and the button says "Link copied!" for two seconds.
+    const shareButton = document.querySelector(".share-button");
+    shareButton.addEventListener("click", async function () {
+      const page = { title: document.title, url: location.href };
+      try {
+        if (navigator.share) {
+          await navigator.share(page);
+        } else {
+          await navigator.clipboard.writeText(page.url);
+          shareButton.textContent = "Link copied!";
+          setTimeout(function () { shareButton.textContent = "Share"; }, 2000);
+        }
+      } catch (error) {
+        // Closing the share sheet without sharing counts as an error; ignore it.
+      }
+    });
+  </script>
 </body>
 </html>

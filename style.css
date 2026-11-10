@@ -899,150 +899,426 @@ body:has(.event-dialog[open]) {
   margin-right: auto;
 }
 
-/* ---------- Blog ---------- */
-/* blog.html: the list of posts, newest first. */
-.post-list {
+/* ---------- Blog ----------
+   The blog is built for reading, like a magazine website: a plain paper
+   background (no halftone dots), big condensed headlines, a serif for
+   body text, and thin black rules instead of boxes and shadows.
+   Every blog page has <body class="page-blog">, so these styles only
+   apply there. */
+.page-blog {
+  --page-colour: #f5f1ea;
+  --page-texture: none;
+  --font-display: "Anton", "Arial Narrow", Impact, sans-serif;
+  --font-serif: "Source Serif 4", Georgia, serif;
+  --rule: 1px solid var(--ink);
+}
+
+/* Extra space at the bottom of the footer so the fixed section tabs
+   never cover the Instagram link. */
+.page-blog .site-footer {
+  padding-bottom: 4.5rem;
+}
+
+.blog-main {
+  max-width: 75rem;
+}
+
+/* Undo the site's cut-out label style for headings on blog pages. */
+.page-blog h1 {
+  display: block;
+  padding: 0;
+  background: none;
+  border: 0;
+  box-shadow: none;
+  transform: none;
+  font-family: var(--font-display);
+  font-weight: normal;
+}
+
+/* The giant page title: "Blog" or a series name. */
+.blog-title {
+  margin: 0;
+  font-size: clamp(3.5rem, 13vw, 8rem);
+  line-height: 0.95;
+}
+
+.blog-intro {
+  margin: 0.5rem 0 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: var(--rule);
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  color: var(--muted);
+}
+
+/* Links in headlines are black; the underline shows on hover. */
+.lead-title a,
+.card-title a {
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.lead-title a:hover,
+.card-title a:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 3px;
+}
+
+/* ---- Lead story: the newest post, shown big ---- */
+.lead-story {
   display: grid;
-  gap: 1.5rem;
+  gap: 1.25rem;
+  padding-bottom: 2rem;
+  margin-bottom: 2rem;
+  border-bottom: var(--rule);
+}
+
+/* On phones the lead story's picture goes first, like the other cards. */
+.lead-story .card-image {
+  order: -1;
+}
+
+.lead-title {
+  margin: 0 0 1rem;
+  font-family: var(--font-display);
+  font-weight: normal;
+  font-size: clamp(2.4rem, 6vw, 4.25rem);
+  line-height: 1.02;
+}
+
+/* ---- Grid of post cards ---- */
+.post-grid {
+  display: grid;
+  gap: 2.5rem 2rem;
 }
 
 .post-card {
-  background: var(--cream);
-  border: var(--border);
-  box-shadow: var(--shadow);
-  padding: 1.25rem;
+  position: relative;  /* lets the headline link cover the whole card */
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 1.25rem;
+  border-bottom: var(--rule);
 }
 
-.post-card h2 {
-  margin: 0.4rem 0 0.25rem;
-  font-size: 1.4rem;
-}
-
-.post-card h2 a {
-  color: var(--ink);
-}
-
-.post-card-cover {
+/* Cover images are cropped to the same shape so the grid lines up. */
+.card-image {
   display: block;
-  margin-bottom: 1rem;
-  border: 2px solid var(--ink);
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
 }
 
-/* Date and reading time. */
-.post-meta {
-  margin: 0 0 0.75rem;
-  color: var(--muted);
-  font-family: var(--font-type);
+/* Posts without a cover: a block in the series colour with the stamp. */
+.card-image-blank {
+  display: grid;
+  place-items: center;
+}
+
+.card-image-blank img {
+  width: 40%;
+  max-width: 10rem;
+}
+
+.post-card .card-image {
+  margin-bottom: 1rem;
+}
+
+.card-title {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 0 0 1rem;
+  font-family: var(--font-display);
+  font-weight: normal;
+  font-size: 1.75rem;
+  line-height: 1.08;
+}
+
+/* The headline link stretches over the whole card (see .post-card). */
+.card-title a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.post-card:focus-within {
+  outline: 3px solid var(--ink);
+  outline-offset: 6px;
+}
+
+.card-title a:focus-visible {
+  outline: none;  /* the whole card gets the outline instead */
+}
+
+/* The little black arrow box next to each headline. */
+.card-arrow {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-top: 0.3rem;
+  background: var(--ink);
+  color: #ffffff;
+  font-family: var(--font-body);
   font-size: 0.9rem;
 }
 
-/* The series name, like a little red tab ("Monthly Mail"). */
-.post-series {
-  display: inline-block;
-  margin: 0 0 0.5rem;
-  padding: 0.05rem 0.5rem;
-  background: var(--red);
-  color: #ffffff;
-  border: 2px solid var(--ink);
-  font-family: var(--font-type);
-  font-size: 0.8rem;
-  font-weight: bold;
-  text-transform: uppercase;
+/* The summary under the headline, after a dashed rule. */
+.card-summary {
+  margin: 0 0 1rem;
+  padding-top: 1rem;
+  border-top: 1px dashed rgba(20, 20, 20, 0.45);
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  line-height: 1.5;
 }
 
-/* Tags, as small blue stickers. */
-.tag-list {
+/* Series label and date, on one line at the bottom of a card. */
+.card-meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.4rem;
-  margin: 0 0 1rem;
-  padding: 0;
-  list-style: none;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  margin: auto 0 0;  /* "auto" pushes it to the bottom of the card */
+  font-size: 0.9rem;
+  color: var(--muted);
 }
 
-.tag-list li {
-  padding: 0 0.5rem;
-  background: var(--blue);
-  border: 2px solid var(--ink);
-  border-radius: 999px;
-  font-family: var(--font-type);
+/* The small coloured series label (a link to that series' page).
+   position + z-index keep it clickable above the card's big link. */
+.series-label {
+  position: relative;
+  z-index: 1;
+  padding: 0.1rem 0.5rem;
+  color: var(--ink);
   font-size: 0.8rem;
   font-weight: bold;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
 }
 
-/* A single post page: narrower, so lines are comfortable to read. */
-.post-main {
+.series-label:hover {
+  text-decoration: underline;
+}
+
+/* Series colours, used by labels, tabs and blank card images. */
+.series-red    { background: var(--red); color: #ffffff; }
+.series-pink   { background: var(--pink); }
+.series-blue   { background: var(--blue); }
+.series-yellow { background: var(--yellow); }
+
+/* ---- Section tabs, fixed along the bottom of the screen ---- */
+.series-tabs {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+  display: flex;
+  overflow-x: auto;  /* on small phones, swipe to see every tab */
+  background: var(--ink);
+  border-top: 2px solid var(--ink);
+}
+
+.series-tabs a {
+  flex: 1 0 auto;
+  padding: 0.6rem 1rem;
+  background: var(--ink);
+  color: #ffffff;
+  border-right: 1px solid #444444;
+  font-size: 0.9rem;
+  font-weight: bold;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.series-tabs a:hover {
+  background: #333333;
+}
+
+/* The tab for the page you're on takes its series colour. */
+.series-tabs a.series-red[aria-current="page"]    { background: var(--red); color: #ffffff; }
+.series-tabs a.series-pink[aria-current="page"]   { background: var(--pink); color: var(--ink); }
+.series-tabs a.series-blue[aria-current="page"]   { background: var(--blue); color: var(--ink); }
+.series-tabs a.series-yellow[aria-current="page"] { background: var(--yellow); color: var(--ink); }
+
+.series-tabs a:focus-visible {
+  outline: 3px solid var(--yellow);
+  outline-offset: -3px;
+}
+
+/* ---- A single post ---- */
+.post-header {
+  max-width: 56rem;
+  margin: 1rem auto 0;
+  text-align: center;
+}
+
+.post-header h1 {
+  margin: 0 0 1rem;
+  font-size: clamp(2.4rem, 7vw, 4.5rem);
+  line-height: 1.02;
+}
+
+/* The one-line summary under the headline. */
+.post-dek {
+  margin: 0 auto 1.5rem;
   max-width: 46rem;
+  font-size: clamp(1.15rem, 2.5vw, 1.45rem);
+  font-weight: 300;
+  line-height: 1.4;
+  color: var(--muted);
 }
 
-.post .post-series {
-  display: table;  /* on its own line above the title */
+/* Series on the left, date on the right, between two rules. */
+.post-byline {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 1.5rem;
+  padding: 0.75rem 0;
+  border-top: var(--rule);
+  font-size: 0.95rem;
 }
 
-.post h1 {
-  font-size: 1.9rem;
-  transform: rotate(-1deg);  /* long titles look better with less tilt */
-}
-
-.back-link {
-  font-family: var(--font-type);
-}
-
-.post-cover {
+.post-hero {
   display: block;
-  margin-bottom: 1.5rem;
-  border: var(--border);
-  box-shadow: var(--shadow);
+  width: 100%;
+  margin: 0 0 1rem;
 }
 
-/* The post text itself. */
-.prose {
-  font-size: 1.1rem;
-  line-height: 1.75;
+.post-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  max-width: 40rem;
+  margin: 0 auto 2rem;
+  padding-bottom: 1rem;
+  border-bottom: var(--rule);
+}
+
+.post-tags {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.share-button {
+  flex: none;
+  padding: 0.35rem 1rem;
+  background: transparent;
+  color: var(--ink);
+  border: var(--rule);
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.share-button:hover {
+  background: var(--ink);
+  color: #ffffff;
+}
+
+/* The article text: a narrow column of comfortable serif type. */
+.post-body {
+  max-width: 40rem;
+  margin: 0 auto;
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  line-height: 1.7;
   overflow-wrap: break-word;  /* lets long emails and links wrap on small phones */
 }
 
-.prose h2 {
-  margin: 2rem 0 0.5rem;
-  font-size: 1.35rem;
+.post-body p,
+.post-body ul,
+.post-body ol {
+  margin: 0 0 1.25rem;
 }
 
-.prose img {
-  border: 2px solid var(--ink);
+.post-body li {
+  margin-bottom: 0.4rem;
 }
 
-/* A highlighted box for event details inside a post. */
-.event-callout {
-  padding: 0.75rem 1rem;
-  background: var(--yellow);
-  border: 2px solid var(--ink);
-  border-left: 8px solid var(--red);
+.post-body a {
+  color: var(--ink);
+  font-weight: normal;
+  text-decoration-color: var(--red);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
 }
 
-/* Quotes (in Markdown, lines starting with >), like a note pinned on. */
-.prose blockquote {
-  margin: 1.5rem 0;
-  padding: 0.75rem 1.25rem;
-  background: #ffffff;
-  border: 2px solid var(--ink);
-  border-left: 8px solid var(--purple);
+.post-body a:hover {
+  color: var(--red);
+}
+
+/* Subheadings inside a post. */
+.post-body h2 {
+  margin: 2.5rem 0 0.75rem;
+  font-family: var(--font-display);
+  font-weight: normal;
+  font-size: 1.9rem;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+/* Quotes (in Markdown, lines starting with >). */
+.post-body blockquote {
+  margin: 1.75rem 0;
+  padding: 0 0 0 1.25rem;
+  border-left: 4px solid var(--purple);
   font-style: italic;
 }
 
 /* A small "Source:" credit line under quoted info. */
-.source {
-  color: var(--muted);
+.post-body .source {
+  font-family: var(--font-body);
   font-size: 0.9rem;
+  color: var(--muted);
+}
+
+/* A box for event details inside a post. */
+.event-callout {
+  padding: 1rem 1.25rem;
+  background: #ffffff;
+  border: var(--rule);
+  border-left: 6px solid var(--red);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.6;
 }
 
 /* The mail club nudge at the end of every post. */
 .post-cta {
-  margin-top: 2.5rem;
+  max-width: 40rem;
+  margin: 3rem auto 0;
+  padding: 1.5rem;
   background: #ffe1ea;
+  border: var(--rule);
 }
 
 .post-cta p {
   margin-top: 0;
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+}
+
+.more-posts {
+  margin-top: 4rem;
+  padding-top: 1rem;
+  border-top: 3px solid var(--ink);
+}
+
+.more-posts h2 {
+  margin: 0 0 1.5rem;
+  font-family: var(--font-display);
+  font-weight: normal;
+  font-size: 2.25rem;
 }
 
 /* The list of past mailers on the mail club page. */
@@ -1053,6 +1329,12 @@ body:has(.event-dialog[open]) {
 
 .mailer-list li {
   margin-bottom: 0.4rem;
+}
+
+.post-meta {
+  color: var(--muted);
+  font-family: var(--font-type);
+  font-size: 0.9rem;
 }
 
 /* ---------- Footer ---------- */
@@ -1121,25 +1403,30 @@ body:has(.event-dialog[open]) {
     justify-content: flex-start;
   }
 
-  /* Blog list: a post's cover image sits to the left of its text. */
-  .post-card:has(.post-card-cover) {
-    display: grid;
+  /* Blog: two columns of post cards; lead story text beside its image. */
+  .post-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* A thin vertical line to the left of every second card. */
+  .post-grid .post-card:nth-child(2n)::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -1rem;
+    border-left: var(--rule);
+  }
+
+  .lead-story {
     grid-template-columns: 2fr 3fr;
-    column-gap: 1.5rem;
-    align-content: start;
+    gap: 2rem;
+    align-items: start;
   }
 
-  .post-card-cover {
-    grid-row: 1 / span 6;  /* the image spans all the text rows */
-    margin-bottom: 0;
-  }
-
-  .post-card:has(.post-card-cover) > :not(.post-card-cover) {
-    grid-column: 2;
-  }
-
-  .post-card:has(.post-card-cover) > .post-series {
-    justify-self: start;  /* keep the tab only as wide as its words */
+  /* Wider screens: words on the left, picture on the right. */
+  .lead-story .card-image {
+    order: 0;
   }
 
   /* Mail club: the $450 stamp sits beside the text. */
@@ -1154,11 +1441,27 @@ body:has(.event-dialog[open]) {
   }
 }
 
-/* Big screens: three columns of event cards and three tier postcards. */
+/* Big screens: three columns of event cards, tier postcards and blog posts. */
 @media (min-width: 64rem) {
   .event-list,
-  .tiers {
+  .tiers,
+  .post-grid {
     grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  /* With three columns, clear the two-column lines and redraw them:
+     a line to the left of every card that isn't first in its row. */
+  .post-grid .post-card::before {
+    content: none;
+  }
+
+  .post-grid .post-card:not(:nth-child(3n + 1))::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -1rem;
+    border-left: var(--rule);
   }
 }
 
