@@ -162,14 +162,21 @@ h2 {
   letter-spacing: 0.05em;
 }
 
+/* On phones the nav gets its own full-width row under the logo,
+   with the four tags sharing the space equally. */
 .site-header nav {
   display: flex;
-  gap: 0.5rem;
+  gap: 0.4rem;
+  width: 100%;
 }
 
 /* Nav links look like little paper tags. */
 .site-header nav a {
-  padding: 0.25rem 0.75rem;
+  flex: 1;              /* equal widths on phones */
+  padding: 0.25rem 0.2rem;
+  font-size: 0.8rem;
+  text-align: center;
+  white-space: nowrap;  /* never split "Mail Club" onto two lines */
   background: var(--cream);
   color: var(--ink);
   border: 2px solid var(--ink);
@@ -892,6 +899,146 @@ body:has(.event-dialog[open]) {
   margin-right: auto;
 }
 
+/* ---------- Blog ---------- */
+/* blog.html: the list of posts, newest first. */
+.post-list {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.post-card {
+  background: var(--cream);
+  border: var(--border);
+  box-shadow: var(--shadow);
+  padding: 1.25rem;
+}
+
+.post-card h2 {
+  margin: 0.4rem 0 0.25rem;
+  font-size: 1.4rem;
+}
+
+.post-card h2 a {
+  color: var(--ink);
+}
+
+.post-card-cover {
+  display: block;
+  margin-bottom: 1rem;
+  border: 2px solid var(--ink);
+}
+
+/* Date and reading time. */
+.post-meta {
+  margin: 0 0 0.75rem;
+  color: var(--muted);
+  font-family: var(--font-type);
+  font-size: 0.9rem;
+}
+
+/* The series name, like a little red tab ("Monthly Mail"). */
+.post-series {
+  display: inline-block;
+  margin: 0 0 0.5rem;
+  padding: 0.05rem 0.5rem;
+  background: var(--red);
+  color: #ffffff;
+  border: 2px solid var(--ink);
+  font-family: var(--font-type);
+  font-size: 0.8rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+/* Tags, as small blue stickers. */
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0 0 1rem;
+  padding: 0;
+  list-style: none;
+}
+
+.tag-list li {
+  padding: 0 0.5rem;
+  background: var(--blue);
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  font-family: var(--font-type);
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+/* A single post page: narrower, so lines are comfortable to read. */
+.post-main {
+  max-width: 46rem;
+}
+
+.post .post-series {
+  display: table;  /* on its own line above the title */
+}
+
+.post h1 {
+  font-size: 1.9rem;
+  transform: rotate(-1deg);  /* long titles look better with less tilt */
+}
+
+.back-link {
+  font-family: var(--font-type);
+}
+
+.post-cover {
+  display: block;
+  margin-bottom: 1.5rem;
+  border: var(--border);
+  box-shadow: var(--shadow);
+}
+
+/* The post text itself. */
+.prose {
+  font-size: 1.1rem;
+  line-height: 1.75;
+  overflow-wrap: break-word;  /* lets long emails and links wrap on small phones */
+}
+
+.prose h2 {
+  margin: 2rem 0 0.5rem;
+  font-size: 1.35rem;
+}
+
+.prose img {
+  border: 2px solid var(--ink);
+}
+
+/* A highlighted box for event details inside a post. */
+.event-callout {
+  padding: 0.75rem 1rem;
+  background: var(--yellow);
+  border: 2px solid var(--ink);
+  border-left: 8px solid var(--red);
+}
+
+/* The mail club nudge at the end of every post. */
+.post-cta {
+  margin-top: 2.5rem;
+  background: #ffe1ea;
+}
+
+.post-cta p {
+  margin-top: 0;
+}
+
+/* The list of past mailers on the mail club page. */
+.mailer-list {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.mailer-list li {
+  margin-bottom: 0.4rem;
+}
+
 /* ---------- Footer ---------- */
 .site-footer {
   display: flex;
@@ -922,6 +1069,17 @@ body:has(.event-dialog[open]) {
 
   .logo img {
     height: 64px;
+  }
+
+  /* Wider screens: nav sits beside the logo, tags sized to their words. */
+  .site-header nav {
+    width: auto;
+  }
+
+  .site-header nav a {
+    flex: none;
+    padding: 0.25rem 0.75rem;
+    font-size: 1rem;
   }
 
   /* All seven day tiles fit in one row, no swiping needed. */

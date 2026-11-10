@@ -77,5 +77,14 @@
     "venue": "Downtown Record Shop",
     "category": "Music",
     "description": "Hear a new local album start to finish on the big speakers."
+  },
+  {
+    "title": "Florida Coffee Festival",
+    "date": "2026-11-15",
+    "start_time": "11:00",
+    "end_time": "16:00",
+    "venue": "Festival Park, Orlando",
+    "category": "Food and Drink",
+    "description": "Local roasters, matcha and specialty drinks, latte art championship, live music and goat cuddling."
   }
 ]
