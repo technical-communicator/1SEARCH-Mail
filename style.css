@@ -3107,7 +3107,7 @@ h1.mcb-title {
    0 = off, 1 = the starting amount, 2 = twice as strong, and so on.
    ========================================================= */
 :root {
-  --grain: 1;
+  --grain: 1.35;
 }
 
 /* The grain sits on two see-through layers fixed over the whole screen.
