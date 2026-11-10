@@ -86,7 +86,7 @@ function buildMailclubBanner(spot) {
             '<span class="mcb-sparkle mcb-sparkle-1" aria-hidden="true">✦</span>' +
             '<span class="mcb-sparkle mcb-sparkle-2" aria-hidden="true">✦</span>' +
             '<a href="' + root + BANNER_SETTINGS.artistPost + '" aria-label="' + BANNER_SETTINGS.month + "'s artist: " + BANNER_SETTINGS.artist + '">' +
-              '<img loading="lazy" decoding="async" class="mcb-print" src="' + root + BANNER_SETTINGS.printImage + '" alt="" width="700" height="990">' +
+              '<img loading="lazy" decoding="async" class="mcb-print" src="' + root + BANNER_SETTINGS.printImage + '" alt="" width="440" height="639">' +
             "</a>" +
             '<img loading="lazy" decoding="async" class="mcb-sticker" src="' + root + BANNER_SETTINGS.stickerImage + '" alt="" width="400" height="474">' +
             '<img loading="lazy" decoding="async" class="mcb-sticker mcb-sticker-2" src="' + root + BANNER_SETTINGS.sticker2Image + '" alt="" width="240" height="333">' +

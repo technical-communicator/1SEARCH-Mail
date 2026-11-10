@@ -644,7 +644,7 @@ main {
 .slide-mail img {
   display: block;
   width: 100%;
-  border: 6px solid #ffffff;
+  border: 3px solid #ffffff;   /* a slim print edge */
   box-shadow: var(--soft-shadow);
   transform: rotate(5deg);
 }
@@ -2578,7 +2578,7 @@ h1.mcb-title {
   display: block;
   width: 70%;
   margin-left: auto;
-  border: 10px solid #ffffff;
+  border: 4px solid #ffffff;   /* a slim print edge */
   box-shadow: var(--soft-shadow);
   transform: rotate(4deg);
 }
