@@ -537,7 +537,7 @@ def main():
         print(f"built blog/{post['slug']}.html")
 
     (ROOT / "blog.html").write_text(build_listing(
-        posts, "", "Blog", ALL_INTRO, "All",
+        posts, "", "Local stories", ALL_INTRO, "All",
         seo.full_title("Orlando Art & Culture Blog"),
         "Guides, local artist spotlights and snail mail club news from Search Central Florida, your hyperlocal Orlando arts and culture guide.",
         "blog.html", [("Home", ""), ("Blog", "blog.html")], posts), encoding="utf-8")

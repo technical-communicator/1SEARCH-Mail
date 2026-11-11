@@ -1667,8 +1667,11 @@ body:has(.event-dialog[open]) {
   margin-bottom: 0.35rem;
 }
 
+/* The Join buttons fill the card's width, so all three line up even when
+   the longest one ("Join as a print & sticker curator") wraps. */
 .tier-join {
-  align-self: flex-start;
+  align-self: stretch;
+  text-align: center;
 }
 
 /* Highlighted when someone arrives from a banner tile (?tier=...). */
@@ -2485,7 +2488,7 @@ body:has(.event-dialog[open]) {
   }
 
   .tier-card .tier-join {
-    justify-self: start;
+    justify-self: stretch;  /* full width, like on phones (see .tier-join) */
     align-self: start;
   }
 
