@@ -22,8 +22,8 @@
     "schema": ["FAQPage"]
   },
   "about.html": {
-    "topic": "About Us",
-    "description": "Search Central Florida is a hyperlocal guide to Orlando arts, culture and small businesses. Find something good, close the app and go.",
+    "topic": "About Us and Our Mission",
+    "description": "Search Central Florida highlights the arts and culture happening every day across Central Florida. Follow along on Instagram @searchcentralfl.",
     "robots": "index, follow",
     "og_type": "website"
   },

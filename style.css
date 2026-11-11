@@ -2073,20 +2073,78 @@ body:has(.event-dialog[open]) {
 /* =========================================================
    11. About page
    ========================================================= */
-.about-body {
-  display: grid;
-  gap: 2rem;
-  align-items: start;
+.about-mission p {
+  font-size: 1.1rem;
 }
 
-.about-body p:first-child {
+/* The Instagram "profile card": a yellow halftone band with the round
+   mascot avatar, handle and name, then a short bio, a list and a Follow
+   button. The band is centred on phones; the avatar sits beside the handle when wider. */
+.ig-card {
+  background: var(--cream);
+  border: var(--border);
+}
+
+.ig-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem 1.5rem;
+  padding: 1.5rem 1.25rem;
+  background-color: var(--section);
+  background-image: radial-gradient(rgba(0, 0, 0, 0.12) 1.2px, transparent 1.6px);
+  background-size: 8px 8px;
+  border-bottom: var(--border);
+  text-align: center;
+}
+
+.ig-avatar {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 7.5rem;
+  aspect-ratio: 1;
+  background: #ffffff;
+  border: var(--border);
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.ig-avatar img {
+  width: 72%;
+  margin-top: 12%;
+}
+
+.ig-handle {
+  margin: 0;
+  font-family: "Anton", sans-serif;
+  font-size: clamp(2rem, 8vw, 3rem);
+  line-height: 1.05;
+  overflow-wrap: anywhere;
+}
+
+.ig-name {
+  margin: 0.25rem 0 0;
+  font-weight: bold;
+}
+
+.ig-body {
+  padding: 1.5rem 1.25rem;
+}
+
+.ig-body > p:first-child {
   margin-top: 0;
 }
 
-.about-stamp {
-  width: min(60vw, 240px);
-  justify-self: center;
-  transform: rotate(8deg);
+.ig-list {
+  margin: 0 0 1.5rem;
+  padding-left: 1.25rem;
+}
+
+.ig-note {
+  margin-top: 1rem;
+  color: var(--muted);
 }
 
 
@@ -2366,8 +2424,15 @@ body:has(.event-dialog[open]) {
     order: 0;
   }
 
-  .about-body {
-    grid-template-columns: 1fr auto;
+  .ig-top,
+  .ig-body {
+    justify-content: flex-start;
+    padding-inline: 2rem;
+    text-align: left;
+  }
+
+  .ig-avatar {
+    width: 9rem;
   }
 
   .inside-grid {
@@ -2583,6 +2648,22 @@ h1.mcb-title {
   border: 4px solid #ffffff;   /* a slim print edge */
   box-shadow: var(--soft-shadow);
   transform: rotate(4deg);
+}
+
+/* The club's seal, inked over the print's top corner like a fresh rubber
+   stamp. The picture already has the patchy, uneven ink (made from the
+   black seal, images/stamp.webp). "multiply" lets the print and the pink
+   show through the ink, the way real stamp ink soaks into paper. */
+.mcb-stamp {
+  position: absolute;
+  z-index: 1;
+  top: -4%;
+  right: -12%;
+  width: 46%;
+  mix-blend-mode: multiply;
+  opacity: 0.92;
+  transform: rotate(-16deg);
+  pointer-events: none;  /* clicks go through to the print's link */
 }
 
 /* One of this month's stickers, stuck on the print's corner. */

@@ -6,8 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- SEO:START These tags are written by tools/build_site.py from
        seo/pages.json and seo/site.json. Edit those files, not this block. -->
-  <title>About Us | Search Central Florida</title>
-  <meta name="description" content="Search Central Florida is a hyperlocal guide to Orlando arts, culture and small businesses. Find something good, close the app and go.">
+  <title>About Us and Our Mission | Search Central Florida</title>
+  <meta name="description" content="Search Central Florida highlights the arts and culture happening every day across Central Florida. Follow along on Instagram @searchcentralfl.">
   <link rel="canonical" href="https://www.searchcentralfl.com/about.html">
   <meta name="robots" content="index, follow">
 
@@ -15,16 +15,16 @@
   <meta property="og:site_name" content="Search Central Florida">
   <meta property="og:locale" content="en_US">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="About Us | Search Central Florida">
-  <meta property="og:description" content="Search Central Florida is a hyperlocal guide to Orlando arts, culture and small businesses. Find something good, close the app and go.">
+  <meta property="og:title" content="About Us and Our Mission | Search Central Florida">
+  <meta property="og:description" content="Search Central Florida highlights the arts and culture happening every day across Central Florida. Follow along on Instagram @searchcentralfl.">
   <meta property="og:url" content="https://www.searchcentralfl.com/about.html">
   <meta property="og:image" content="https://www.searchcentralfl.com/images/og/default.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="Search Central Florida: Orlando arts, culture and events, with the SEARCH mascot">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="About Us | Search Central Florida">
-  <meta name="twitter:description" content="Search Central Florida is a hyperlocal guide to Orlando arts, culture and small businesses. Find something good, close the app and go.">
+  <meta name="twitter:title" content="About Us and Our Mission | Search Central Florida">
+  <meta name="twitter:description" content="Search Central Florida highlights the arts and culture happening every day across Central Florida. Follow along on Instagram @searchcentralfl.">
   <meta name="twitter:image" content="https://www.searchcentralfl.com/images/og/default.jpg">
   <meta name="twitter:image:alt" content="Search Central Florida: Orlando arts, culture and events, with the SEARCH mascot">
   <!-- SEO:END -->
@@ -63,20 +63,58 @@
   <main>
     <header class="masthead">
       <p class="section-chip">About</p>
-      <h1>About SCF</h1>
-      <p class="masthead-intro">A hyperlocal guide to Orlando arts, culture and small businesses.</p>
+      <h1>Our mission</h1>
+      <p class="masthead-intro">Highlighting the amazing arts and culture happening every day across Central Florida.</p>
     </header>
 
-    <!-- The text on the left, the mail club stamp on the right. -->
-    <section class="about-body">
+    <!-- ===== THE MISSION ===== (the owners' words) -->
+    <section class="about-mission" aria-labelledby="mission-heading">
+      <h2 class="section-head" id="mission-heading">Why we do this</h2>
       <div class="reading">
-        <!-- Placeholder copy: edit freely. -->
-        <p>Search Central Florida is a hyperlocal guide to Orlando arts, culture and small businesses.</p>
-        <p>We share a handful of hand-picked events every day on Instagram, and this site is where even more good events live.</p>
-        <p>We believe the best stuff happens in person. Find something fun, close the app and go.</p>
+        <p>The mission of Search Central Florida is to highlight the amazing arts and culture that is happening every day across Central Florida.</p>
+        <p>We started Search Central Florida on Instagram with the goal of curating some of the best events in Central Florida. This website is an extension of that mission: to keep spreading and sharing the amazing things that go on in Central Florida.</p>
       </div>
-      <img class="about-stamp" src="images/stamp.webp" width="600" height="600"
-           alt="SEARCH: a snail mail club stamp featuring the mascot">
+    </section>
+
+    <!-- ===== INSTAGRAM =====
+         A "profile card" for our Instagram, in the site's own style.
+         Every link on it opens our Instagram in a new tab. -->
+    <section class="ig-section" aria-labelledby="ig-heading">
+      <h2 class="section-head" id="ig-heading">Find us on Instagram</h2>
+      <div class="ig-card">
+        <!-- Top: a yellow halftone band with the avatar, handle and name. -->
+        <div class="ig-top">
+          <a class="ig-avatar" href="https://www.instagram.com/searchcentralfl/" target="_blank" rel="noopener"
+             aria-label="@searchcentralfl on Instagram, opens in a new tab">
+            <img src="images/mascot-head-color-large.webp" alt="" width="391" height="440">
+          </a>
+          <div>
+            <p class="ig-handle">@searchcentralfl</p>
+            <p class="ig-name">Search Central Florida</p>
+          </div>
+        </div>
+        <!-- Bottom: what we post there, and the Follow button. -->
+        <div class="ig-body">
+          <p>Instagram is where it all started, and it's still the best place to keep up. We post hand-picked events every week, plus the local artists, small businesses and mail club news we love.</p>
+          <ul class="ig-list">
+            <li>Weekly "events this week" round-ups</li>
+            <li>Featured artists and local businesses</li>
+            <li>First look at each month's mail club package</li>
+          </ul>
+          <a class="button" href="https://www.instagram.com/searchcentralfl/" target="_blank" rel="noopener">Follow @searchcentralfl &#8599;</a>
+        </div>
+      </div>
+      <p class="ig-note">Have an event or a local spot we should know about? Send us a DM on Instagram, or <a href="submit.html">submit an event</a> here.</p>
+    </section>
+
+    <!-- ===== THE REST OF THE SITE ===== -->
+    <section aria-labelledby="explore-heading">
+      <h2 class="section-head" id="explore-heading">On this site</h2>
+      <div class="buttons">
+        <a class="button button-outline" href="events.html">This week's events</a>
+        <a class="button button-outline" href="mailclub.html">The snail mail club</a>
+        <a class="button button-outline" href="blog.html">The blog</a>
+      </div>
     </section>
   </main>
 
