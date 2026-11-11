@@ -81,6 +81,17 @@ create policy "Reviewers can do everything" on public.events
 revoke all on public.events from anon;
 revoke all on public.reviewers from anon, authenticated;
 
+-- Give exactly the permissions the site needs, written out here so it
+-- works even with Supabase's "Automatically expose new tables" switched
+-- OFF (the safer setting, recommended by Supabase).
+--   - logged-in users may use the events table, but the RLS rule above
+--     limits that to reviewers only;
+--   - the two server functions (service_role) may use both tables.
+grant usage on schema public to anon, authenticated, service_role;
+grant select, insert, update, delete on public.events to authenticated;
+grant all on public.events, public.reviewers to service_role;
+grant execute on function public.is_reviewer() to authenticated;
+
 
 -- 4. The public list of approved events --------------------------------------
 -- The website reads this. It only has approved events from yesterday

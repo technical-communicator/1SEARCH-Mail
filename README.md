@@ -31,6 +31,11 @@ Until you finish these steps, the calendar keeps working from
 1. Go to [supabase.com](https://supabase.com), sign up and click **New project**.
    Name it something like `search-central-florida` and pick the US East region.
    Save the database password somewhere safe (you won't need it day to day).
+   Under **Security**, choose:
+   - **Enable Data API**: on (the website needs it)
+   - **Automatically expose new tables**: **off** (the safer choice;
+     `schema.sql` gives exactly the permissions the site needs)
+   - **Enable automatic RLS**: on
 2. When it's ready, open **SQL Editor**, click **New query**, and paste in
    everything from [`supabase/schema.sql`](supabase/schema.sql).
 3. Near the bottom of what you pasted, change `your-email@example.com` to the
