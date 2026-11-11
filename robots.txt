@@ -1,0 +1,12 @@
+# GENERATED FILE: made by tools/build_site.py.
+# Search engines may crawl the whole site except the private review
+# page and the folders that only hold source files.
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /posts/
+Disallow: /tools/
+Disallow: /supabase/
+Disallow: /seo/
+
+Sitemap: https://www.searchcentralfl.com/sitemap.xml

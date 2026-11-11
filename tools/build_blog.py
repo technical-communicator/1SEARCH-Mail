@@ -24,14 +24,19 @@ Running this script:
      (posts whose series is "Monthly Mail")
 
 The output is plain HTML that gets committed, so GitHub Pages still just
-serves static files. Needs: pip install markdown pyyaml
+serves static files. Needs: pip install markdown pyyaml pillow
 
-Usage (from the repo root):  python3 tools/build_blog.py
+Usually you run the whole-site build instead, which runs this too and then
+makes the sitemap:  python3 tools/build_site.py
+
+Optional front matter for search results (when the title or description is
+too long for Google, which shows about 60 and 155 characters):
+    seo_title: "Featured Artist: Xine Hann"    # " | Search Central Florida" is added
+    seo_description: "A shorter summary, 155 characters at most."
 """
 
 import datetime
 import html
-import json
 import math
 import re
 import sys
@@ -40,11 +45,15 @@ from pathlib import Path
 import markdown
 import yaml
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import og_images                                     # noqa: E402
+import seo                                           # noqa: E402
+
 ROOT = Path(__file__).resolve().parent.parent
 POSTS_DIR = ROOT / "posts"
 BLOG_DIR = ROOT / "blog"
 SERIES_DIR = BLOG_DIR / "series"
-SITE_URL = "https://www.searchcentralfl.com/"
+SITE_URL = seo.BASE_URL   # set once, in seo/site.json
 MAIL_SERIES = "Monthly Mail"
 REQUIRED = ["title", "date", "description", "tags"]
 
@@ -98,7 +107,9 @@ def load_post(path):
                  f"Use one of {list(SERIES_BY_NAME)} or add it to SERIES in this script.")
 
     # House style: never use em dashes anywhere in site copy.
-    for label, value in [("title", meta["title"]), ("description", meta["description"]), ("body", body_md)]:
+    for label, value in [("title", meta["title"]), ("description", meta["description"]),
+                         ("seo_title", meta.get("seo_title", "")),
+                         ("seo_description", meta.get("seo_description", "")), ("body", body_md)]:
         if "—" in str(value):
             sys.exit(f"{path.name}: the {label} contains an em dash (—). Rewrite it without one.")
 
@@ -112,6 +123,9 @@ def load_post(path):
         "title": str(meta["title"]),
         "date": date,
         "description": str(meta["description"]),
+        "seo_title": str(meta.get("seo_title") or meta["title"]),
+        "seo_description": str(meta.get("seo_description") or meta["description"]),
+        "file": path,
         "tags": [str(t) for t in meta["tags"]],
         "series": meta.get("series"),
         "cover": meta.get("cover"),
@@ -150,21 +164,18 @@ def header(prefix, current):
   </header>"""
 
 
-def head(prefix, title, description, url, og_type, extra="", image="images/mascot.webp"):
-    """Everything inside <head>: titles, link preview tags, fonts, CSS."""
+def head(prefix, path, file, title, description, og_type, json_ld=(),
+         image=None, image_alt=None, extra_meta=()):
+    """Everything inside <head>. The search and sharing tags come from
+    seo.render_head() (tools/seo.py), the same as on every other page.
+    path is the page's address from the site root, file is where it's saved."""
+    tags = seo.render_head(path=path, file=file, title=title, description=description,
+                           og_type=og_type, image=image, image_alt=image_alt,
+                           json_ld=json_ld, extra_meta=extra_meta)
     return f"""<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{esc(title)}</title>
-  <meta name="description" content="{esc(description)}">
-  <link rel="canonical" href="{url}">
-
-  <!-- Open Graph tags control how links look when shared on social media. -->
-  <meta property="og:type" content="{og_type}">
-  <meta property="og:title" content="{esc(title)}">
-  <meta property="og:description" content="{esc(description)}">
-  <meta property="og:url" content="{url}">
-  <meta property="og:image" content="{SITE_URL}{image}">
+{tags}
 
   <link rel="icon" type="image/png" href="{prefix}images/favicon.png">
   <!-- Fonts: Anton for headlines, Courier Prime (typewriter) for text,
@@ -172,7 +183,7 @@ def head(prefix, title, description, url, og_type, extra="", image="images/masco
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Yellowtail&display=swap">
-  <link rel="stylesheet" href="{prefix}style.css">{extra}
+  <link rel="stylesheet" href="{prefix}style.css">
 </head>"""
 
 
@@ -315,24 +326,52 @@ def lead_story(post, prefix):
 # ---------------------------------------------------------------------------
 
 def build_post_page(post, all_posts):
-    url = f"{SITE_URL}blog/{post['slug']}.html"
+    path = f"blog/{post['slug']}.html"
+    file = BLOG_DIR / f"{post['slug']}.html"
+    url = SITE_URL + path
+
+    # The share picture: the cover cropped to 1200x630, or the site default.
+    if post["cover"]:
+        image = og_images.post_image(post["cover"], post["slug"]).relative_to(ROOT).as_posix()
+        image_alt = post["cover_alt"]
+    else:
+        image, image_alt = seo.SITE["default_og_image"], None
+
+    # dateModified: when the post's .md file last changed (never before its date).
+    modified = max(seo.git_date(post["file"]), post["date"])
+
+    # The trail Google can show above the result: Home > Blog > Series > Post.
+    trail = [("Home", ""), ("Blog", "blog.html")]
+    if post["series"]:
+        trail.append((post["series"], f"blog/series/{SERIES_BY_NAME[post['series']][0]}.html"))
+    trail.append((post["title"], path))
 
     # Structured data so Google understands this page is a blog post.
-    json_ld = {
+    images = [SITE_URL + image] + ([SITE_URL + post["cover"]] if post["cover"] else [])
+    json_ld = [{
         "@context": "https://schema.org",
         "@type": "BlogPosting",
-        "headline": post["title"],
+        "headline": post["title"][:110],
         "description": post["description"],
         "datePublished": post["date"].isoformat(),
+        "dateModified": modified.isoformat(),
+        "mainEntityOfPage": url,
         "url": url,
-        "image": SITE_URL + (post["cover"] or "images/mascot.webp"),
-        "author": {"@type": "Organization", "name": "Search Central Florida"},
-        "publisher": {"@type": "Organization", "name": "Search Central Florida",
-                      "url": SITE_URL},
-    }
-    extra = ('\n  <script type="application/ld+json">\n  '
-             + json.dumps(json_ld, ensure_ascii=False).replace("</", "<\\/")
-             + "\n  </script>")
+        "image": images,
+        "keywords": post["tags"],
+        "author": {"@type": "Organization", "name": "Search Central Florida", "url": SITE_URL},
+        "publisher": seo.publisher(),
+    }, seo.breadcrumbs(trail)]
+    if post["series"]:
+        json_ld[0]["articleSection"] = post["series"]
+
+    extra_meta = [("article:published_time", post["date"].isoformat()),
+                  ("article:modified_time", modified.isoformat())]
+    if post["series"]:
+        extra_meta.append(("article:section", post["series"]))
+    extra_meta += [("article:tag", t) for t in post["tags"]]
+    head_html = head("../", path, file, seo.full_title(post["seo_title"]), post["seo_description"],
+                     "article", json_ld, image, image_alt, extra_meta)
 
     hero = ""
     if post["cover"]:
@@ -359,8 +398,7 @@ def build_post_page(post, all_posts):
 <!-- GENERATED FILE: made by tools/build_blog.py from posts/{post['slug']}.md.
      Edit the .md file and run the script; changes made here get overwritten. -->
 <html lang="en">
-{head("../", post["title"] + " | SEARCH Central Florida blog", post["description"], url, "article", extra,
-      post["cover"] or "images/mascot.webp")}
+{head_html}
 <body class="page-blog">
 {header("../", "Blog")}
 
@@ -416,8 +454,9 @@ def build_post_page(post, all_posts):
 """
 
 
-def build_listing(posts, prefix, title_text, intro, current, page_title, description, url):
-    """A list page: blog.html (all posts) or one series page."""
+def build_listing(posts, prefix, title_text, intro, current, page_title, description, path, trail):
+    """A list page: blog.html (all posts) or one series page.
+    path is its address from the site root; trail is its breadcrumb trail."""
     if posts:
         lead = lead_story(posts[0], prefix)
         rest = "\n".join(post_card(p, prefix) for p in posts[1:])
@@ -428,7 +467,7 @@ def build_listing(posts, prefix, title_text, intro, current, page_title, descrip
     return f"""<!DOCTYPE html>
 <!-- GENERATED FILE: made by tools/build_blog.py. Edit posts/*.md and run the script. -->
 <html lang="en">
-{head(prefix, page_title, description, url, "website")}
+{head(prefix, path, ROOT / path, page_title, description, "website", [seo.breadcrumbs(trail)])}
 <body class="page-blog">
 {header(prefix, "Blog")}
 
@@ -482,18 +521,19 @@ def main():
 
     (ROOT / "blog.html").write_text(build_listing(
         posts, "", "Blog", ALL_INTRO, "All",
-        "Blog | Orlando local art, events and mail club news | SEARCH Central Florida",
+        seo.full_title("Orlando Art & Culture Blog"),
         "Guides, local artist spotlights and snail mail club news from Search Central Florida, your hyperlocal Orlando arts and culture guide.",
-        f"{SITE_URL}blog.html"), encoding="utf-8")
+        "blog.html", [("Home", ""), ("Blog", "blog.html")]), encoding="utf-8")
     print(f"built blog.html ({len(posts)} post{'' if len(posts) == 1 else 's'})")
 
     for name, slug, _, intro in SERIES:
         in_series = [p for p in posts if p["series"] == name]
         (SERIES_DIR / f"{slug}.html").write_text(build_listing(
             in_series, "../../", name, intro, name,
-            f"{name} | SEARCH Central Florida blog",
+            seo.full_title(f"{name}: SEARCH Blog"),
             f"{name} posts from Search Central Florida: {intro}",
-            f"{SITE_URL}blog/series/{slug}.html"), encoding="utf-8")
+            f"blog/series/{slug}.html",
+            [("Home", ""), ("Blog", "blog.html"), (name, f"blog/series/{slug}.html")]), encoding="utf-8")
         print(f"built blog/series/{slug}.html ({len(in_series)})")
 
     update_mailclub(posts)

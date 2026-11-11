@@ -32,7 +32,8 @@
    14. Reduced motion
    15. Mail club banner (the full-width promo at the bottom of every page)
    16. Submitting events: the form, the call to action, the review dashboard
-   17. Film finish: grain over the whole site, and a film look on photos */
+   17. Film finish: grain over the whole site, and a film look on photos
+   18. Event pages (one page per event) and the "all events" list */
 
 
 /* =========================================================
@@ -3169,3 +3170,120 @@ body::after {
   }
 }
 
+
+
+/* =========================================================
+   18. Event pages
+   Each event has its own page at events/<name>-<date>/, made by
+   tools/build_site.py, plus a list of every event at events/.
+   The card itself uses the same .event-card styles as the events page.
+   ========================================================= */
+.event-page {
+  max-width: 44rem;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 3rem;
+}
+
+/* "Home / Events / This event" */
+.breadcrumb ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.5rem;
+  margin: 0 0 1.25rem;
+  padding: 0;
+  list-style: none;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.breadcrumb li + li::before {
+  content: "/";
+  margin-right: 0.5rem;
+}
+
+.breadcrumb a {
+  color: inherit;
+}
+
+/* The card on its own page: bigger title, and no "lift" on hover,
+   since the whole card isn't a button here. */
+.event-detail:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.event-detail .card-top h1 {
+  margin: 0.6rem 0 0.3rem;
+  font-size: clamp(2rem, 7vw, 3rem);
+  line-height: 1.05;
+}
+
+.event-when {
+  margin: 0;
+  font-weight: bold;
+}
+
+.event-address {
+  margin: 0;
+  color: var(--muted);
+}
+
+.event-detail .card-footer {
+  margin-top: 0.5rem;
+}
+
+/* "This event has passed" */
+.event-passed {
+  margin: 0 0 1rem;
+  padding: 0.6rem 0.9rem;
+  border: var(--border);
+  border-style: dashed;
+  background: var(--cream);
+}
+
+.event-passed[hidden] {
+  display: none;
+}
+
+.event-more {
+  margin-top: 1.5rem;
+}
+
+/* The plain list of events: on events/ and inside events.html before
+   the calendar script replaces it. */
+.event-index {
+  margin: 0 0 2rem;
+  padding: 0;
+  list-style: none;
+}
+
+.event-index li {
+  padding: 0.6rem 0;
+  border-bottom: 1px dashed var(--ink);
+}
+
+.event-index a {
+  font-weight: bold;
+}
+
+.event-index-meta {
+  display: block;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+/* The link under the map to the list of every event. */
+.all-events-link {
+  margin: 1.5rem 0;
+  text-align: center;
+}
+
+/* The mail club page's h1, shown for a split second before banner.js
+   draws the full banner around it (and for search engines). */
+.mcb-placeholder {
+  margin: 0;
+  padding: 3rem 1rem;
+  background: var(--section, #e0457b);
+  color: var(--ink);
+  text-align: center;
+}

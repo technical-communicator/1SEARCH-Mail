@@ -2,6 +2,8 @@
 title: "check your mailbox! | november's mail"
 date: 2026-11-09
 description: "November's SEARCH snail mail club package is on its way, featuring Orlando artist Xine Hann of Orlando Collage Club and 20% off Florida Coffee Festival tickets."
+seo_title: "November 2026 Mail Club Package"
+seo_description: "November's SEARCH snail mail club package is on its way, with Orlando artist Xine Hann and 20% off Florida Coffee Festival tickets."
 tags: [mail club, featured artist, local business]
 series: Monthly Mail
 ---

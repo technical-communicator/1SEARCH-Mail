@@ -6,9 +6,64 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- The title shows in the browser tab and in search results. -->
-  <title>Search Central Florida | Orlando arts, culture and local events</title>
-  <meta name="description" content="Search Central Florida helps you find cool local events, art and small businesses in Orlando.">
+  <!-- SEO:START These tags are written by tools/build_site.py from
+       seo/pages.json and seo/site.json. Edit those files, not this block. -->
+  <title>Orlando Arts, Events &amp; Culture | Search Central Florida</title>
+  <meta name="description" content="Your guide to Orlando&#x27;s best local art, music, markets and events, plus SEARCH, a snail mail club that sends local art to your mailbox every month.">
+  <link rel="canonical" href="https://www.searchcentralfl.com/">
+  <meta name="robots" content="index, follow">
+
+  <!-- Open Graph and Twitter tags: how the link looks when it's shared. -->
+  <meta property="og:site_name" content="Search Central Florida">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Orlando Arts, Events &amp; Culture | Search Central Florida">
+  <meta property="og:description" content="Your guide to Orlando&#x27;s best local art, music, markets and events, plus SEARCH, a snail mail club that sends local art to your mailbox every month.">
+  <meta property="og:url" content="https://www.searchcentralfl.com/">
+  <meta property="og:image" content="https://www.searchcentralfl.com/images/og/default.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Search Central Florida: Orlando arts, culture and events, with the SEARCH mascot">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Orlando Arts, Events &amp; Culture | Search Central Florida">
+  <meta name="twitter:description" content="Your guide to Orlando&#x27;s best local art, music, markets and events, plus SEARCH, a snail mail club that sends local art to your mailbox every month.">
+  <meta name="twitter:image" content="https://www.searchcentralfl.com/images/og/default.jpg">
+  <meta name="twitter:image:alt" content="Search Central Florida: Orlando arts, culture and events, with the SEARCH mascot">
+
+  <!-- Structured data for search engines (schema.org). -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": "https://www.searchcentralfl.com/#organization",
+    "name": "Search Central Florida",
+    "alternateName": "SEARCH",
+    "url": "https://www.searchcentralfl.com/",
+    "logo": "https://www.searchcentralfl.com/images/mascot-head-color-large.webp",
+    "description": "A hyperlocal guide to Orlando arts, culture and small businesses, and home of SEARCH: a snail mail club.",
+    "email": "searchcentralflorida@gmail.com",
+    "areaServed": "Orlando, Florida",
+    "sameAs": [
+      "https://www.instagram.com/searchcentralfl/",
+      "https://patreon.com/SearchCentralFlorida"
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": "https://www.searchcentralfl.com/#website",
+    "name": "Search Central Florida",
+    "alternateName": "SEARCH",
+    "url": "https://www.searchcentralfl.com/",
+    "inLanguage": "en-US",
+    "publisher": {
+      "@id": "https://www.searchcentralfl.com/#organization"
+    }
+  }
+  </script>
+  <!-- SEO:END -->
 
   <!-- Little mascot icon in the browser tab. -->
   <link rel="icon" type="image/png" href="images/favicon.png">
@@ -219,10 +274,11 @@
           " happening today, hand-picked by us.";
 
         todays.slice(0, MAX_SHOWN).forEach(function (event) {
-          // Each row links to the events page, opened on today.
+          // Each row links to the event's own page. (Approved submissions
+          // don't have one, so they link to the events page, opened on today.)
           const item = document.createElement("li");
           const link = make("a", "today-item", "");
-          link.href = "events.html?day=" + today;
+          link.href = event.slug ? "events/" + event.slug + "/" : "events.html?day=" + today;
           link.append(
             make("span", "today-time", formatTime(event.start_time)),
             make("span", "today-title", event.title),

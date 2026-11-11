@@ -2,6 +2,8 @@
 title: "featured business of the month: florida coffee festival!!"
 date: 2026-11-09
 description: "November's SEARCH featured business is Florida Coffee Festival. Mail club members get 20% off tickets to the third annual festival on November 15 at Festival Park, Orlando."
+seo_title: "Featured Business: Coffee Festival"
+seo_description: "November's SEARCH featured business is Florida Coffee Festival. Mail club members get 20% off tickets to the November 15 festival at Festival Park."
 tags: [mail club, featured business, coffee, orlando events]
 series: Featured Business
 cover: images/blog/florida-coffee-festival.webp

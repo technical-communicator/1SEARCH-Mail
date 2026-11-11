@@ -1,0 +1,43 @@
+{
+  "_about": "Titles, descriptions and robots settings for the hand-written pages. Each page supplies its own. Titles: 60 characters max, in the form 'Page Topic | Search Central Florida' (the build adds the ' | Search Central Florida' part). Descriptions: 155 characters max. Blog posts and event pages get theirs from their own data, not from this file.",
+
+  "index.html": {
+    "topic": "Orlando Arts, Events & Culture",
+    "description": "Your guide to Orlando's best local art, music, markets and events, plus SEARCH, a snail mail club that sends local art to your mailbox every month.",
+    "robots": "index, follow",
+    "og_type": "website",
+    "schema": ["Organization", "WebSite"]
+  },
+  "events.html": {
+    "topic": "Orlando Events This Week",
+    "description": "Hand-picked Orlando events for the next seven days: live music, art shows, markets, comedy, film and workshops, on a calendar and a map.",
+    "robots": "index, follow",
+    "og_type": "website"
+  },
+  "mailclub.html": {
+    "topic": "SEARCH Snail Mail Art Club, Orlando",
+    "description": "A monthly snail mail club and Orlando art subscription box: prints and stickers from a local artist, plus perks from local businesses. From $6.99.",
+    "robots": "index, follow",
+    "og_type": "website",
+    "schema": ["FAQPage"]
+  },
+  "about.html": {
+    "topic": "About Us",
+    "description": "Search Central Florida is a hyperlocal guide to Orlando arts, culture and small businesses. Find something good, close the app and go.",
+    "robots": "index, follow",
+    "og_type": "website"
+  },
+  "submit.html": {
+    "topic": "Submit an Orlando Event",
+    "description": "Hosting an event in Orlando? Submit it to the Search Central Florida events calendar. It's free, takes two minutes and needs no account.",
+    "robots": "index, follow",
+    "og_type": "website"
+  },
+  "admin.html": {
+    "topic": "Reviewer Login",
+    "description": "Private review dashboard for Search Central Florida event submissions.",
+    "robots": "noindex, nofollow",
+    "og_type": "website",
+    "sitemap": false
+  }
+}

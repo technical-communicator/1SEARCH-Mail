@@ -8,8 +8,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Events in Orlando | Search Central Florida</title>
-  <meta name="description" content="Upcoming arts, music, food and community events in Orlando, curated by Search Central Florida.">
+  <!-- SEO:START These tags are written by tools/build_site.py from
+       seo/pages.json and seo/site.json. Edit those files, not this block. -->
+  <title>Orlando Events This Week | Search Central Florida</title>
+  <meta name="description" content="Hand-picked Orlando events for the next seven days: live music, art shows, markets, comedy, film and workshops, on a calendar and a map.">
+  <link rel="canonical" href="https://www.searchcentralfl.com/events.html">
+  <meta name="robots" content="index, follow">
+
+  <!-- Open Graph and Twitter tags: how the link looks when it's shared. -->
+  <meta property="og:site_name" content="Search Central Florida">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Orlando Events This Week | Search Central Florida">
+  <meta property="og:description" content="Hand-picked Orlando events for the next seven days: live music, art shows, markets, comedy, film and workshops, on a calendar and a map.">
+  <meta property="og:url" content="https://www.searchcentralfl.com/events.html">
+  <meta property="og:image" content="https://www.searchcentralfl.com/images/og/default.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Search Central Florida: Orlando arts, culture and events, with the SEARCH mascot">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Orlando Events This Week | Search Central Florida">
+  <meta name="twitter:description" content="Hand-picked Orlando events for the next seven days: live music, art shows, markets, comedy, film and workshops, on a calendar and a map.">
+  <meta name="twitter:image" content="https://www.searchcentralfl.com/images/og/default.jpg">
+  <meta name="twitter:image:alt" content="Search Central Florida: Orlando arts, culture and events, with the SEARCH mascot">
+  <!-- SEO:END -->
   <!-- Little mascot icon in the browser tab. -->
   <link rel="icon" type="image/png" href="images/favicon.png">
 
@@ -64,9 +86,39 @@
     <h2 id="day-heading" class="day-heading"></h2>
 
     <!-- The cards for the chosen day get added inside here.
-         aria-live makes screen readers announce it when the cards change. -->
+         aria-live makes screen readers announce it when the cards change.
+         Until the script runs, it holds a plain list of every upcoming
+         event with a link to its own page. That list is for search engines
+         (and anyone without JavaScript): tools/build_site.py writes it. -->
     <div id="event-list" class="event-list" aria-live="polite">
-      <p>Loading events...</p>
+      <!-- EVENTS-LIST:START (written by tools/build_site.py; the script below replaces it) -->
+      <ul class="event-index">
+        <li><a href="events/cinema-nsynq-2026-11-10/">Cinema NSYNQ</a> <span class="event-index-meta">Tue, Nov 10 · 6:00 PM · Lucky Straws Boba · Film</span></li>
+        <li><a href="events/craft-club-orlando-2026-11-10/">Craft Club Orlando</a> <span class="event-index-meta">Tue, Nov 10 · 6:30 PM · BookBurn Cafe · Workshops</span></li>
+        <li><a href="events/tasty-takeover-2026-11-10/">Tasty Takeover</a> <span class="event-index-meta">Tue, Nov 10 · 6:30 PM · Sportstown / Etoile Boutique · Food and Drink</span></li>
+        <li><a href="events/the-reconnect-movement-2026-11-10/">The Reconnect Movement</a> <span class="event-index-meta">Tue, Nov 10 · 7:00 PM · Dr. Drips Coffee Lounge · Community</span></li>
+        <li><a href="events/kayas-birthday-bash-2026-11-11/">Kaya&#x27;s Birthday Bash</a> <span class="event-index-meta">Wed, Nov 11 · 5:30 PM · Kaya Orlando · Food and Drink</span></li>
+        <li><a href="events/her-turn-to-spin-dj-workshop-2026-11-11/">Her Turn to Spin DJ Workshop</a> <span class="event-index-meta">Wed, Nov 11 · 7:00 PM · Rugged Perspective · Workshops</span></li>
+        <li><a href="events/timucua-jazz-jam-2026-11-11/">Timucua Jazz Jam</a> <span class="event-index-meta">Wed, Nov 11 · 7:30 PM · Timucua Arts Foundation · Music</span></li>
+        <li><a href="events/otr-open-stage-fight-night-2026-11-11/">OTR: Open Stage Fight Night</a> <span class="event-index-meta">Wed, Nov 11 · 10:00 PM · The Renaissance Theatre · Comedy</span></li>
+        <li><a href="events/fpn-movie-night-2026-11-12/">FPN Movie Night</a> <span class="event-index-meta">Thu, Nov 12 · 6:00 PM · Austin&#x27;s Coffee · Film</span></li>
+        <li><a href="events/fl-girl-goes-to-orlando-show-2026-11-12/">FL Girl Goes to Orlando Show</a> <span class="event-index-meta">Thu, Nov 12 · 7:00 PM · Austin&#x27;s Coffee · Music</span></li>
+        <li><a href="events/theatrical-thursdays-2026-11-12/">Theatrical Thursdays</a> <span class="event-index-meta">Thu, Nov 12 · 7:00 PM · Bynx Cafe · Comedy</span></li>
+        <li><a href="events/4resonance-open-air-party-2026-11-12/">4Resonance Open Air Party</a> <span class="event-index-meta">Thu, Nov 12 · 10:00 PM · Kissimmee Campgrounds · Music</span></li>
+        <li><a href="events/fall-museum-open-house-2026-11-13/">Fall Museum Open House</a> <span class="event-index-meta">Fri, Nov 13 · 6:30 PM · Art &amp; History Museums of Maitland · Art</span></li>
+        <li><a href="events/clothing-swap-and-groove-2026-11-13/">Clothing Swap &amp; Groove</a> <span class="event-index-meta">Fri, Nov 13 · 7:00 PM · Austin&#x27;s Coffee · Community</span></li>
+        <li><a href="events/diaspora-photo-exhibition-2026-11-13/">Diaspora: Photo Exhibition</a> <span class="event-index-meta">Fri, Nov 13 · 7:00 PM · Not Another Film Lab · Art</span></li>
+        <li><a href="events/dyke-night-a-heroes-journey-2026-11-13/">Dyke Night: A Heroes Journey</a> <span class="event-index-meta">Fri, Nov 13 · 8:00 PM · Conduit · Community</span></li>
+        <li><a href="events/the-orlando-pottery-festival-2026-11-14/">The Orlando Pottery Festival</a> <span class="event-index-meta">Sat, Nov 14 · 9:00 AM · 2809 S Ferncreek Ave, Orlando · Markets</span></li>
+        <li><a href="events/citrusmrkt-2026-11-14/">CitrusMRKT</a> <span class="event-index-meta">Sat, Nov 14 · 5:00 PM · 1500 Hillcrest St, Orlando · Markets</span></li>
+        <li><a href="events/hellhound-communion-2026-11-14/">Hellhound Communion</a> <span class="event-index-meta">Sat, Nov 14 · 8:00 PM · Austin&#x27;s Coffee · Comedy</span></li>
+        <li><a href="events/the-pheromones-show-2026-11-14/">The Pheromones Show</a> <span class="event-index-meta">Sat, Nov 14 · 8:00 PM · The Renaissance Theatre · Music</span></li>
+        <li><a href="events/fall-festival-and-plant-sale-2026-11-15/">Fall Festival &amp; Plant Sale</a> <span class="event-index-meta">Sun, Nov 15 · 9:00 AM · Mead Botanical Garden · Community</span></li>
+        <li><a href="events/brunch-and-beats-jazz-2026-11-15/">Brunch &amp; Beats Jazz</a> <span class="event-index-meta">Sun, Nov 15 · 11:00 AM · Bynx Cafe · Music</span></li>
+        <li><a href="events/bubbles-and-babes-burlesque-2026-11-15/">Bubbles &amp; Babes Burlesque</a> <span class="event-index-meta">Sun, Nov 15 · 11:00 AM · Anthem Orlando · Comedy</span></li>
+        <li><a href="events/florida-coffee-festival-2026-11-15/">Florida Coffee Festival</a> <span class="event-index-meta">Sun, Nov 15 · 11:00 AM · Festival Park, Orlando · Food and Drink</span></li>
+      </ul>
+      <!-- EVENTS-LIST:END -->
     </div>
 
     <!-- ===== THE MAP =====
@@ -89,6 +141,9 @@
       <!-- The days again, so you can change day without scrolling back up. -->
       <div class="map-days" id="map-days" role="group" aria-label="Choose a day"></div>
     </section>
+
+    <!-- Every event has its own page; this lists them all, past ones too. -->
+    <p class="all-events-link"><a href="events/">Browse every event we've listed, past and upcoming &rarr;</a></p>
 
     <!-- ===== CALL TO ACTION: submit an event ===== -->
     <aside class="submit-cta">
@@ -129,6 +184,8 @@
              "View on map", which scrolls down to the map and shows the pin. -->
         <div class="dialog-buttons">
           <a id="dialog-link" class="button dialog-link" target="_blank" rel="noopener" hidden></a>
+          <!-- The event's own page (events/<slug>/), for sharing. -->
+          <a id="dialog-page" class="button button-outline" hidden>Event page</a>
           <button id="dialog-map" class="button button-outline" type="button" hidden>View on map</button>
         </div>
       </div>
@@ -671,6 +728,12 @@
       } else {
         dialogLink.hidden = true;
       }
+
+      // Events from events.json have their own page (made by
+      // tools/build_site.py). Approved submissions don't, so it's hidden.
+      const pageLink = document.getElementById("dialog-page");
+      pageLink.hidden = !event.slug;
+      if (event.slug) pageLink.href = "events/" + event.slug + "/";
 
       // "View on map" only shows if the event has a place on the map.
       dialogEvent = event;

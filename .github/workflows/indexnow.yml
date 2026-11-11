@@ -1,0 +1,25 @@
+# Tells Bing (IndexNow) about new and updated pages after they're published.
+# It doesn't build anything: the site is built by running
+# tools/build_site.py and committing the result. This only sends the ping.
+name: IndexNow ping
+
+on:
+  push:
+    branches: [main]
+    paths: [seo/published.json]   # only when the build recorded changed pages
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0          # full history, to compare with the last push
+
+      # Give GitHub Pages time to publish the new pages (and the key file)
+      # before Bing comes to look at them.
+      - name: Wait for GitHub Pages to publish
+        run: sleep 180
+
+      - name: Send changed pages to IndexNow
+        run: python3 tools/indexnow.py --since "${{ github.event.before }}"

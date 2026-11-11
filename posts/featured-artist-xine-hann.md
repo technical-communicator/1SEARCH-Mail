@@ -2,6 +2,7 @@
 title: "featured artist of the month: Xine Hann"
 date: 2026-11-09
 description: "November's SEARCH featured artist is Xine Hann, an Orlando graphic designer, 3D collage artist and the founder of Orlando Collage Club."
+seo_title: "Featured Artist: Xine Hann"
 tags: [mail club, featured artist, collage, orlando artists]
 series: Featured Artist
 cover: images/blog/xine-hann-collage.webp

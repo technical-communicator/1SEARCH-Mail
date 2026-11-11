@@ -147,6 +147,31 @@ show on the calendar together.
 **Publishing a blog post.** Send the article (and any pictures) to Claude,
 which turns it into a page and publishes it.
 
+**Rebuilding the site.** Blog posts, event pages, the sitemap and the
+search tags are made by one command, run from the repo root:
+
+```
+pip install markdown pyyaml pillow
+python3 tools/build_site.py
+```
+
+Claude runs it whenever events or posts change. Then commit everything it
+changed. It stops with an ERROR line if a page has no title or description,
+two pages share a title, or an image has no alt text.
+
+- **Titles and descriptions** for the main pages are in `seo/pages.json`.
+  The site address, name and default share picture are in `seo/site.json`.
+- **Event pages.** Every event in `events.json` gets its own page, like
+  `/events/mex-market-2026-11-09/`, with a share picture. Old events keep
+  their pages (they're remembered in `data/events-archive.json`) and say
+  "This event has passed". Events approved on admin.html show on the
+  calendar straight away but only get their own page once they're added
+  to `events.json` and the build is run.
+- **Bing (IndexNow).** After each push that changes pages, a small GitHub
+  workflow (`.github/workflows/indexnow.yml`) tells Bing which pages are new.
+- **Google.** Submit `https://www.searchcentralfl.com/sitemap.xml` once in
+  Google Search Console (Sitemaps). Google re-reads it by itself after that.
+
 **If a GitHub deploy fails** with "No artifacts named github-pages", it's a
 temporary GitHub problem. Go to the **Actions** tab, open the failed run,
 and click **Re-run all jobs** (or just save any new change).
@@ -167,5 +192,9 @@ and click **Re-run all jobs** (or just save any new change).
 | `mailers.json` | Past mail club features (artist + business by month) |
 | `style.css` | All the styles, in numbered sections |
 | `posts/`, `tools/build_blog.py` | Blog posts and the script that builds the blog pages |
+| `tools/build_site.py` | The one build command: blog, event pages, search tags, sitemap |
+| `seo/` | Site-wide search settings (`site.json`) and page titles (`pages.json`) |
+| `events/`, `data/events-archive.json` | Generated event pages, and every event ever listed |
+| `sitemap.xml`, `robots.txt` | Made by the build, for search engines |
 | `supabase/` | The database setup and the two server functions |
 | `vendor/` | Copies of the map library (Leaflet) and the Supabase library |
