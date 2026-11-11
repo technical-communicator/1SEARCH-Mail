@@ -33,7 +33,8 @@
    15. Mail club banner (the full-width promo at the bottom of every page)
    16. Submitting events: the form, the call to action, the review dashboard
    17. Film finish: grain over the whole site, and a film look on photos
-   18. Event pages (one page per event) and the "all events" list */
+   18. Event pages (one page per event) and the "all events" list
+   19. Disclaimers (events page, event pages, submit page) */
 
 
 /* =========================================================
@@ -3396,4 +3397,36 @@ body::after {
   background: var(--section, #e0457b);
   color: var(--ink);
   text-align: center;
+}
+
+
+/* =========================================================
+   19. Disclaimers
+   A small dashed note: on the events page (we only curate events), on
+   every event page, and on the submit page (not every event is listed).
+   ========================================================= */
+.disclaimer {
+  max-width: 44rem;
+  margin: 1rem 0 0;
+  padding: 0.6rem 0.9rem;
+  border: 1px dashed var(--ink);
+  background: var(--cream);
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.disclaimer p {
+  margin: 0;
+}
+
+.disclaimer strong {
+  color: var(--ink);
+}
+
+main > .disclaimer {
+  margin-bottom: 1.5rem;
+}
+
+.event-page .disclaimer {
+  margin-top: 1.25rem;
 }

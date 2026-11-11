@@ -44,7 +44,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Yellowtail&display=swap">
 
-  <link rel="stylesheet" href="style.css?v=e3a82e55">
+  <link rel="stylesheet" href="style.css?v=77c4d3d0">
 </head>
 <!-- "page-events" gives this page the Events colour, blue (see style.css). -->
 <body class="page-events">
@@ -70,8 +70,13 @@
     <header class="masthead">
       <p class="section-chip">Submit an event</p>
       <h1>Add your event</h1>
-      <p class="masthead-intro">we curate this calendar for the vibe of our community. every submission is read by a real person, and if it's a good fit, we'll add it. we can't promise every event gets approved, or featured on our instagram, but we read them all. no account needed.</p>
+      <p class="masthead-intro">Tell us about your event in about two minutes. No account needed.</p>
     </header>
+
+    <!-- The submission disclaimer, shown before the form. -->
+    <aside class="disclaimer" aria-label="Before you submit">
+      <p><strong>Before you submit:</strong> we curate the calendar based on what our audience is most interested in, so not every event that's sent in is guaranteed to be listed. Each event is checked by a real person before it's added.</p>
+    </aside>
 
     <!-- The form (left) and the live preview (right, or below on phones). -->
     <div class="submit-layout" id="submit-layout">
@@ -116,14 +121,6 @@
             <p class="field-error" id="e-short_description"></p>
           </div>
 
-          <div class="field">
-            <label for="f-long">More details <span class="optional">(optional)</span></label>
-            <textarea id="f-long" name="long_description" rows="5" data-max="1000" maxlength="1000"
-                      aria-describedby="h-long c-long e-long_description"></textarea>
-            <p class="field-hint" id="h-long">Anything else people should know. Shows when someone opens your event.</p>
-            <p class="counter" id="c-long"></p>
-            <p class="field-error" id="e-long_description"></p>
-          </div>
         </fieldset>
 
         <fieldset>
@@ -166,19 +163,13 @@
         </fieldset>
 
         <fieldset>
-          <legend>Links &amp; contact</legend>
+          <legend>Link &amp; contact</legend>
           <div class="field">
             <label for="f-link">Tickets or more info <span class="req" aria-hidden="true">*</span></label>
             <input id="f-link" name="link" type="url" required maxlength="500" inputmode="url"
                    aria-describedby="h-link e-link" placeholder="https://">
-            <p class="field-hint" id="h-link">A ticket page, website or Instagram post about the event.</p>
+            <p class="field-hint" id="h-link">A ticket page, website or Instagram post about the event. We use it to check the details.</p>
             <p class="field-error" id="e-link"></p>
-          </div>
-          <div class="field">
-            <label for="f-instagram">Instagram handle <span class="optional">(optional)</span></label>
-            <input id="f-instagram" name="instagram_handle" type="text" maxlength="31" autocomplete="off"
-                   aria-describedby="e-instagram_handle" placeholder="@yourhandle">
-            <p class="field-error" id="e-instagram_handle"></p>
           </div>
           <div class="field">
             <label for="f-email">Your email <span class="optional">(optional)</span></label>
