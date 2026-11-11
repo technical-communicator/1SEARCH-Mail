@@ -8,8 +8,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- SEO:START These tags are written by tools/build_site.py from
        seo/pages.json and seo/site.json. Edit those files, not this block. -->
-  <title>Reviewer Login | Search Central Florida</title>
-  <meta name="description" content="Private review dashboard for Search Central Florida event submissions.">
+  <title>Admin Login | Search Central Florida</title>
+  <meta name="description" content="Private admin login for Search Central Florida.">
   <link rel="canonical" href="https://www.searchcentralfl.com/admin.html">
   <meta name="robots" content="noindex, nofollow">
 
@@ -17,16 +17,16 @@
   <meta property="og:site_name" content="Search Central Florida">
   <meta property="og:locale" content="en_US">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Reviewer Login | Search Central Florida">
-  <meta property="og:description" content="Private review dashboard for Search Central Florida event submissions.">
+  <meta property="og:title" content="Admin Login | Search Central Florida">
+  <meta property="og:description" content="Private admin login for Search Central Florida.">
   <meta property="og:url" content="https://www.searchcentralfl.com/admin.html">
   <meta property="og:image" content="https://www.searchcentralfl.com/images/og/default.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="Search Central Florida: Orlando arts, culture and events, with the SEARCH mascot">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Reviewer Login | Search Central Florida">
-  <meta name="twitter:description" content="Private review dashboard for Search Central Florida event submissions.">
+  <meta name="twitter:title" content="Admin Login | Search Central Florida">
+  <meta name="twitter:description" content="Private admin login for Search Central Florida.">
   <meta name="twitter:image" content="https://www.searchcentralfl.com/images/og/default.jpg">
   <meta name="twitter:image:alt" content="Search Central Florida: Orlando arts, culture and events, with the SEARCH mascot">
   <!-- SEO:END -->
@@ -64,30 +64,18 @@
 
   <main>
     <header class="masthead">
-      <p class="section-chip">Reviewers only</p>
-      <h1>Review events</h1>
-      <p class="masthead-intro">Check submitted events, fix anything that needs it, then approve or reject. Approved events show on the calendar right away.</p>
+      <p class="section-chip">Admin</p>
+      <h1>Admin login</h1>
     </header>
 
-    <!-- Shown if config.js hasn't been filled in yet. -->
-    <div class="panel setup-note" id="setup-note" hidden>
-      <p><strong>Logging in isn't switched on yet.</strong> The login below starts working once the site is connected to Supabase, where your login and the submitted events are stored. It's a one-time setup of about 30 minutes:</p>
-      <ol>
-        <li>Create a free Supabase project and run <code>supabase/schema.sql</code> (with your email in it).</li>
-        <li>Create your login in Supabase (Authentication &rarr; Users), with that same email and a password.</li>
-        <li>Set up the spam check, add the two server functions and their secret keys.</li>
-        <li>Paste the three public values into <code>config.js</code>.</li>
-      </ol>
-      <p>Every step is explained in plain language in <a href="https://github.com/technical-communicator/SEARCH-Mail#turning-on-event-submissions-one-time-setup-about-30-minutes">the setup guide (README)</a>. After that, come back here and log in with your email and password.</p>
-    </div>
-
-    <!-- ===== LOG IN ===== -->
+    <!-- ===== LOG IN =====
+         The username is the email address of the login made in Supabase
+         (Authentication -> Users). -->
     <section class="admin-login" id="login" hidden>
-      <h2 class="section-head">Log in</h2>
       <form id="login-form" class="submit-form">
         <div class="field">
-          <label for="l-email">Email</label>
-          <input id="l-email" type="email" autocomplete="username" required>
+          <label for="l-email">Username</label>
+          <input id="l-email" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" required>
         </div>
         <div class="field">
           <label for="l-password">Password</label>
@@ -165,8 +153,8 @@
 
     <div class="footer-bottom">
       <p>&copy; 2026 Search Central Florida. Made in Orlando.</p>
-      <!-- For Search Central Florida's reviewers. The page asks for a login. -->
-      <a href="admin.html" class="footer-top">Reviewer login</a>
+      <!-- For Search Central Florida's admins. The page asks for a login. -->
+      <a href="admin.html" class="footer-top">Admin login</a>
       <a href="#top" class="footer-top">Back to top &uarr;</a>
     </div>
   </footer>
@@ -194,12 +182,11 @@
     const $ = function (id) { return document.getElementById(id); };
 
     if (!config.supabaseUrl || !config.supabaseAnonKey) {
-      // Not connected yet: show the explanation and the login form, but
-      // switched off, so it's clear where logging in will happen.
-      $("setup-note").hidden = false;
+      // Not connected yet (config.js is empty): show the login form, but
+      // switched off. The setup steps are in README.md.
       $("login").hidden = false;
       $("login-form").querySelectorAll("input, button").forEach(function (el) { el.disabled = true; });
-      $("login-status").textContent = "Logging in will work once the setup above is done.";
+      $("login-status").textContent = "Login isn't switched on yet.";
       return;  // stop here
     }
 
@@ -214,7 +201,7 @@
         email: $("l-email").value.trim(),
         password: $("l-password").value,
       });
-      $("login-status").textContent = error ? "That email and password didn't work." : "";
+      $("login-status").textContent = error ? "That username and password didn't work." : "";
     });
 
     $("sign-out").addEventListener("click", function () { db.auth.signOut(); });

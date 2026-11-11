@@ -121,7 +121,7 @@ In **Edge Functions → Secrets**, add:
 
 1. Wait a minute or two for GitHub to publish, then open the site's
    **submit.html**, fill in a test event for a date this week, and send it.
-2. Open **admin.html** (it isn't linked from the site, so bookmark it), log in,
+2. Open **admin.html** (the small **Admin login** link at the bottom of every page), log in with your email as the username,
    and you'll see it under **Pending**. Click **Approve & publish**.
 3. Open the events page: your test event is on the calendar and the map.
    Back on admin.html you can **Unpublish** it when you're done.

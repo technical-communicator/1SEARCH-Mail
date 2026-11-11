@@ -674,6 +674,19 @@ main {
   transform: rotate(4deg);
 }
 
+/* The blue seal stamp (see .seal-stamp in section 15), over the right
+   side of the print, kept inside the slide so it isn't cut off. border,
+   shadow and filter are reset because the slide's other pictures have them. */
+.slide-mail .slide-stamp {
+  right: -8%;
+  top: 34%;
+  width: 62%;
+  border: 0;
+  box-shadow: none;
+  filter: none;
+  transform: rotate(-14deg);
+}
+
 /* The second sticker (two come in every package), on the print's top corner. */
 .slide-mail .slide-sticker-2 {
   left: auto;
@@ -2650,20 +2663,23 @@ h1.mcb-title {
   transform: rotate(4deg);
 }
 
-/* The club's seal, inked over the print's top corner like a fresh rubber
-   stamp. The picture already has the patchy, uneven ink (made from the
-   black seal, images/stamp.webp). "multiply" lets the print and the pink
-   show through the ink, the way real stamp ink soaks into paper. */
-.mcb-stamp {
+/* The club's seal, inked over the print like a fresh rubber stamp. It's
+   on every mail club ad: this banner and the home page's mail club slide.
+   The picture already has the patchy, uneven ink (made from the black
+   seal, images/stamp.webp). "multiply" lets the print and the pink show
+   through the ink, the way real stamp ink soaks into paper. */
+.seal-stamp {
   position: absolute;
   z-index: 1;
-  top: -4%;
-  right: -12%;
-  width: 46%;
   mix-blend-mode: multiply;
-  opacity: 0.92;
+  pointer-events: none;  /* clicks go through to whatever is underneath */
+}
+
+.mcb-stamp {
+  top: -6%;
+  right: -16%;
+  width: 54%;
   transform: rotate(-16deg);
-  pointer-events: none;  /* clicks go through to the print's link */
 }
 
 /* One of this month's stickers, stuck on the print's corner. */
@@ -3041,20 +3057,6 @@ h1.mcb-title {
 }
 
 /* ---- Review dashboard ---- */
-.setup-note {
-  max-width: 44rem;
-  margin-bottom: 1rem;
-  border-left: 6px solid var(--yellow);
-}
-
-.setup-note ol {
-  padding-left: 1.25rem;
-}
-
-.setup-note li {
-  margin-bottom: 0.3rem;
-}
-
 .submit-form input:disabled,
 .submit-form button:disabled {
   opacity: 0.55;

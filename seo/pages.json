@@ -34,8 +34,8 @@
     "og_type": "website"
   },
   "admin.html": {
-    "topic": "Reviewer Login",
-    "description": "Private review dashboard for Search Central Florida event submissions.",
+    "topic": "Admin Login",
+    "description": "Private admin login for Search Central Florida.",
     "robots": "noindex, nofollow",
     "og_type": "website",
     "sitemap": false

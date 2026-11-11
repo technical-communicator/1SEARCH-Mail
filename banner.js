@@ -89,7 +89,7 @@ function buildMailclubBanner(spot) {
               '<img loading="lazy" decoding="async" class="mcb-print" src="' + root + BANNER_SETTINGS.printImage + '" alt="" width="440" height="639">' +
             "</a>" +
             // The club's seal in blue ink, stamped over the print's corner.
-            '<img loading="lazy" decoding="async" class="mcb-stamp" src="' + root + 'images/stamp-blue.webp" alt="" width="400" height="400">' +
+            '<img loading="lazy" decoding="async" class="seal-stamp mcb-stamp" src="' + root + 'images/stamp-blue.webp" alt="" width="400" height="400">' +
             '<img loading="lazy" decoding="async" class="mcb-sticker" src="' + root + BANNER_SETTINGS.stickerImage + '" alt="" width="400" height="474">' +
             '<img loading="lazy" decoding="async" class="mcb-sticker mcb-sticker-2" src="' + root + BANNER_SETTINGS.sticker2Image + '" alt="" width="240" height="333">' +
             // The small "this month's perk" card, like a product card on a shop banner.
