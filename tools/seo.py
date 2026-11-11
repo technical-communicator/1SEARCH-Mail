@@ -219,6 +219,17 @@ def render_head(*, path, file, title, description, robots="index, follow",
         f'<meta name="twitter:image" content="{esc(absolute(image))}">',
         f'<meta name="twitter:image:alt" content="{esc(image_alt)}">',
     ]
+    # The site icon (the mascot), in the sizes Google and phones want.
+    # Google only uses icons whose size is a multiple of 48 pixels.
+    # The paths start with "/" so they work from any folder.
+    lines += [
+        "",
+        "<!-- Site icon: the mascot head. Google shows it next to search results. -->",
+        '<link rel="icon" href="/favicon.ico" sizes="48x48">',
+        '<link rel="icon" type="image/png" sizes="96x96" href="/images/icons/icon-96.png">',
+        '<link rel="icon" type="image/png" sizes="192x192" href="/images/icons/icon-192.png">',
+        '<link rel="apple-touch-icon" href="/apple-touch-icon.png">',
+    ]
     out = "\n".join((indent + line) if line else "" for line in lines)
     if json_ld:
         out += "\n\n" + indent + "<!-- Structured data for search engines (schema.org). -->\n"

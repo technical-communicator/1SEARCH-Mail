@@ -177,7 +177,6 @@ def head(prefix, path, file, title, description, og_type, json_ld=(),
   <meta name="viewport" content="width=device-width, initial-scale=1">
 {tags}
 
-  <link rel="icon" type="image/png" href="{prefix}images/favicon.png">
   <!-- Fonts: Anton for headlines, Courier Prime (typewriter) for text,
        Yellowtail (handwriting) for small accents. Same on every page. -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
