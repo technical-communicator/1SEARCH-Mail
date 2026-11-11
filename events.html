@@ -65,6 +65,15 @@
     </nav>
   </header>
 
+  <!-- ===== MOVING TICKER =====
+       A scrolling strip like the one on the mail club banner. It starts
+       with the words below; once the events load, the script swaps in
+       today's events. The words are written twice so the loop has no gap.
+       aria-hidden: screen readers skip it (the same events are listed below). -->
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track" id="events-ticker"><span>HAND-PICKED ORLANDO EVENTS ★ NEW EVERY WEEK ★ MUSIC ★ ART ★ MARKETS ★ FOOD AND DRINK ★ FILM ★ COMEDY ★ COMMUNITY ★ WORKSHOPS ★ SUBMIT YOUR EVENT FOR FREE ★ </span><span>HAND-PICKED ORLANDO EVENTS ★ NEW EVERY WEEK ★ MUSIC ★ ART ★ MARKETS ★ FOOD AND DRINK ★ FILM ★ COMEDY ★ COMMUNITY ★ WORKSHOPS ★ SUBMIT YOUR EVENT FOR FREE ★ </span></div>
+  </div>
+
   <main class="events-main">
     <header class="masthead">
       <p class="section-chip">Orlando events</p>
@@ -773,6 +782,27 @@
 
     // ---------- Start everything ----------
 
+    // The moving ticker under the header: today's events (or the next day
+    // that has some), like "7:30 PM TIMUCUA JAZZ JAM AT TIMUCUA ARTS FOUNDATION".
+    function fillTicker(today) {
+      const upcoming = allEvents
+        .filter(function (event) { return event.date >= today; })
+        .sort(function (a, b) { return (a.date + a.start_time).localeCompare(b.date + b.start_time); });
+      if (upcoming.length === 0) return;  // keep the starting words
+      const firstDay = upcoming[0].date;
+      const label = firstDay === today ? "TODAY IN ORLANDO" :
+        formatDate(firstDay, { weekday: "long" }).toUpperCase() + " IN ORLANDO";
+      let text = label + " ★ ";
+      upcoming.filter(function (event) { return event.date === firstDay; }).forEach(function (event) {
+        text += formatTime(event.start_time) + " " + event.title + " AT " + event.venue + " ★ ";
+      });
+      text += "SUBMIT YOUR EVENT FOR FREE ★ ";
+      const track = document.getElementById("events-ticker");
+      track.querySelectorAll("span").forEach(function (span) { span.textContent = text; });
+      // Longer text gets a longer loop, so it always moves at the same speed.
+      track.style.animationDuration = Math.round(text.length / 3.2) + "s";
+    }
+
     async function start() {
       try {
         // events.json plus approved submissions (see events-common.js).
@@ -787,6 +817,8 @@
 
       // Make the list of days: today, tomorrow, ... (7 in total).
       const today = todayInOrlando();
+
+      fillTicker(today);
       const days = [];
       for (let i = 0; i < DAYS_TO_SHOW; i++) {
         days.push(addDays(today, i));

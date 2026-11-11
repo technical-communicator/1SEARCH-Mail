@@ -454,8 +454,25 @@ def build_post_page(post, all_posts):
 """
 
 
-def build_listing(posts, prefix, title_text, intro, current, page_title, description, path, trail):
+def ticker(posts):
+    """The moving strip under the header on the blog's list pages: the
+    newest post titles, like the one on the mail club banner. The words are
+    written twice so the loop has no gap. Longer text loops more slowly, so
+    it always moves at the same speed."""
+    text = "NEW ON THE BLOG \u2605 " + "".join(f"{esc(p['title'])} \u2605 " for p in posts[:5])
+    text += "STORIES FROM CENTRAL FLORIDA \u2605 "
+    seconds = max(20, round(len(text) / 3.2))
+    return f"""  <!-- Moving ticker: the newest posts. Screen readers skip it (aria-hidden),
+       since the same posts are listed below. -->
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track" style="animation-duration: {seconds}s"><span>{text}</span><span>{text}</span></div>
+  </div>"""
+
+
+def build_listing(posts, prefix, title_text, intro, current, page_title, description, path, trail,
+                  all_posts=()):
     """A list page: blog.html (all posts) or one series page.
+    all_posts (newest first) fills the moving ticker.
     path is its address from the site root; trail is its breadcrumb trail."""
     if posts:
         lead = lead_story(posts[0], prefix)
@@ -470,6 +487,7 @@ def build_listing(posts, prefix, title_text, intro, current, page_title, descrip
 {head(prefix, path, ROOT / path, page_title, description, "website", [seo.breadcrumbs(trail)])}
 <body class="page-blog">
 {header(prefix, "Blog")}
+{ticker(all_posts)}
 
   <main class="blog-main">
     <h1 class="blog-title">{esc(title_text)}</h1>
@@ -523,7 +541,7 @@ def main():
         posts, "", "Blog", ALL_INTRO, "All",
         seo.full_title("Orlando Art & Culture Blog"),
         "Guides, local artist spotlights and snail mail club news from Search Central Florida, your hyperlocal Orlando arts and culture guide.",
-        "blog.html", [("Home", ""), ("Blog", "blog.html")]), encoding="utf-8")
+        "blog.html", [("Home", ""), ("Blog", "blog.html")], posts), encoding="utf-8")
     print(f"built blog.html ({len(posts)} post{'' if len(posts) == 1 else 's'})")
 
     for name, slug, _, intro in SERIES:
@@ -533,7 +551,8 @@ def main():
             seo.full_title(f"{name}: SEARCH Blog"),
             f"{name} posts from Search Central Florida: {intro}",
             f"blog/series/{slug}.html",
-            [("Home", ""), ("Blog", "blog.html"), (name, f"blog/series/{slug}.html")]), encoding="utf-8")
+            [("Home", ""), ("Blog", "blog.html"), (name, f"blog/series/{slug}.html")], posts),
+            encoding="utf-8")
         print(f"built blog/series/{slug}.html ({len(in_series)})")
 
     update_mailclub(posts)

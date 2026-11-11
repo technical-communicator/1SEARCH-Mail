@@ -675,12 +675,12 @@ main {
 }
 
 /* The blue seal stamp (see .seal-stamp in section 15), over the right
-   side of the print, kept inside the slide so it isn't cut off. border,
+   edge of the print. border,
    shadow and filter are reset because the slide's other pictures have them. */
 .slide-mail .slide-stamp {
-  right: -8%;
-  top: 34%;
-  width: 62%;
+  right: -7%;
+  top: 50%;
+  width: 31%;   /* to scale: a 1.25 in stamp on the 4 in wide print */
   border: 0;
   box-shadow: none;
   filter: none;
@@ -2595,6 +2595,30 @@ h1.mcb-title {
   white-space: nowrap;
 }
 
+/* The same kind of moving strip, under the header on the events page and
+   the blog's list pages. A thin line in the page's colour underneath. */
+.ticker {
+  overflow: hidden;
+  padding: 0.5rem 0;
+  background: var(--ink);
+  color: #ffffff;
+  border-bottom: 4px solid var(--section);
+}
+
+.ticker-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 35s linear infinite;  /* pages may set a longer time */
+}
+
+.ticker-track span {
+  font-size: 0.85rem;
+  font-weight: bold;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
 /* ---- The big pink banner, on the SCF pink halftone ---- */
 .mcb-main {
   overflow: hidden;  /* keeps the tilted picture inside the banner */
@@ -2675,10 +2699,12 @@ h1.mcb-title {
   pointer-events: none;  /* clicks go through to whatever is underneath */
 }
 
+/* Sized to scale: a real 1.25 in stamp on the 4 in wide print is 31% of
+   the print's width. The print is 70% of this box wide, so 31% x 70% = 22%. */
 .mcb-stamp {
-  top: -6%;
-  right: -16%;
-  width: 54%;
+  top: 0;
+  right: -11%;   /* half over the print's corner, half on the pink */
+  width: 22%;
   transform: rotate(-16deg);
 }
 
@@ -2827,7 +2853,8 @@ h1.mcb-title {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .mcb-ticker-track {
+  .mcb-ticker-track,
+  .ticker-track {
     animation: none;
   }
 }
