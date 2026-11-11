@@ -476,6 +476,29 @@ def update_hand_written_pages():
 
 
 # ---------------------------------------------------------------------------
+# Fresh files after every update ("cache busting")
+# ---------------------------------------------------------------------------
+
+# The site's own CSS and JavaScript files. Browsers keep a saved copy of
+# these, so after an update a visitor could see the new page with the OLD
+# styles. Adding "?v=" plus a code made from the file's contents, like
+# style.css?v=3f9a1c2e, gives each version its own address: when the file
+# changes, the code changes, and every browser fetches the new copy.
+VERSIONED_FILES = ["style.css", "banner.js", "events-common.js", "config.js"]
+
+
+def add_version_codes():
+    codes = {name: seo.fingerprint(ROOT / name)[:8] for name in VERSIONED_FILES}
+    names = "|".join(re.escape(name) for name in VERSIONED_FILES)
+    pattern = re.compile(r'((?:src|href)="(?:\.\./)*)(' + names + r')(?:\?v=[0-9a-f]+)?"')
+    for page in seo.PAGES:
+        text = page["file"].read_text(encoding="utf-8")
+        new = pattern.sub(lambda m: f'{m.group(1)}{m.group(2)}?v={codes[m.group(2)]}"', text)
+        if new != text:
+            page["file"].write_text(new, encoding="utf-8")
+
+
+# ---------------------------------------------------------------------------
 
 def main():
     og_images.default_image()
@@ -495,6 +518,8 @@ def main():
     update_hand_written_pages()
     print("updated the SEO tags in " + ", ".join(
         k for k in json.loads(PAGES_FILE.read_text(encoding="utf-8")) if not k.startswith("_")))
+
+    add_version_codes()
 
     print("\n== Checks")
     errors, warnings = seo.check_pages()
