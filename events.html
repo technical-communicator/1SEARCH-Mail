@@ -48,7 +48,7 @@
 
   <!-- Leaflet, the map library, kept in our own vendor/ folder. -->
   <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
-  <link rel="stylesheet" href="style.css?v=3df01ae1">
+  <link rel="stylesheet" href="style.css?v=39a483c7">
 </head>
 <!-- "page-events" gives this page its section colour, blue (see style.css). -->
 <body class="page-events">
@@ -84,9 +84,6 @@
       <p class="section-chip">Orlando events</p>
       <h1>Events</h1>
       <p class="masthead-intro">Hand-picked things to do around Orlando. Pick a day, then tap an event for the details.</p>
-      <!-- The curation disclaimer. The same words are on every event page
-           (made by tools/build_site.py). -->
-      <p class="disclaimer"><strong>Good to know:</strong> we curate these events, but we don't produce, host or manage them. Details can change, so always check with the event host before you commit to going or buy tickets.</p>
     </header>
 
     <!-- ===== DAY STRIP =====
@@ -167,6 +164,11 @@
       </div>
       <a class="button" href="submit.html">Submit an event</a>
     </aside>
+
+    <!-- The curation disclaimer: small, at the very bottom, so the page
+         opens straight onto the events. The same words are on every event
+         page (made by tools/build_site.py). -->
+    <p class="disclaimer disclaimer-small"><strong>Good to know:</strong> we curate these events, but we don't produce, host or manage them. Details can change, so always check with the event host before you commit to going or buy tickets.</p>
   </main>
 
   <!-- The full-width mail club banner. banner.js fills in this empty spot.

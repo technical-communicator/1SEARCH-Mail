@@ -346,12 +346,12 @@ def build_event_page(event):
       </div>
     </article>
 
-    <p class="disclaimer"><strong>Good to know:</strong> Search Central Florida curates this event but doesn't produce, host or manage it. Details can change, so always check with the event host before you commit to going or buy tickets.</p>
-
     <div class="buttons event-more">
       {more_button}
       <a class="button button-outline" href="{prefix}events/">All events</a>
     </div>
+
+    <p class="disclaimer disclaimer-small"><strong>Good to know:</strong> Search Central Florida curates this event but doesn't produce, host or manage it. Details can change, so always check with the event host before you commit to going or buy tickets.</p>
   </main>"""
 
     scripts = f"""  <script>

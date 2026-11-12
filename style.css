@@ -3433,3 +3433,17 @@ main > .disclaimer {
 .event-page .disclaimer {
   margin-top: 1.25rem;
 }
+
+/* The small version at the bottom of the events page and event pages:
+   no box, just quiet fine print. */
+.disclaimer-small {
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+
+main > .disclaimer-small {
+  margin: 1.5rem 0 0;
+}
