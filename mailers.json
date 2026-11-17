@@ -36,19 +36,18 @@
   },
   {
     "month": "October 2026",
-    "placeholder": true,
     "artist": {
-      "name": "Artist name",
-      "about": "A short line about this month's artist goes here.",
-      "image": "",
-      "instagram": "",
+      "name": "Val Rodriguez",
+      "about": "A film major studying production and character design, drawing spooky, detailed portraits in hatching and crosshatching, inspired by Guillermo del Toro.",
+      "image": "images/mailer/val-print-small.webp",
+      "instagram": "https://www.instagram.com/goblinart._/",
       "post": ""
     },
     "business": {
-      "name": "Business name",
-      "about": "A short line about this month's business and its perk goes here.",
-      "image": "",
-      "instagram": "",
+      "name": "Not Another Film Lab",
+      "about": "Members got 15% off their first film development. Their new spot, OTRO Coffee, pairs film photography with artisanal coffee at 1320 S Crystal Lake Dr.",
+      "image": "images/mailer/notanotherfilmlab-thumb.webp",
+      "instagram": "https://www.instagram.com/notanotherfilmlab/",
       "post": ""
     }
   },
