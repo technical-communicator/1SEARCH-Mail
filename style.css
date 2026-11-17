@@ -36,7 +36,8 @@
    18. Event pages (one page per event) and the "all events" list
    19. Disclaimers (events page, event pages, submit page)
    20. Mail club: this month's artist and the "join by" date
-   21. Brand halftone textures (red, pink, blue, yellow) */
+   21. Brand halftone textures (red, pink, blue, yellow)
+   22. "Share to your story" maker */
 
 
 /* =========================================================
@@ -3536,4 +3537,144 @@ main > .disclaimer-small {
 .mcb-stamp,
 .slide-red .slide-stamp {
   mix-blend-mode: normal;
+}
+
+
+/* =========================================================
+   22. "Share to your story" (story.js)
+   The button on the mail club banner and the pop-up that makes a
+   1080x1920 Instagram story picture of this month's issue.
+   ========================================================= */
+.mcb-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.mcb-share {
+  background: transparent;
+  color: #ffffff;
+  border: 2px solid #ffffff;
+  font-size: 1rem;
+}
+
+.mcb-share:hover {
+  background: #ffffff;
+  color: var(--ink);
+}
+
+.story-dialog {
+  width: min(94vw, 46rem);
+  max-height: 92vh;
+  padding: 0;
+  border: var(--border);
+  background: var(--paper);
+  overflow: auto;
+}
+
+.story-dialog::backdrop {
+  background: rgba(20, 20, 20, 0.75);
+}
+
+.story-panel {
+  position: relative;
+  padding: 1.25rem;
+}
+
+.story-panel h2 {
+  margin: 0 2.5rem 0.25rem 0;
+  font-size: 2rem;
+}
+
+.story-note {
+  margin: 0 0 1rem;
+  font-size: 0.9rem;
+}
+
+.story-close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.75rem;
+  border: 0;
+  background: none;
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.story-body {
+  display: grid;
+  gap: 1.25rem;
+  justify-items: center;
+}
+
+/* The preview: the real 1080x1920 picture, shown small. */
+.story-canvas {
+  width: min(100%, 15rem);
+  height: auto;
+  aspect-ratio: 9 / 16;
+  border: var(--border);
+  background: var(--cream);
+}
+
+.story-controls {
+  display: grid;
+  gap: 0.75rem;
+  align-content: start;
+  width: 100%;
+}
+
+.story-colours {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.story-colours legend {
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.story-swatch {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid var(--ink);
+  background: var(--cream);
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.story-swatch input {
+  position: absolute;
+  opacity: 0;
+}
+
+.story-chip {
+  flex: none;
+  width: 1.6rem;
+  height: 1.6rem;
+  border: 1px solid var(--ink);
+  background-size: 300px;
+}
+
+.story-swatch:has(input:checked) {
+  outline: 3px solid var(--ink);
+  font-weight: bold;
+}
+
+.story-swatch:has(input:focus-visible) {
+  outline: 3px solid var(--red);
+}
+
+@media (min-width: 40rem) {
+  .story-body {
+    grid-template-columns: 15rem 1fr;
+    align-items: start;
+  }
 }

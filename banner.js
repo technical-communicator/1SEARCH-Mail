@@ -40,6 +40,14 @@ const BANNER_SETTINGS = {
   perkImage: "images/mailer/morse-thumb.webp",  // a small copy, it shows tiny
   stickerImage: "images/mailer/jasmine-sticker-heart-small.webp",
   sticker2Image: "images/mailer/jasmine-sticker-skeleton-small.webp",   // two stickers come in every package
+
+  // For the shareable Instagram story (story.js): full-size copies, so the
+  // 1080x1920 picture is sharp, and the print's real width in inches, so the
+  // stickers (about 2.5 in long) and the stamp (1.25 in) are drawn to scale.
+  storyPrint: "images/mailer/jasmine-print.webp",
+  storySticker: "images/mailer/jasmine-sticker-heart.webp",
+  storySticker2: "images/mailer/jasmine-sticker-skeleton.webp",
+  printWidthInches: 6,   // 6 for a landscape 6x4 print, 4 for a portrait 4x6
 };
 
 // The ticker's words. They're written twice so the loop has no gap.
@@ -93,7 +101,11 @@ function buildMailclubBanner(spot) {
             '<p class="mcb-eyebrow">SEARCH: a snail mail club</p>' +
             "<" + headingTag + ' class="mcb-title">Local art in your mailbox, every month!</' + headingTag + ">" +
             '<p class="mcb-sub">a new central florida artist every month, plus perks from local businesses. starting at $6.99 a month. join by ' + BANNER_SETTINGS.joinBy.toLowerCase() + " to get " + BANNER_SETTINGS.month + "'s mail.</p>" +
-            '<a class="button mcb-button" href="' + root + 'mailclub.html#tiers">Join by ' + BANNER_SETTINGS.joinBy + "</a>" +
+            '<div class="mcb-buttons">' +
+              '<a class="button mcb-button" href="' + root + 'mailclub.html#tiers">Join by ' + BANNER_SETTINGS.joinBy + "</a>" +
+              // Opens the "share to your story" maker (story.js).
+              '<button type="button" class="button mcb-share" data-root="' + root + '">Share to your story</button>' +
+            "</div>" +
           "</div>" +
 
           '<div class="mcb-visual">' +
@@ -122,6 +134,24 @@ function buildMailclubBanner(spot) {
 
 // Fill in every banner spot on the page (there's normally just one).
 document.querySelectorAll("[data-mailclub-banner]").forEach(buildMailclubBanner);
+
+// The "Share to your story" button loads story.js the first time it's
+// tapped (so pages don't download it unless someone wants it), then opens
+// the story maker.
+document.addEventListener("click", function (clickEvent) {
+  const button = clickEvent.target.closest(".mcb-share");
+  if (!button) return;
+  const root = button.dataset.root || "";
+  if (window.openStoryMaker) {
+    window.openStoryMaker(root);
+    return;
+  }
+  const script = document.createElement("script");
+  // "?v=" plus today's date: browsers fetch a fresh copy at most once a day.
+  script.src = root + "story.js?v=" + new Date().toISOString().slice(0, 10);
+  script.onload = function () { window.openStoryMaker(root); };
+  document.head.append(script);
+});
 
 // Any other "join by" date on the page (the home slide, the mail club
 // page) is written as <span data-join-by>Nov 29</span>. This keeps them
