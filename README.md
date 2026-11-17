@@ -51,7 +51,13 @@ Until you finish these steps, the calendar keeps working from
    This way, nobody else can make an account. (Even if they could, only the
    email from Step 1 can review events.)
 
-### Step 3: Set up the spam check (Cloudflare Turnstile)
+### Step 3 (optional): Set up the spam check (Cloudflare Turnstile)
+
+You can skip this. Without it, the form still has two quiet spam traps
+(a hidden field bots fill in, and a check that throws out forms sent in
+under 3 seconds), and you review every event before it goes live. Add
+Turnstile later if spam starts showing up in your Pending tab.
+
 
 1. Sign up at [cloudflare.com](https://dash.cloudflare.com/sign-up) (free) and
    open **Turnstile** in the menu. Click **Add widget**.
@@ -97,7 +103,7 @@ In **Edge Functions → Secrets**, add:
 
 | Name | Value |
 | --- | --- |
-| `TURNSTILE_SECRET_KEY` | the Turnstile **Secret Key** from Step 3 |
+| `TURNSTILE_SECRET_KEY` | the Turnstile **Secret Key** from Step 3 (only if you did Step 3) |
 | `GEOCODIO_API_KEY` | your Geocodio key from Step 4 |
 | `ALLOWED_ORIGIN` | `https://www.searchcentralfl.com` (optional: only lets your own site use the functions) |
 

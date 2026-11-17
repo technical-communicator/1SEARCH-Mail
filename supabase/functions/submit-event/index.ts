@@ -10,7 +10,8 @@
 //   3. Saves the event with status "pending".
 //
 // Secrets it needs (Supabase -> Edge Functions -> Secrets):
-//   TURNSTILE_SECRET_KEY   from Cloudflare Turnstile
+//   TURNSTILE_SECRET_KEY   from Cloudflare Turnstile (optional: without it,
+//                          the spam check is skipped)
 // Supabase provides SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY by itself.
 //
 // IMPORTANT: turn OFF "Enforce JWT verification" (verify JWT) for this
@@ -105,20 +106,29 @@ Deno.serve(async (req) => {
   // Pretend it worked, so the bot doesn't learn anything.
   if (clean(body.website)) return reply(200, { ok: true });
 
-  // 1. The spam test.
+  // A person takes more than a few seconds to fill in the form; a bot sends
+  // it straight away. The form says when it was opened ("startedAt").
+  const startedAt = Number(body.startedAt);
+  if (startedAt && Date.now() - startedAt < 3000) return reply(200, { ok: true });
+
+  // 1. The spam test (Cloudflare Turnstile). It's OPTIONAL: only used if
+  //    TURNSTILE_SECRET_KEY is saved in Supabase's secrets. Without it,
+  //    the hidden field, the timing check above and your review of every
+  //    submission keep spam off the calendar.
   const secret = Deno.env.get("TURNSTILE_SECRET_KEY");
-  if (!secret) return reply(500, { error: "Submissions aren't set up yet (missing spam check key)." });
-  const check = new FormData();
-  check.append("secret", secret);
-  check.append("response", clean(body.turnstileToken));
-  const ip = req.headers.get("CF-Connecting-IP") ?? req.headers.get("x-forwarded-for");
-  if (ip) check.append("remoteip", ip.split(",")[0].trim());
-  const verdict = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
-    method: "POST",
-    body: check,
-  }).then((r) => r.json()).catch(() => ({ success: false }));
-  if (!verdict.success) {
-    return reply(400, { error: "The spam check didn't go through. Please try it again." });
+  if (secret) {
+    const check = new FormData();
+    check.append("secret", secret);
+    check.append("response", clean(body.turnstileToken));
+    const ip = req.headers.get("CF-Connecting-IP") ?? req.headers.get("x-forwarded-for");
+    if (ip) check.append("remoteip", ip.split(",")[0].trim());
+    const verdict = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+      method: "POST",
+      body: check,
+    }).then((r) => r.json()).catch(() => ({ success: false }));
+    if (!verdict.success) {
+      return reply(400, { error: "The spam check didn't go through. Please try it again." });
+    }
   }
 
   // 2. Check the fields.

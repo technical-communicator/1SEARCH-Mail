@@ -289,7 +289,10 @@
     const form = document.getElementById("submit-form");
     const statusLine = document.getElementById("form-status");
     const submitButton = document.getElementById("submit-button");
-    const isSetUp = Boolean(config.supabaseUrl && config.supabaseAnonKey && config.turnstileSiteKey);
+    // The form works once Supabase is connected. The Turnstile spam check
+    // is optional: it only appears if turnstileSiteKey is set in config.js.
+    const isSetUp = Boolean(config.supabaseUrl && config.supabaseAnonKey);
+    const openedAt = Date.now();   // sent along, so the server can spot instant bot sends
 
     // The date can't be in the past: the date picker starts from today.
     document.getElementById("f-date").min = todayInOrlando();
@@ -419,7 +422,7 @@
         say("Submissions aren't switched on just yet. In the meantime, send your event to us on Instagram: @searchcentralfl", true);
         return;
       }
-      if (!turnstileToken) {
+      if (config.turnstileSiteKey && !turnstileToken) {
         say("Please complete the quick spam check above the button.", true);
         return;
       }
@@ -433,7 +436,7 @@
         const response = await fetch(config.supabaseUrl + "/functions/v1/submit-event", {
           method: "POST",
           headers: headers,
-          body: JSON.stringify({ ...values, turnstileToken: turnstileToken }),
+          body: JSON.stringify({ ...values, turnstileToken: turnstileToken, startedAt: openedAt }),
         });
         const result = await response.json().catch(function () { return {}; });
 
