@@ -34,7 +34,9 @@ const BANNER_SETTINGS = {
   printImage: "images/mailer/jasmine-print-small.webp",
   // The small card on the banner shows this month's local business perk.
   perk: "Morse Museum",
-  perkPost: "mailclub.html#this-month",
+  // A full web address (starting with https) opens the business's own site
+  // in a new tab; a page name like "mailclub.html" stays on our site.
+  perkPost: "https://www.morsemuseum.org/",
   perkImage: "images/mailer/morse-thumb.webp",  // a small copy, it shows tiny
   stickerImage: "images/mailer/jasmine-sticker-heart-small.webp",
   sticker2Image: "images/mailer/jasmine-sticker-skeleton-small.webp",   // two stickers come in every package
@@ -59,6 +61,12 @@ function buildMailclubBanner(spot) {
   // Normally the headline is an <h2>. The mail club page puts the banner at
   // the very top and adds data-heading="1", so it becomes the page's <h1>.
   const headingTag = spot.dataset.heading === "1" ? "h1" : "h2";
+
+  // The perk card links to the business's own website (new tab) or to a
+  // page on our site.
+  const perkIsOutside = BANNER_SETTINGS.perkPost.startsWith("http");
+  const perkLink = perkIsOutside ? BANNER_SETTINGS.perkPost : root + BANNER_SETTINGS.perkPost;
+  const perkTarget = perkIsOutside ? ' target="_blank" rel="noopener"' : "";
 
   // Each tier tile is a link to the mail club page, e.g.
   // mailclub.html?tier=print#tiers  ("#tiers" scrolls to the envelopes).
@@ -99,7 +107,7 @@ function buildMailclubBanner(spot) {
             '<img loading="lazy" decoding="async" class="mcb-sticker" src="' + root + BANNER_SETTINGS.stickerImage + '" alt="" width="260" height="336">' +
             '<img loading="lazy" decoding="async" class="mcb-sticker mcb-sticker-2" src="' + root + BANNER_SETTINGS.sticker2Image + '" alt="" width="300" height="237">' +
             // The small "this month's perk" card, like a product card on a shop banner.
-            '<a class="mcb-card" href="' + root + BANNER_SETTINGS.perkPost + '">' +
+            '<a class="mcb-card" href="' + perkLink + '"' + perkTarget + ">" +
               '<img loading="lazy" decoding="async" src="' + root + BANNER_SETTINGS.perkImage + '" alt="">' +
               '<span class="mcb-card-label">' + BANNER_SETTINGS.month + "'s perk</span>" +
               '<span class="mcb-card-name">' + BANNER_SETTINGS.perk + " &rarr;</span>" +

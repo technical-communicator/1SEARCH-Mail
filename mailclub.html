@@ -101,7 +101,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Yellowtail&display=swap">
-  <link rel="stylesheet" href="style.css?v=a6a4fbb4">
+  <link rel="stylesheet" href="style.css?v=ee23e5fc">
 </head>
 <!-- "page-mailclub" gives this page its section colour, pink (see style.css). -->
 <body class="page-mailclub">
@@ -131,7 +131,7 @@
   <div data-mailclub-banner data-root="" data-heading="1">
     <h1 class="mcb-title mcb-placeholder">Local art in your mailbox, every month!</h1>
   </div>
-  <script src="banner.js?v=1ddb0bb4"></script>
+  <script src="banner.js?v=5c34bf11"></script>
 
   <main>
     <!-- ===== CHOOSE YOUR TIER =====
@@ -143,7 +143,7 @@
       <h2 class="section-head">Choose your tier!</h2>
       <p class="reading">hi everyone! welcome to SEARCH: a snail mail club by <a href="https://www.instagram.com/searchcentralfl/">@searchcentralfl</a>. pick the tier that's right for you. you can cancel any time.</p>
       <!-- The date in data-join-by comes from BANNER_SETTINGS.joinBy in banner.js. -->
-      <p class="join-by-note"><strong>join by <span data-join-by>Nov 29</span></strong> to get december's package, featuring <a href="#this-month">Jasmine Saldana</a> and the Morse Museum.</p>
+      <p class="join-by-note"><strong>join by <span data-join-by>Nov 29</span></strong> to get december's package, featuring <a href="#this-month">Jasmine Saldana</a> and the <a href="https://www.morsemuseum.org/" target="_blank" rel="noopener">Morse Museum</a>.</p>
 
       <div class="tier-grid">
         <article class="tier-card" id="tier-sticker">
@@ -199,9 +199,9 @@
 
       <div class="inside-grid">
         <article class="post-card inside-card">
-          <div class="inside-photo"><img loading="lazy" src="images/mailer/jasmine-print-small.webp" width="660" height="440"
+          <div class="inside-photo"><img loading="lazy" src="images/mailer/jasmine-print-bordered.webp" width="676" height="463"
                alt="A 6x4 print of a painting by Jasmine Saldana: two girls by a lit shop window at night, one in a red shirt, one in a patterned tank top"></div>
-          <h3 class="card-title">A 4x6 art print</h3>
+          <h3 class="card-title">A 6x4 art print</h3>
           <p class="card-summary">an original print from the month's featured artist, with a note from the artist printed on the back. december's is a painting by jasmine saldana.</p>
           <p class="card-meta"><span class="series-label series-blue">Print collector</span><span class="series-label series-yellow">Curator</span></p>
         </article>
@@ -223,7 +223,7 @@
           <div class="inside-photo"><img loading="lazy" src="images/mailer/morse-card.webp" width="500" height="750"
                alt="December's perk card: The Charles Hosmer Morse Museum of American Art"></div>
           <h3 class="card-title">A local perk</h3>
-          <p class="card-summary">a special perk from one of our favorite local spots. december's comes from the morse museum in winter park.</p>
+          <p class="card-summary">a special perk from one of our favorite local spots. december's comes from the <a href="https://www.morsemuseum.org/" target="_blank" rel="noopener">morse museum</a> in winter park.</p>
           <p class="card-meta"><span class="series-label series-red">Every tier</span></p>
         </article>
 
@@ -294,7 +294,7 @@
           <li>Mead Botanical Garden</li>
           <li>Authentic Books</li>
           <li>Florida Coffee Festival</li>
-          <li>Morse Museum</li>
+          <li><a href="https://www.morsemuseum.org/" target="_blank" rel="noopener">Morse Museum</a></li>
         </ul>
         <!-- Sits at the bottom, matching the $450 line in the other note. -->
         <p class="stat-line">with more added every month.</p>
@@ -462,6 +462,13 @@
 
       // Links, only if they exist.
       const links = make("p", "feature-links");
+      if (info.website) {
+        const site = make("a", "", "Website \u2197");
+        site.href = info.website;
+        site.target = "_blank";
+        site.rel = "noopener";
+        links.append(site);
+      }
       if (info.instagram) {
         const ig = make("a", "", "Instagram \u2197");
         ig.href = info.instagram;

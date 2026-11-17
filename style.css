@@ -35,7 +35,8 @@
    17. Film finish: grain over the whole site, and a film look on photos
    18. Event pages (one page per event) and the "all events" list
    19. Disclaimers (events page, event pages, submit page)
-   20. Mail club: this month's artist and the "join by" date */
+   20. Mail club: this month's artist and the "join by" date
+   21. Brand halftone textures (red, pink, blue, yellow) */
 
 
 /* =========================================================
@@ -566,11 +567,9 @@ main {
   color: #ffffff;
 }
 
-/* The mail club slide: pink with white halftone dots. */
-.slide-pink {
-  background-color: var(--pink);
-  background-image: radial-gradient(rgba(255, 255, 255, 0.35) 2px, transparent 2.6px);
-  background-size: 12px 12px;
+/* The mail club slide: the cherry red halftone (see section 21), white words. */
+.slide-red {
+  color: #ffffff;
 }
 
 /* The words sit on top of the picture. */
@@ -620,7 +619,8 @@ main {
   box-shadow: 3px 3px 0 #ffffff;
 }
 
-.series-red .slide-button {
+.series-red .slide-button,
+.slide-red .slide-button {
   background: var(--cream);
   color: var(--ink);
   box-shadow: 3px 3px 0 var(--ink);
@@ -2634,8 +2634,10 @@ h1.mcb-title {
 /* ---- The big pink banner, on the SCF pink halftone ---- */
 .mcb-main {
   overflow: hidden;  /* keeps the tilted picture inside the banner */
-  /* The SCF pink halftone texture from the brand artwork. */
-  background: var(--pink) url("images/bg-pink.webp") center / cover;
+  /* The SCF cherry red halftone texture from the brand artwork. Red, so
+     it doesn't blend into the pink, blue and yellow tier tiles under it. */
+  background: var(--red) url("images/bg-red.webp") center / 600px;
+  color: #ffffff;
   border-top: var(--border);
   border-bottom: var(--border);
 }
@@ -3411,8 +3413,8 @@ body::after {
 .mcb-placeholder {
   margin: 0;
   padding: 3rem 1rem;
-  background: var(--section, #e0457b);
-  color: var(--ink);
+  background: var(--red);  /* the same red as the banner it turns into */
+  color: #ffffff;
   text-align: center;
 }
 
@@ -3539,4 +3541,30 @@ main > .disclaimer-small {
     top: 2rem;
     margin-top: 1rem;
   }
+}
+
+
+/* =========================================================
+   21. Brand halftone textures
+   The owner's four colour backgrounds (images/bg-red.webp, bg-pink,
+   bg-blue, bg-yellow), used on the big coloured blocks: the mail club
+   banner (red, section 15), the home slides, the tier cards and the
+   banner's tier tiles. "600px" keeps the dots the same size everywhere.
+   ========================================================= */
+.slide-red              { background: var(--red) url("images/bg-red.webp") center / 600px; }
+.slide.series-blue      { background: var(--blue) url("images/bg-blue.webp") center / 600px; }
+.slide.series-yellow    { background: var(--yellow) url("images/bg-yellow.webp") center / 600px; }
+
+.tier-top.series-pink,
+.mcb-tile.series-pink   { background: var(--pink) url("images/bg-pink.webp") center / 600px; }
+.tier-top.series-blue,
+.mcb-tile.series-blue   { background: var(--blue) url("images/bg-blue.webp") center / 600px; }
+.tier-top.series-yellow,
+.mcb-tile.series-yellow { background: var(--yellow) url("images/bg-yellow.webp") center / 600px; }
+
+/* On the red, the blue stamp ink would turn almost black with "multiply",
+   so there it's stamped on normally. */
+.mcb-stamp,
+.slide-red .slide-stamp {
+  mix-blend-mode: normal;
 }
