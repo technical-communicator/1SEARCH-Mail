@@ -151,7 +151,10 @@
     const bottomTop = H - 590;
 
     // 4. The print, with a white border, and the stickers and stamp to scale.
-    const printWidth = 640;
+    // Landscape prints are drawn wider; portrait (tall) prints narrower,
+    // so both fill the same space. Inches stay to scale either way.
+    const landscape = S.printWidthInches > 4.5;
+    const printWidth = landscape ? 640 : 420;
     const perInch = printWidth / S.printWidthInches;  // pixels per inch of print
     const centreY = (y + bottomTop) / 2 - 30;
     const printHeight = place(ctx, print, W / 2 + 20, centreY, printWidth, 3, 22);
@@ -159,8 +162,8 @@
       const long = 2.5 * perInch;
       return img.width >= img.height ? long : long * img.width / img.height;
     }
-    place(ctx, sticker2, W / 2 - printWidth / 2 + 50, centreY - printHeight / 2 - 10, stickerWidth(sticker2), -12, 0);
-    place(ctx, sticker, W / 2 + printWidth / 2 - 10, centreY + printHeight / 2 - 30, stickerWidth(sticker), 10, 0);
+    place(ctx, sticker2, W / 2 - printWidth / 2 + (landscape ? 50 : -40), centreY - printHeight / 2 + (landscape ? -10 : 60), stickerWidth(sticker2), -12, 0);
+    place(ctx, sticker, W / 2 + printWidth / 2 + (landscape ? -10 : 40), centreY + printHeight / 2 - (landscape ? 30 : 110), stickerWidth(sticker), 10, 0);
     place(ctx, stamp, W / 2 + printWidth / 2 - 30, centreY - printHeight / 2 + 10, 1.25 * perInch, -14, 0);
 
     // 5. The month and artist. The name shrinks to fit on one line.
@@ -194,6 +197,14 @@
     ctx.fillText("searchcentralfl.com/mailclub", LEFT, H - 140);
   }
 
+  // Draw, then show the result in the preview image.
+  async function redraw() {
+    await draw();
+    const preview = dialog.querySelector(".story-preview");
+    if (preview.src) URL.revokeObjectURL(preview.src);
+    preview.src = URL.createObjectURL(await asBlob());
+  }
+
   // The file's name, e.g. "search-mail-club-december.png".
   function fileName() { return "search-mail-club-" + S.month.toLowerCase() + ".png"; }
 
@@ -217,7 +228,7 @@
   async function share() {
     const file = new File([await asBlob()], fileName(), { type: "image/png" });
     try {
-      await navigator.share({ files: [file] });
+      await navigator.share({ files: [file], title: "SEARCH: a snail mail club" });
     } catch (error) {
       // Closing the share sheet counts as an error; ignore it.
     }
@@ -233,11 +244,15 @@
         '<h2 id="story-title">Share to your story</h2>' +
         '<p class="story-note">A picture of ' + S.month + "'s mail club, the size of an Instagram story. Pick a colour, then save it or share it.</p>" +
         '<div class="story-body">' +
-          '<canvas class="story-canvas" width="' + W + '" height="' + H + '" role="img" aria-label="Preview of the story picture"></canvas>' +
+          // The picture is drawn on a hidden canvas, then shown as a normal
+          // image, so on phones you can also press and hold it to save it.
+          '<canvas class="story-canvas" width="' + W + '" height="' + H + '" hidden></canvas>' +
+          '<img class="story-preview" alt="Preview of the story picture">' +
           '<div class="story-controls">' +
             '<fieldset class="story-colours"><legend>Background</legend></fieldset>' +
-            '<button type="button" class="button story-download">Download</button>' +
-            '<button type="button" class="button button-outline story-share" hidden>Share</button>' +
+            '<button type="button" class="button story-save">Download</button>' +
+            '<button type="button" class="button button-outline story-share" hidden>Share to Instagram</button>' +
+            '<p class="story-tip" hidden>Tip: you can also press and hold the picture, then tap <strong>Save to Photos</strong> (iPhone) or <strong>Download image</strong> (Android).</p>' +
           "</div>" +
         "</div>" +
       "</div>";
@@ -250,18 +265,40 @@
       label.className = "story-swatch";
       label.innerHTML = '<input type="radio" name="story-bg" value="' + option.id + '"' + (i === 0 ? " checked" : "") + ">" +
         '<span class="story-chip" style="background-image: url(' + root + option.image + ')"></span>' + option.name;
-      label.querySelector("input").addEventListener("change", function () { chosen = option; draw(); });
+      label.querySelector("input").addEventListener("change", function () { chosen = option; redraw(); });
       colours.append(label);
     });
 
     dialog.querySelector(".story-close").addEventListener("click", function () { dialog.close(); });
     dialog.addEventListener("click", function (e) { if (e.target === dialog) dialog.close(); });
-    dialog.querySelector(".story-download").addEventListener("click", download);
-
-    // Only offer "Share" where the browser can share pictures (mostly phones).
-    const shareButton = dialog.querySelector(".story-share");
+    // Saving. Phones and computers save files differently:
+    //  - iPhone/iPad: a plain download goes to the Files app, not Photos.
+    //    The share sheet has "Save Image", which goes straight to Photos,
+    //    so there the button opens the share sheet.
+    //  - Android: a download lands in Downloads, which shows up in Google
+    //    Photos and the Gallery, so a normal download is right.
+    //  - Computers: a normal download.
+    const isApple = /iPhone|iPad|iPod/.test(navigator.userAgent) ||
+      (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);   // iPads say "Mac"
+    const isPhone = window.matchMedia("(pointer: coarse)").matches || navigator.maxTouchPoints > 0;
     const test = new File([""], "test.png", { type: "image/png" });
-    if (navigator.canShare && navigator.canShare({ files: [test] })) {
+    const canShareFiles = Boolean(navigator.canShare && navigator.canShare({ files: [test] }));
+
+    const saveButton = dialog.querySelector(".story-save");
+    if (isPhone) {
+      saveButton.textContent = "Save to Photos";
+      dialog.querySelector(".story-tip").hidden = false;
+    }
+    saveButton.addEventListener("click", function () {
+      if (isApple && canShareFiles) share();   // then tap "Save Image"
+      else download();
+    });
+
+    // A separate Share button where the phone can share pictures (to post
+    // straight to an Instagram story). On iPhones the Save button already
+    // opens the same share sheet, so it's only shown on other phones.
+    const shareButton = dialog.querySelector(".story-share");
+    if (canShareFiles && !isApple) {
       shareButton.hidden = false;
       shareButton.addEventListener("click", share);
     }
@@ -271,6 +308,6 @@
     root = siteRoot || "";
     if (!dialog) build();
     dialog.showModal();
-    draw();
+    redraw();
   };
 })();

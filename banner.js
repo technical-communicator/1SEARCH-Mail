@@ -50,6 +50,13 @@ const BANNER_SETTINGS = {
   printWidthInches: 6,   // 6 for a landscape 6x4 print, 4 for a portrait 4x6
 };
 
+// THE LAYOUT SWITCH: a landscape (wide) print and a portrait (tall) print
+// need different layouts. This sets data-print="landscape" or "portrait" on
+// the page, and style.css (section 23) picks the matching sizes for the
+// banner, the home slide and the mail club page. So each month you only
+// change printWidthInches above.
+document.documentElement.dataset.print = BANNER_SETTINGS.printWidthInches > 4.5 ? "landscape" : "portrait";
+
 // The ticker's words. They're written twice so the loop has no gap.
 const TICKER_TEXT =
   "NEW! " + BANNER_SETTINGS.month.toUpperCase() + " MAILER FT. " + BANNER_SETTINGS.artist.toUpperCase() +
