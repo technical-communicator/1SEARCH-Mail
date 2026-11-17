@@ -45,7 +45,7 @@ const BANNER_SETTINGS = {
 // The ticker's words. They're written twice so the loop has no gap.
 const TICKER_TEXT =
   "NEW! " + BANNER_SETTINGS.month.toUpperCase() + " MAILER FT. " + BANNER_SETTINGS.artist.toUpperCase() +
-  " ★ JOIN BY " + BANNER_SETTINGS.joinBy.toUpperCase() + " ★ ART IN YOUR MAILBOX ★ FROM $6.99/MONTH ★ $450 GIVEN TO LOCAL ARTISTS ★ ";
+  " ★ JOIN BY " + BANNER_SETTINGS.joinBy.toUpperCase() + " ★ ART IN YOUR MAILBOX ★ FROM $6.99/MONTH ★ ";
 // (★ is a ★ star.   is a space that doesn't disappear at the end.)
 
 // The three tiers, shown as colour tiles. "id" matches the envelope tabs on

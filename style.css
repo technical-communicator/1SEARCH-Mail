@@ -1795,6 +1795,39 @@ body:has(.event-dialog[open]) {
   margin-top: 0.5rem;
 }
 
+/* "past perk partners": a small row of business names under the month's
+   artist and business. */
+.partners {
+  margin: 0 0 1.5rem;
+}
+
+.partners-label {
+  margin: 0 0 0.5rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.partner-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.partner-list li {
+  padding: 0.15rem 0.6rem;
+  border: 1px solid var(--ink);
+  border-radius: 999px;
+  background: var(--cream);
+  font-size: 0.85rem;
+}
+
+.partner-list a {
+  color: inherit;
+}
+
 /* ---- The list of past mailers ---- */
 .mailer-list {
   margin: 0;
