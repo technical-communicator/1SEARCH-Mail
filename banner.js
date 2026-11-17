@@ -92,7 +92,7 @@ function buildMailclubBanner(spot) {
             '<span class="mcb-sparkle mcb-sparkle-1" aria-hidden="true">✦</span>' +
             '<span class="mcb-sparkle mcb-sparkle-2" aria-hidden="true">✦</span>' +
             '<a href="' + root + BANNER_SETTINGS.artistPost + '" aria-label="' + BANNER_SETTINGS.month + "'s artist: " + BANNER_SETTINGS.artist + '">' +
-              '<img loading="lazy" decoding="async" class="mcb-print" src="' + root + BANNER_SETTINGS.printImage + '" alt="" width="440" height="660">' +
+              '<img loading="lazy" decoding="async" class="mcb-print" src="' + root + BANNER_SETTINGS.printImage + '" alt="" width="660" height="440">' +
             "</a>" +
             // The club's seal in blue ink, stamped over the print's corner.
             '<img loading="lazy" decoding="async" class="seal-stamp mcb-stamp" src="' + root + 'images/stamp-blue.webp" alt="" width="400" height="400">' +

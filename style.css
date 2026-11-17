@@ -639,10 +639,13 @@ main {
   filter: drop-shadow(3px 4px 0 rgba(0, 0, 0, 0.2));
 }
 
+/* December's print is a 6x4 landscape. Stickers and stamp are to scale
+   against its 6 in width (see the banner's notes in section 15). */
 .slide-mail {
   width: 34%;
-  right: 4%;
-  top: 14%;
+  right: 3%;
+  top: 30%;
+  bottom: auto;  /* the box is as tall as the print, so stickers line up with it */
 }
 
 .slide-mail img {
@@ -656,9 +659,9 @@ main {
 /* The sticker is to scale with the print: 2.1 in wide / 4 in = 53%. */
 .slide-mail .slide-sticker {
   position: absolute;
-  left: -20%;
-  bottom: -12%;
-  width: 53%;
+  left: -4%;
+  bottom: -34%;
+  width: 42%;  /* skeleton: 2.5 in / 6 in print */
   border: 0;
   box-shadow: none;
   filter: drop-shadow(2px 3px 0 rgba(0, 0, 0, 0.3));
@@ -682,9 +685,9 @@ main {
    edge of the print. border,
    shadow and filter are reset because the slide's other pictures have them. */
 .slide-mail .slide-stamp {
-  right: -7%;
-  top: 50%;
-  width: 31%;   /* to scale: a 1.25 in stamp on the 4 in wide print */
+  right: -8%;
+  top: -10%;
+  width: 21%;   /* to scale: a 1.25 in stamp on the 6 in wide print */
   border: 0;
   box-shadow: none;
   filter: none;
@@ -695,9 +698,9 @@ main {
 .slide-mail .slide-sticker-2 {
   left: auto;
   right: -6%;
-  top: -10%;
+  top: 30%;
   bottom: auto;
-  width: 40%;
+  width: 32%;  /* heart: 1.9 in wide / 6 in print */
   transform: rotate(12deg);
 }
 
@@ -2413,9 +2416,9 @@ body:has(.event-dialog[open]) {
   }
 
   .slide-mail {
-    width: 22%;
-    right: 12%;
-    top: 10%;
+    width: 32%;
+    right: 8%;
+    top: 18%;
   }
 
   .slide-photo {
@@ -2425,9 +2428,10 @@ body:has(.event-dialog[open]) {
     bottom: auto;
   }
 
-  .slide-mail .slide-sticker {
-    left: -30%;
-    bottom: -10%;
+  /* Just the first sticker (the second one keeps its own spot). */
+  .slide-mail .slide-sticker:not(.slide-sticker-2) {
+    left: -16%;
+    bottom: -6%;
   }
 
   .slide-button {
@@ -2684,11 +2688,17 @@ h1.mcb-title {
   position: relative;
   justify-self: center;
   width: min(80vw, 22rem);
+  /* Room under the landscape print, so the perk card sits mostly below
+     it instead of covering the art. */
+  padding-bottom: 6rem;
 }
 
+/* SIZES TO SCALE: December's print is a 6x4 landscape, so it's wider here.
+   The stickers and the stamp below are sized against the print's 6 in
+   width: stickers are 2.5 in on their long side, the stamp 1.25 in. */
 .mcb-print {
   display: block;
-  width: 70%;
+  width: 86%;
   margin-left: auto;
   border: 4px solid #ffffff;   /* a slim print edge */
   box-shadow: var(--soft-shadow);
@@ -2707,12 +2717,12 @@ h1.mcb-title {
   pointer-events: none;  /* clicks go through to whatever is underneath */
 }
 
-/* Sized to scale: a real 1.25 in stamp on the 4 in wide print is 31% of
-   the print's width. The print is 70% of this box wide, so 31% x 70% = 22%. */
+/* Sized to scale: a real 1.25 in stamp on the 6 in wide print is 21% of
+   the print's width. The print is 86% of this box wide, so 21% x 86% = 18%. */
 .mcb-stamp {
-  top: 0;
-  right: -11%;   /* half over the print's corner, half on the pink */
-  width: 22%;
+  top: -8%;
+  right: -9%;   /* half over the print's corner, half on the pink */
+  width: 18%;
   transform: rotate(-16deg);
 }
 
@@ -2721,8 +2731,8 @@ h1.mcb-title {
   position: absolute;
   z-index: 1;
   right: -4%;
-  top: 44%;
-  width: 28%;  /* December's stickers are small paintings, so they sit smaller */
+  top: 34%;
+  width: 28%;  /* heart: 1.9 in wide / 6 in print = 32% of the print (86%) */
   filter: drop-shadow(2px 3px 0 rgba(0, 0, 0, 0.3));
   transform: rotate(12deg);
 }
@@ -2730,9 +2740,9 @@ h1.mcb-title {
 /* The second sticker, stuck on the print's top-left corner. */
 .mcb-sticker-2 {
   right: auto;
-  left: 8%;
-  top: -6%;
-  width: 28%;
+  left: 2%;
+  top: -10%;
+  width: 36%;  /* skeleton: 2.5 in wide / 6 in print = 42% of the print (86%) */
   transform: rotate(-14deg);
 }
 
@@ -3490,9 +3500,12 @@ main > .disclaimer-small {
   align-items: start;
 }
 
+.this-month-frame {
+  position: relative;  /* the stickers are placed against the print */
+}
+
 .this-month-art {
-  position: relative;
-  max-width: 16rem;
+  max-width: 20rem;
   margin: 0 auto 2rem;
 }
 
@@ -3507,9 +3520,9 @@ main > .disclaimer-small {
 
 .this-month-sticker {
   position: absolute;
-  width: 34%;
+  width: 32%;  /* heart: 1.9 in wide / 6 in print */
   right: -6%;
-  bottom: 12%;
+  bottom: -18%;
   transform: rotate(10deg);
   filter: drop-shadow(2px 3px 0 rgba(0, 0, 0, 0.3));
 }
@@ -3517,14 +3530,14 @@ main > .disclaimer-small {
 .this-month-sticker-2 {
   right: auto;
   left: -8%;
-  top: 6%;
+  top: -16%;
   bottom: auto;
-  width: 40%;
+  width: 42%;  /* skeleton: 2.5 in wide / 6 in print */
   transform: rotate(-10deg);
 }
 
 .this-month-art figcaption {
-  margin-top: 1rem;
+  margin-top: 3rem;  /* room for the sticker hanging off the bottom */
   color: var(--muted);
   font-size: 0.85rem;
   text-align: center;
@@ -3532,7 +3545,7 @@ main > .disclaimer-small {
 
 @media (min-width: 900px) {
   .this-month {
-    grid-template-columns: minmax(0, 1fr) 20rem;
+    grid-template-columns: minmax(0, 1fr) 22rem;
     gap: 3rem;
   }
 
