@@ -12,7 +12,7 @@
 
 window.SCF_CONFIG = {
   // Supabase: Project Settings -> API (or "API Keys").
-  supabaseUrl: "",       // looks like "https://abcdefgh.supabase.co"
+  supabaseUrl: "https://pevvqchvwzcdchimxyrq.supabase.co",       // looks like "https://abcdefgh.supabase.co"
   supabaseAnonKey: "",   // the "anon" / "publishable" key
 
   // Cloudflare Turnstile (the spam check): your widget's "Site Key".
