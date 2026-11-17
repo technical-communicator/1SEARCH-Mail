@@ -454,18 +454,14 @@ def build_post_page(post, all_posts):
 """
 
 
-def ticker(posts):
-    """The moving strip under the header on the blog's list pages: the
-    newest post titles, like the one on the mail club banner. The words are
-    written twice so the loop has no gap. Longer text loops more slowly, so
-    it always moves at the same speed."""
-    text = "NEW ON THE BLOG \u2605 " + "".join(f"{esc(p['title'])} \u2605 " for p in posts[:5])
-    text += "STORIES FROM CENTRAL FLORIDA \u2605 "
-    seconds = max(20, round(len(text) / 3.2))
-    return f"""  <!-- Moving ticker: the newest posts. Screen readers skip it (aria-hidden),
-       since the same posts are listed below. -->
+def ticker():
+    """The moving strip under the header on the blog's list pages. It's the
+    same simple strip as on the events page: fixed words, written twice so
+    the loop has no gap. aria-hidden: screen readers skip it."""
+    text = "LOCAL STORIES FROM CENTRAL FLORIDA \u2605 ARTISTS \u2605 SMALL BUSINESSES \u2605 "
+    return f"""  <!-- Moving ticker (decoration only). -->
   <div class="ticker" aria-hidden="true">
-    <div class="ticker-track" style="animation-duration: {seconds}s"><span>{text}</span><span>{text}</span></div>
+    <div class="ticker-track"><span>{text}</span><span>{text}</span></div>
   </div>"""
 
 
@@ -487,7 +483,7 @@ def build_listing(posts, prefix, title_text, intro, current, page_title, descrip
 {head(prefix, path, ROOT / path, page_title, description, "website", [seo.breadcrumbs(trail)])}
 <body class="page-blog">
 {header(prefix, "Blog")}
-{ticker(all_posts)}
+{ticker()}
 
   <main class="blog-main">
     <h1 class="blog-title">{esc(title_text)}</h1>
