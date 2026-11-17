@@ -34,7 +34,8 @@
    16. Submitting events: the form, the call to action, the review dashboard
    17. Film finish: grain over the whole site, and a film look on photos
    18. Event pages (one page per event) and the "all events" list
-   19. Disclaimers (events page, event pages, submit page) */
+   19. Disclaimers (events page, event pages, submit page)
+   20. Mail club: this month's artist and the "join by" date */
 
 
 /* =========================================================
@@ -664,11 +665,13 @@ main {
   transform: rotate(-12deg);
 }
 
+/* On phones the picture sits low on the right, beside the button, so it
+   doesn't cover the slide's text. Wider screens move it up (see below). */
 .slide-photo {
-  width: 38%;
-  right: 5%;
-  bottom: auto;
-  top: 18%;
+  width: 32%;
+  right: 6%;
+  bottom: 8%;
+  top: auto;
   aspect-ratio: 3 / 4;
   object-fit: cover;
   border: 6px solid #ffffff;
@@ -2419,6 +2422,7 @@ body:has(.event-dialog[open]) {
     width: 21%;
     right: 10%;
     top: 10%;
+    bottom: auto;
   }
 
   .slide-mail .slide-sticker {
@@ -2717,8 +2721,8 @@ h1.mcb-title {
   position: absolute;
   z-index: 1;
   right: -4%;
-  top: 38%;
-  width: 38%;
+  top: 44%;
+  width: 28%;  /* December's stickers are small paintings, so they sit smaller */
   filter: drop-shadow(2px 3px 0 rgba(0, 0, 0, 0.3));
   transform: rotate(12deg);
 }
@@ -2728,7 +2732,7 @@ h1.mcb-title {
   right: auto;
   left: 8%;
   top: -6%;
-  width: 30%;
+  width: 28%;
   transform: rotate(-14deg);
 }
 
@@ -3446,4 +3450,95 @@ main > .disclaimer {
 
 main > .disclaimer-small {
   margin: 1.5rem 0 0;
+}
+
+
+/* =========================================================
+   20. Mail club: this month's artist and the "join by" date
+   The "Meet December's artist" section on mailclub.html (#this-month)
+   and the small "join by Nov 29" lines. The date itself comes from
+   BANNER_SETTINGS.joinBy in banner.js.
+   ========================================================= */
+.join-by-note {
+  max-width: 44rem;
+  margin: 0.75rem 0 1.5rem;
+  padding: 0.5rem 0.8rem;
+  border-left: 4px solid var(--section);
+  background: var(--cream);
+}
+
+/* The artist's own letter, as a taped note inside the reading column. */
+.artist-letter {
+  margin: 2rem 0;
+}
+
+.artist-letter p {
+  margin: 0 0 0.9rem;
+}
+
+.artist-letter .signature {
+  margin: 0;
+  font-family: var(--font-script);
+  font-size: 1.6rem;
+}
+
+/* The letter on the left, her print and stickers on the right (stacked on
+   phones). The stickers are tucked on the print's corners. */
+.this-month {
+  display: grid;
+  gap: 2rem;
+  align-items: start;
+}
+
+.this-month-art {
+  position: relative;
+  max-width: 16rem;
+  margin: 0 auto 2rem;
+}
+
+.this-month-print {
+  display: block;
+  width: 100%;
+  border: 6px solid #ffffff;
+  box-shadow: var(--soft-shadow);
+  transform: rotate(2deg);
+  filter: contrast(1.05) saturate(0.88) sepia(0.08);
+}
+
+.this-month-sticker {
+  position: absolute;
+  width: 34%;
+  right: -6%;
+  bottom: 12%;
+  transform: rotate(10deg);
+  filter: drop-shadow(2px 3px 0 rgba(0, 0, 0, 0.3));
+}
+
+.this-month-sticker-2 {
+  right: auto;
+  left: -8%;
+  top: 6%;
+  bottom: auto;
+  width: 40%;
+  transform: rotate(-10deg);
+}
+
+.this-month-art figcaption {
+  margin-top: 1rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+@media (min-width: 900px) {
+  .this-month {
+    grid-template-columns: minmax(0, 1fr) 20rem;
+    gap: 3rem;
+  }
+
+  .this-month-art {
+    position: sticky;
+    top: 2rem;
+    margin-top: 1rem;
+  }
 }

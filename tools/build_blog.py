@@ -142,8 +142,10 @@ def load_post(path):
 def header(prefix, current):
     """The site header. prefix is how to get back to the site root from this
     page: "" for root pages, "../" for blog/, "../../" for blog/series/."""
+    # The blog is on hold (the owner's request), so it isn't in the menu.
+    # Its pages stay online, so old links still work.
     links = [("events.html", "Events"), ("mailclub.html", "Mail Club"),
-             ("blog.html", "Blog"), ("about.html", "About")]
+             ("about.html", "About")]
     nav = "\n".join(
         f'      <a href="{prefix}{href}"{" aria-current=\"page\"" if label == current else ""}>{label}</a>'
         for href, label in links
@@ -210,7 +212,6 @@ def footer(prefix):
         <ul>
           <li><a href="{prefix}events.html">Events this week</a></li>
           <li><a href="{prefix}mailclub.html">Snail mail club</a></li>
-          <li><a href="{prefix}blog.html">Blog</a></li>
           <li><a href="{prefix}about.html">About us</a></li>
           <li><a href="{prefix}submit.html">Submit an event</a></li>
         </ul>

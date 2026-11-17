@@ -80,7 +80,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Yellowtail&display=swap">
 
   <!-- One shared stylesheet for every page. -->
-  <link rel="stylesheet" href="style.css?v=39a483c7">
+  <link rel="stylesheet" href="style.css?v=496472a0">
 </head>
 <body>
   <!-- Site header: the same block appears on every page. -->
@@ -97,7 +97,6 @@
     <nav>
       <a href="events.html">Events</a>
       <a href="mailclub.html">Mail Club</a>
-      <a href="blog.html">Blog</a>
       <a href="about.html">About</a>
     </nav>
   </header>
@@ -135,28 +134,30 @@
             <div class="slide-text">
               <p class="slide-kicker">Snail mail club</p>
               <h2>Local art in your mailbox, every month!</h2>
-              <p class="slide-detail">November features Xine Hann. Starting at $6.99/month.</p>
-              <a class="button slide-button" href="mailclub.html">Join the club</a>
+              <!-- The date in data-join-by comes from BANNER_SETTINGS.joinBy in banner.js. -->
+              <p class="slide-detail">December features Jasmine Saldana. Join by <span data-join-by>Nov 29</span> to get it. Starting at $6.99/month.</p>
+              <a class="button slide-button" href="mailclub.html#tiers">Join by <span data-join-by>Nov 29</span></a>
             </div>
             <div class="slide-art slide-mail" aria-hidden="true">
-              <img loading="lazy" src="images/mailer/xine-print-small.webp" alt="" width="440" height="639">
-              <img loading="lazy" class="slide-sticker" src="images/mailer/xine-sticker-flowers-small.webp" alt="" width="280" height="332">
-              <img loading="lazy" class="slide-sticker slide-sticker-2" src="images/mailer/xine-sticker-rose-small.webp" alt="" width="240" height="333">
+              <img loading="lazy" src="images/mailer/jasmine-print-small.webp" alt="" width="440" height="660">
+              <img loading="lazy" class="slide-sticker" src="images/mailer/jasmine-sticker-skeleton-small.webp" alt="" width="300" height="237">
+              <img loading="lazy" class="slide-sticker slide-sticker-2" src="images/mailer/jasmine-sticker-heart-small.webp" alt="" width="260" height="336">
               <!-- The club's seal in blue ink, stamped over the print. -->
               <img loading="lazy" class="seal-stamp slide-stamp" src="images/stamp-blue.webp" alt="" width="400" height="400">
             </div>
           </article>
 
-          <!-- Slide 3: Blog -->
-          <article class="slide series-red" aria-roledescription="slide" aria-label="3 of 3: Blog">
+          <!-- Slide 3: This month's artist (the blog is on hold, so this
+               slide introduces the mail club's featured artist instead). -->
+          <article class="slide series-red" aria-roledescription="slide" aria-label="3 of 3: December's artist">
             <div class="slide-text">
-              <p class="slide-kicker">The blog</p>
-              <h2>What is going on around town?</h2>
-              <p class="slide-detail">New: featured artist of the month, Xine Hann.</p>
-              <a class="button slide-button" href="blog/featured-artist-xine-hann.html">Read the story</a>
+              <p class="slide-kicker">December's artist</p>
+              <h2>Meet Jasmine Saldana.</h2>
+              <p class="slide-detail">A UCF grad painting the vulnerable, honest side of the dark.</p>
+              <a class="button slide-button" href="mailclub.html#this-month">Meet the artist</a>
             </div>
-            <img loading="lazy" class="slide-art slide-photo" src="images/blog/xine-hann-collage.webp" width="1080" height="608"
-                 alt="Collage art by Xine Hann: an eye made of a Central Florida street map">
+            <img loading="lazy" class="slide-art slide-photo" src="images/mailer/jasmine-sticker-heart.webp" width="768" height="992"
+                 alt="A painting by Jasmine Saldana: an anatomical heart, dried flowers and a cracked gold frame under hanging stars and red curtains">
           </article>
 
         </div>
@@ -166,7 +167,7 @@
           <div class="slider-dots" id="slider-dots">
             <button type="button" class="slider-dot" aria-label="Show slide 1: Events"></button>
             <button type="button" class="slider-dot" aria-label="Show slide 2: Mail club"></button>
-            <button type="button" class="slider-dot" aria-label="Show slide 3: Blog"></button>
+            <button type="button" class="slider-dot" aria-label="Show slide 3: December's artist"></button>
           </div>
         </div>
       </div>
@@ -190,7 +191,7 @@
   <!-- The full-width mail club banner. banner.js fills in this empty spot.
        To change the monthly artist, edit banner.js (one file for the whole site). -->
   <div data-mailclub-banner data-root=""></div>
-  <script src="banner.js?v=7e8ed267"></script>
+  <script src="banner.js?v=070b84f1"></script>
 
   <!-- The site footer. It's the same on every page: if you change it,
        change it in index.html, events.html, mailclub.html, about.html
@@ -210,7 +211,6 @@
         <ul>
           <li><a href="events.html">Events this week</a></li>
           <li><a href="mailclub.html">Snail mail club</a></li>
-          <li><a href="blog.html">Blog</a></li>
           <li><a href="about.html">About us</a></li>
           <li><a href="submit.html">Submit an event</a></li>
         </ul>

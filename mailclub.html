@@ -101,7 +101,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Yellowtail&display=swap">
-  <link rel="stylesheet" href="style.css?v=39a483c7">
+  <link rel="stylesheet" href="style.css?v=496472a0">
 </head>
 <!-- "page-mailclub" gives this page its section colour, pink (see style.css). -->
 <body class="page-mailclub">
@@ -117,7 +117,6 @@
     <nav>
       <a href="events.html">Events</a>
       <a href="mailclub.html" aria-current="page">Mail Club</a>
-      <a href="blog.html">Blog</a>
       <a href="about.html">About</a>
     </nav>
   </header>
@@ -132,7 +131,7 @@
   <div data-mailclub-banner data-root="" data-heading="1">
     <h1 class="mcb-title mcb-placeholder">Local art in your mailbox, every month!</h1>
   </div>
-  <script src="banner.js?v=7e8ed267"></script>
+  <script src="banner.js?v=070b84f1"></script>
 
   <main>
     <!-- ===== CHOOSE YOUR TIER =====
@@ -143,6 +142,8 @@
     <section id="tiers">
       <h2 class="section-head">Choose your tier!</h2>
       <p class="reading">hi everyone! welcome to SEARCH: a snail mail club by <a href="https://www.instagram.com/searchcentralfl/">@searchcentralfl</a>. pick the tier that's right for you. you can cancel any time.</p>
+      <!-- The date in data-join-by comes from BANNER_SETTINGS.joinBy in banner.js. -->
+      <p class="join-by-note"><strong>join by <span data-join-by>Nov 29</span></strong> to get december's package, featuring <a href="#this-month">Jasmine Saldana</a> and the Morse Museum.</p>
 
       <div class="tier-grid">
         <article class="tier-card" id="tier-sticker">
@@ -191,27 +192,27 @@
     <!-- ===== WHAT'S INSIDE =====
          One card per thing in the mailer, in the same card style as the
          blog. The pictures are this month's real mailer (images/mailer/).
-         EACH MONTH: swap the pictures and the "november's..." lines. -->
+         EACH MONTH: swap the pictures and the "december's..." lines. -->
     <section aria-labelledby="inside-heading">
       <h2 class="section-head" id="inside-heading">What's inside</h2>
-      <p class="reading">every mailer is built around one local artist and one local business. here's what came in november's, featuring <a href="blog/featured-artist-xine-hann.html">Xine Hann</a> and <a href="blog/featured-business-florida-coffee-festival.html">Florida Coffee Festival</a>:</p>
+      <p class="reading">every mailer is built around one local artist and one local business. here's what's in december's, featuring <a href="#this-month">Jasmine Saldana</a> and the <a href="https://www.morsemuseum.org/" target="_blank" rel="noopener">Morse Museum</a>:</p>
 
       <div class="inside-grid">
         <article class="post-card inside-card">
-          <div class="inside-photo"><img loading="lazy" src="images/mailer/xine-print-small.webp" width="440" height="639"
-               alt="A 4x6 collage print by Xine Hann: an eye made of a Central Florida street map"></div>
+          <div class="inside-photo"><img loading="lazy" src="images/mailer/jasmine-print-small.webp" width="440" height="660"
+               alt="A 4x6 print of a painting by Jasmine Saldana: two girls in jeans by a doorway, one in a red shirt, one in a patterned tank top"></div>
           <h3 class="card-title">A 4x6 art print</h3>
-          <p class="card-summary">an original print from the month's featured artist. november's is a collage by xine hann.</p>
+          <p class="card-summary">an original print from the month's featured artist. december's is a painting by jasmine saldana.</p>
           <p class="card-meta"><span class="series-label series-blue">Print collector</span><span class="series-label series-yellow">Curator</span></p>
         </article>
 
         <article class="post-card inside-card">
           <!-- Two stickers come in every package, so this box shows both. -->
           <div class="inside-photo inside-photo-pair">
-            <img loading="lazy" src="images/mailer/xine-sticker-rose-small.webp" width="240" height="333"
-                 alt="A die-cut sticker by Xine Hann: a rose with a brain and fishnet legs">
-            <img loading="lazy" src="images/mailer/xine-sticker-flowers-small.webp" width="280" height="332"
-                 alt="A die-cut sticker by Xine Hann: halftone flowers in pink, yellow and blue">
+            <img loading="lazy" src="images/mailer/jasmine-sticker-heart-small.webp" width="260" height="336"
+                 alt="A sticker by Jasmine Saldana: an anatomical heart, dried flowers and a cracked gold frame under hanging stars">
+            <img loading="lazy" src="images/mailer/jasmine-sticker-skeleton-small.webp" width="300" height="237"
+                 alt="A sticker by Jasmine Saldana: a skeleton resting on draped blue and violet cloth, lit in yellow">
           </div>
           <h3 class="card-title">Two vinyl stickers</h3>
           <p class="card-summary">two stickers by the featured artist, for your journal, water bottle or wherever they fit.</p>
@@ -219,20 +220,59 @@
         </article>
 
         <article class="post-card inside-card">
-          <div class="inside-photo"><img loading="lazy" src="images/mailer/coffee-fest-card.webp" width="500" height="750"
-               alt="The Florida Coffee Festival perk card: Drink Local Coffee, November 15th"></div>
+          <div class="inside-photo"><img loading="lazy" src="images/mailer/morse-card.webp" width="500" height="750"
+               alt="December's perk card: The Charles Hosmer Morse Museum of American Art"></div>
           <h3 class="card-title">A local perk</h3>
-          <p class="card-summary">a discount at one of our favorite local businesses. november's: 20% off florida coffee festival tickets.</p>
+          <p class="card-summary">a special perk from one of our favorite local spots. december's comes from the morse museum in winter park.</p>
           <p class="card-meta"><span class="series-label series-red">Every tier</span></p>
         </article>
 
         <article class="post-card inside-card">
           <div class="inside-photo"><img loading="lazy" src="images/mailer/november-letter.webp" width="500" height="917"
-               alt="November's letter from SEARCH, typed on pink paper"></div>
+               alt="A monthly letter from SEARCH, typed on pink paper"></div>
           <h3 class="card-title">The newsletter</h3>
           <p class="card-summary">a letter from us about the month's artist, the business and what's happening around central florida.</p>
           <p class="card-meta"><span class="series-label series-red">Every tier</span></p>
         </article>
+      </div>
+    </section>
+
+    <!-- ===== THIS MONTH =====
+         This month's artist and business. The blog is on hold, so the
+         artist's letter lives here. EACH MONTH: replace this section. -->
+    <section id="this-month" aria-labelledby="this-month-heading">
+      <h2 class="section-head" id="this-month-heading">Meet December's artist</h2>
+      <div class="this-month">
+        <div class="reading">
+          <p>howdy friends!!</p>
+          <p>get ready for december's featured artist of the month! let us introduce you to <a href="https://www.instagram.com/itsmadeofjasmine/" target="_blank" rel="noopener">Jasmine Saldana</a>! Jasmine is a UCF grad (Go Knights!) and loves to explore our inner worlds through her work. here is a special message from Jasmine:</p>
+
+          <blockquote class="mc-note taped artist-letter">
+            <p>Hello fellow mail lovers!</p>
+            <p>I'm Jasmine, an artist born and raised in Pembroke Pines, Florida and a recent UCF graduate. My work has grown and changed alongside me throughout the years. But I have always been interested in how vulnerability and truth intersect with the darker parts of ourselves, our experiences, and our world. So I don't see any of it as "dark" or "macabre", it is simply an expression of my reality.</p>
+            <p>I often exaggerate color and play with imagery that gently taps past what we are comfortable with. I think it makes each work more striking. Some visuals are more humorous, and others not so much, but they all have a soft, emotional core. That core is what matters most. I create work to express my inner world in hopes that someone out there, maybe even someone reading this, sees themselves in it. To me, that is connection in its rawest, purest form.</p>
+            <p class="signature">With love, Jasmine &lt;3</p>
+          </blockquote>
+
+          <p>thank you for choosing to support this mail club! artists in our community deserve our support! be sure to head over to <a href="https://www.instagram.com/itsmadeofjasmine/" target="_blank" rel="noopener">@itsmadeofjasmine</a> and show your support by liking or sharing a post!</p>
+          <p>if you are new here, every month we showcase a local artist by sending some of their work to you by mail, making supporting local a part of your monthly routine!</p>
+          <p>talk to you soon,<br>SEARCH</p>
+          <p class="join-by-note">december's local perk comes from the <a href="https://www.morsemuseum.org/" target="_blank" rel="noopener">Morse Museum of American Art</a> in Winter Park. <strong>join by <span data-join-by>Nov 29</span></strong> to get it in your mailbox.</p>
+          <div class="buttons">
+            <a class="button" href="#tiers">Join by <span data-join-by>Nov 29</span></a>
+          </div>
+        </div>
+
+        <!-- Her print and stickers, beside the letter on wide screens. -->
+        <figure class="this-month-art">
+          <img loading="lazy" class="this-month-print" src="images/mailer/jasmine-print.webp" width="900" height="1350"
+               alt="Jasmine Saldana's December print: two girls in jeans by a doorway, painted in rich reds and blues">
+          <img loading="lazy" class="this-month-sticker" src="images/mailer/jasmine-sticker-heart-small.webp" width="260" height="336"
+               alt="Her heart and stars sticker">
+          <img loading="lazy" class="this-month-sticker this-month-sticker-2" src="images/mailer/jasmine-sticker-skeleton-small.webp" width="300" height="237"
+               alt="Her skeleton sticker">
+          <figcaption>december's print and stickers by Jasmine Saldana.</figcaption>
+        </figure>
       </div>
     </section>
 
@@ -257,6 +297,8 @@
           <li>Timucua Arts</li>
           <li>Mead Botanical Garden</li>
           <li>Authentic Books</li>
+          <li>Florida Coffee Festival</li>
+          <li>Morse Museum</li>
         </ul>
         <!-- Sits at the bottom, matching the $450 line in the other note. -->
         <p class="stat-line">with more added every month.</p>
@@ -339,7 +381,6 @@
         <ul>
           <li><a href="events.html">Events this week</a></li>
           <li><a href="mailclub.html">Snail mail club</a></li>
-          <li><a href="blog.html">Blog</a></li>
           <li><a href="about.html">About us</a></li>
           <li><a href="submit.html">Submit an event</a></li>
         </ul>

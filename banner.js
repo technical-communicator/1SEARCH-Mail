@@ -19,25 +19,31 @@
 // "../" for blog posts, "../../" for blog section pages.
 
 const BANNER_SETTINGS = {
-  month: "november",
-  artist: "Xine Hann",
-  artistPost: "blog/featured-artist-xine-hann.html",
-  artistImage: "images/blog/xine-hann-collage.webp",
-  // The artwork shown big on the banner: this month's print and a sticker.
-  // (Small copies, about 460px and 280px wide, so phones load them fast.)
-  printImage: "images/mailer/xine-print-small.webp",
+  month: "december",
+  artist: "Jasmine Saldana",
+  // Where the print and the artist's name link to. (The blog is on hold,
+  // so this month's artist is introduced on the mail club page.)
+  artistPost: "mailclub.html#this-month",
+  // The last day to sign up and still get this month's package (the last
+  // Sunday of the month). It shows on the banner's button and ticker, and
+  // anywhere else on the site that has data-join-by (see the bottom of
+  // this file), so it only needs changing here.
+  joinBy: "Nov 29",
+  // The artwork shown big on the banner: this month's print and two stickers.
+  // (Small copies, about 440px and 300px wide, so phones load them fast.)
+  printImage: "images/mailer/jasmine-print-small.webp",
   // The small card on the banner shows this month's local business perk.
-  perk: "Florida Coffee Fest",
-  perkPost: "blog/featured-business-florida-coffee-festival.html",
-  perkImage: "images/mailer/coffee-fest-thumb.webp",  // a small copy, it shows tiny
-  stickerImage: "images/mailer/xine-sticker-flowers-small.webp",
-  sticker2Image: "images/mailer/xine-sticker-rose-small.webp",   // two stickers come in every package
+  perk: "Morse Museum",
+  perkPost: "mailclub.html#this-month",
+  perkImage: "images/mailer/morse-thumb.webp",  // a small copy, it shows tiny
+  stickerImage: "images/mailer/jasmine-sticker-heart-small.webp",
+  sticker2Image: "images/mailer/jasmine-sticker-skeleton-small.webp",   // two stickers come in every package
 };
 
 // The ticker's words. They're written twice so the loop has no gap.
 const TICKER_TEXT =
   "NEW! " + BANNER_SETTINGS.month.toUpperCase() + " MAILER FT. " + BANNER_SETTINGS.artist.toUpperCase() +
-  " ★ ART IN YOUR MAILBOX ★ FROM $6.99/MONTH ★ $450 GIVEN TO LOCAL ARTISTS ★ ";
+  " ★ JOIN BY " + BANNER_SETTINGS.joinBy.toUpperCase() + " ★ ART IN YOUR MAILBOX ★ FROM $6.99/MONTH ★ $450 GIVEN TO LOCAL ARTISTS ★ ";
 // (★ is a ★ star.   is a space that doesn't disappear at the end.)
 
 // The three tiers, shown as colour tiles. "id" matches the envelope tabs on
@@ -78,20 +84,20 @@ function buildMailclubBanner(spot) {
           '<div class="mcb-text">' +
             '<p class="mcb-eyebrow">SEARCH: a snail mail club</p>' +
             "<" + headingTag + ' class="mcb-title">Local art in your mailbox, every month!</' + headingTag + ">" +
-            '<p class="mcb-sub">a new central florida artist every month, plus perks from local businesses. starting at $6.99 a month.</p>' +
-            '<a class="button mcb-button" href="' + root + 'mailclub.html#tiers">Join the club</a>' +
+            '<p class="mcb-sub">a new central florida artist every month, plus perks from local businesses. starting at $6.99 a month. join by ' + BANNER_SETTINGS.joinBy.toLowerCase() + " to get " + BANNER_SETTINGS.month + "'s mail.</p>" +
+            '<a class="button mcb-button" href="' + root + 'mailclub.html#tiers">Join by ' + BANNER_SETTINGS.joinBy + "</a>" +
           "</div>" +
 
           '<div class="mcb-visual">' +
             '<span class="mcb-sparkle mcb-sparkle-1" aria-hidden="true">✦</span>' +
             '<span class="mcb-sparkle mcb-sparkle-2" aria-hidden="true">✦</span>' +
             '<a href="' + root + BANNER_SETTINGS.artistPost + '" aria-label="' + BANNER_SETTINGS.month + "'s artist: " + BANNER_SETTINGS.artist + '">' +
-              '<img loading="lazy" decoding="async" class="mcb-print" src="' + root + BANNER_SETTINGS.printImage + '" alt="" width="440" height="639">' +
+              '<img loading="lazy" decoding="async" class="mcb-print" src="' + root + BANNER_SETTINGS.printImage + '" alt="" width="440" height="660">' +
             "</a>" +
             // The club's seal in blue ink, stamped over the print's corner.
             '<img loading="lazy" decoding="async" class="seal-stamp mcb-stamp" src="' + root + 'images/stamp-blue.webp" alt="" width="400" height="400">' +
-            '<img loading="lazy" decoding="async" class="mcb-sticker" src="' + root + BANNER_SETTINGS.stickerImage + '" alt="" width="400" height="474">' +
-            '<img loading="lazy" decoding="async" class="mcb-sticker mcb-sticker-2" src="' + root + BANNER_SETTINGS.sticker2Image + '" alt="" width="240" height="333">' +
+            '<img loading="lazy" decoding="async" class="mcb-sticker" src="' + root + BANNER_SETTINGS.stickerImage + '" alt="" width="260" height="336">' +
+            '<img loading="lazy" decoding="async" class="mcb-sticker mcb-sticker-2" src="' + root + BANNER_SETTINGS.sticker2Image + '" alt="" width="300" height="237">' +
             // The small "this month's perk" card, like a product card on a shop banner.
             '<a class="mcb-card" href="' + root + BANNER_SETTINGS.perkPost + '">' +
               '<img loading="lazy" decoding="async" src="' + root + BANNER_SETTINGS.perkImage + '" alt="">' +
@@ -108,3 +114,10 @@ function buildMailclubBanner(spot) {
 
 // Fill in every banner spot on the page (there's normally just one).
 document.querySelectorAll("[data-mailclub-banner]").forEach(buildMailclubBanner);
+
+// Any other "join by" date on the page (the home slide, the mail club
+// page) is written as <span data-join-by>Nov 29</span>. This keeps them
+// all matching BANNER_SETTINGS.joinBy above.
+document.querySelectorAll("[data-join-by]").forEach(function (spot) {
+  spot.textContent = BANNER_SETTINGS.joinBy;
+});
