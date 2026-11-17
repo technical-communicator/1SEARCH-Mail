@@ -53,19 +53,18 @@
   },
   {
     "month": "September 2026",
-    "placeholder": true,
     "artist": {
-      "name": "Artist name",
-      "about": "A short line about this month's artist goes here.",
-      "image": "",
-      "instagram": "",
+      "name": "Eros Harrows",
+      "about": "A local artist and market vendor whose weird, visceral work draws on what unsettles them, from the bugs that land on their car to wild nights-out makeup.",
+      "image": "images/mailer/eros-print-small.webp",
+      "instagram": "https://www.instagram.com/eros.harrows.art/",
       "post": ""
     },
     "business": {
-      "name": "Business name",
-      "about": "A short line about this month's business and its perk goes here.",
-      "image": "",
-      "instagram": "",
+      "name": "Assemblage Wine",
+      "about": "Members got 15% off a Build-a-Wine Workshop at CityArts Orlando: blend your own red with the head winemaker and take home a one-of-a-kind bottle. 21+.",
+      "image": "images/mailer/assemblage-thumb.webp",
+      "instagram": "https://www.instagram.com/assemblagewine_co/",
       "post": ""
     }
   },
