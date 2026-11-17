@@ -3477,22 +3477,7 @@ main > .disclaimer-small {
   background: var(--cream);
 }
 
-/* The artist's own letter, as a taped note inside the reading column. */
-.artist-letter {
-  margin: 2rem 0;
-}
-
-.artist-letter p {
-  margin: 0 0 0.9rem;
-}
-
-.artist-letter .signature {
-  margin: 0;
-  font-family: var(--font-script);
-  font-size: 1.6rem;
-}
-
-/* The letter on the left, her print and stickers on the right (stacked on
+/* The text on the left, her print and stickers on the right (stacked on
    phones). The stickers are tucked on the print's corners. */
 .this-month {
   display: grid;
