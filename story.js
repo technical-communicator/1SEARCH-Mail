@@ -86,40 +86,74 @@
       load(S.storySticker2), load("images/stamp-blue.webp"),
     ]);
 
-    // 1. The halftone background, repeated to fill the picture.
+    // 1. The border: the picture looks like a postage stamp. A dark
+    //    backdrop, a cream stamp with perforated (bitten) edges, and the
+    //    chosen halftone colour inside it with a thin ink line around it.
+    const STAMP = 26;     // backdrop showing around the stamp
+    const PAPER = 34;     // cream paper between the perforations and the colour
+    const HOLE = 13;      // size of each perforation bite
+    ctx.fillStyle = "#1a1a1a";
+    ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = "#f6f1e7";
+    ctx.fillRect(STAMP, STAMP, W - 2 * STAMP, H - 2 * STAMP);
+    ctx.fillStyle = "#1a1a1a";
+    function bite(x, y) { ctx.beginPath(); ctx.arc(x, y, HOLE, 0, Math.PI * 2); ctx.fill(); }
+    const stampW = W - 2 * STAMP, stampH = H - 2 * STAMP;
+    const across = Math.round(stampW / 44), down = Math.round(stampH / 44);
+    for (let i = 0; i <= across; i++) {
+      bite(STAMP + i * stampW / across, STAMP);
+      bite(STAMP + i * stampW / across, H - STAMP);
+    }
+    for (let i = 0; i <= down; i++) {
+      bite(STAMP, STAMP + i * stampH / down);
+      bite(W - STAMP, STAMP + i * stampH / down);
+    }
+
+    // The halftone colour, repeated to fill the inside of the stamp.
+    const inset = STAMP + PAPER;
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(inset, inset, W - 2 * inset, H - 2 * inset);
+    ctx.clip();
     ctx.fillStyle = chosen.colour;
     ctx.fillRect(0, 0, W, H);
     for (let y = 0; y < H; y += bg.height) {
       for (let x = 0; x < W; x += bg.width) ctx.drawImage(bg, x, y);
     }
+    ctx.restore();
+    ctx.strokeStyle = "#1a1a1a";
+    ctx.lineWidth = 4;
+    ctx.strokeRect(inset, inset, W - 2 * inset, H - 2 * inset);
+
+    const LEFT = 120;     // left edge for all the words
 
     // 2. The small black label at the top.
     ctx.font = 'bold 40px "Courier Prime", monospace';
     const label = "SEARCH: a snail mail club";
     ctx.fillStyle = "#1a1a1a";
-    ctx.fillRect(90, 130, ctx.measureText(label).width + 40, 64);
+    ctx.fillRect(LEFT, 140, ctx.measureText(label).width + 40, 64);
     ctx.fillStyle = "#ffffff";
     ctx.textBaseline = "middle";
-    ctx.fillText(label, 110, 163);
+    ctx.fillText(label, LEFT + 20, 173);
 
     // 3. The headline.
     ctx.fillStyle = chosen.ink;
     ctx.font = '140px "Anton", Impact, sans-serif';
     ctx.textBaseline = "alphabetic";
-    let y = 360;
-    wrap(ctx, "LOCAL ART IN YOUR MAILBOX!", W - 180).forEach(function (line) {
-      ctx.fillText(line, 90, y);
+    let y = 370;
+    wrap(ctx, "LOCAL ART IN YOUR MAILBOX!", W - 2 * LEFT).forEach(function (line) {
+      ctx.fillText(line, LEFT, y);
       y += 150;
     });
 
     // The words at the bottom are placed up from the bottom edge, and the
     // print goes in the space between the headline and those words.
-    const bottomTop = H - 560;
+    const bottomTop = H - 590;
 
     // 4. The print, with a white border, and the stickers and stamp to scale.
-    const printWidth = 720;
+    const printWidth = 640;
     const perInch = printWidth / S.printWidthInches;  // pixels per inch of print
-    const centreY = (y + bottomTop) / 2;
+    const centreY = (y + bottomTop) / 2 - 30;
     const printHeight = place(ctx, print, W / 2 + 20, centreY, printWidth, 3, 22);
     function stickerWidth(img) {      // the long side is about 2.5 inches
       const long = 2.5 * perInch;
@@ -132,33 +166,32 @@
     // 5. The month and artist. The name shrinks to fit on one line.
     ctx.fillStyle = chosen.ink;
     ctx.font = 'bold 48px "Courier Prime", monospace';
-    ctx.fillText(capital(S.month) + "'s featured artist", 90, H - 470);
+    ctx.fillText(capital(S.month) + "'s featured artist", LEFT, H - 500);
     let size = 120;
     do {
       ctx.font = size + 'px "Anton", Impact, sans-serif';
       size -= 4;
-    } while (ctx.measureText(S.artist.toUpperCase()).width > W - 180 && size > 40);
-    ctx.fillText(S.artist.toUpperCase(), 90, H - 345);
+    } while (ctx.measureText(S.artist.toUpperCase()).width > W - 2 * LEFT && size > 40);
+    ctx.fillText(S.artist.toUpperCase(), LEFT, H - 375);
 
     // A black "Join by" tag, like the site's buttons.
     ctx.font = 'bold 54px "Courier Prime", monospace';
     const join = "JOIN BY " + S.joinBy.toUpperCase();
     const joinWidth = ctx.measureText(join).width + 70;
-    const joinTop = H - 300;
+    const joinTop = H - 330;
     ctx.fillStyle = "#ffffff";
-    ctx.fillRect(98, joinTop + 8, joinWidth, 100);
+    ctx.fillRect(LEFT + 8, joinTop + 8, joinWidth, 100);
     ctx.fillStyle = "#1a1a1a";
-    ctx.fillRect(90, joinTop, joinWidth, 100);
+    ctx.fillRect(LEFT, joinTop, joinWidth, 100);
     ctx.fillStyle = "#ffffff";
     ctx.textBaseline = "middle";
-    ctx.fillText(join, 125, joinTop + 51);
+    ctx.fillText(join, LEFT + 35, joinTop + 51);
 
-    // 6. Where to sign up.
+    // 6. Where to sign up. (No price on the story, the owner's request.)
     ctx.fillStyle = chosen.ink;
     ctx.textBaseline = "alphabetic";
     ctx.font = 'bold 40px "Courier Prime", monospace';
-    ctx.fillText("starting at $6.99/month", 90, H - 120);
-    ctx.fillText("searchcentralfl.com/mailclub", 90, H - 65);
+    ctx.fillText("searchcentralfl.com/mailclub", LEFT, H - 140);
   }
 
   // The file's name, e.g. "search-mail-club-december.png".
