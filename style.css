@@ -149,7 +149,9 @@ h3 {
   justify-content: space-between;
   gap: 0.75rem;
   padding: 0.75rem 1rem;
-  background: var(--red);
+  /* The owner's cherry red halftone texture, the same as the mail club
+     banner (see section 21). */
+  background: var(--red) url("images/bg-red.webp") center / 600px;
   border-bottom: var(--border);
 }
 
