@@ -309,63 +309,66 @@
 
     // 3. The headline.
     ctx.fillStyle = chosen.ink;
-    ctx.font = '140px "Anton", Impact, sans-serif';
+    ctx.font = '124px "Anton", Impact, sans-serif';
     ctx.textBaseline = "alphabetic";
-    let y = 370;
+    let y = 350;
     wrap(ctx, "LOCAL ART IN YOUR MAILBOX!", W - 2 * LEFT).forEach(function (line) {
       ctx.fillText(line, LEFT, y);
-      y += 150;
+      y += 132;
     });
 
     // The words at the bottom are placed up from the bottom edge, and the
     // print goes in the space between the headline and those words.
-    const bottomTop = H - 590;
+    // The bottom ~260px are left empty on purpose, so there's room to add
+    // Instagram's Link sticker (pointing to the Patreon page) in the story.
+    const bottomTop = H - 720;
 
     // 4. The print, with a white border, and the stickers and stamp to scale.
     // Landscape prints are drawn wider; portrait (tall) prints narrower,
     // so both fill the same space. Inches stay to scale either way.
     const landscape = S.printWidthInches > 4.5;
-    const printWidth = landscape ? 640 : 420;
+    const printWidth = landscape ? 600 : 380;
     const perInch = printWidth / S.printWidthInches;  // pixels per inch of print
-    const centreY = (y + bottomTop) / 2 - 30;
+    const centreY = (y + bottomTop) / 2 - 42;
     const printHeight = place(ctx, print, W / 2 + 20, centreY, printWidth, 3, 22);
     function stickerWidth(img) {      // the long side is about 2.5 inches
       const long = 2.5 * perInch;
       return img.width >= img.height ? long : long * img.width / img.height;
     }
-    place(ctx, sticker2, W / 2 - printWidth / 2 + (landscape ? 50 : -40), centreY - printHeight / 2 + (landscape ? -10 : 60), stickerWidth(sticker2), -12, 0);
+    place(ctx, sticker2, W / 2 - printWidth / 2 + (landscape ? 50 : -40), centreY - printHeight / 2 + (landscape ? 12 : 60), stickerWidth(sticker2), -12, 0);
     place(ctx, sticker, W / 2 + printWidth / 2 + (landscape ? -10 : 40), centreY + printHeight / 2 - (landscape ? 30 : 110), stickerWidth(sticker), 10, 0);
     place(ctx, stamp, W / 2 + printWidth / 2 - 30, centreY - printHeight / 2 + 10, 1.25 * perInch, -14, 0);
 
     // 5. The month and artist. The name shrinks to fit on one line.
     ctx.fillStyle = chosen.ink;
     ctx.font = 'bold 48px "Courier Prime", monospace';
-    ctx.fillText(capital(S.month) + "'s featured artist", LEFT, H - 500);
+    ctx.fillText(capital(S.month) + "'s featured artist", LEFT, H - 640);
     let size = 120;
     do {
       ctx.font = size + 'px "Anton", Impact, sans-serif';
       size -= 4;
     } while (ctx.measureText(S.artist.toUpperCase()).width > W - 2 * LEFT && size > 40);
-    ctx.fillText(S.artist.toUpperCase(), LEFT, H - 375);
+    ctx.fillText(S.artist.toUpperCase(), LEFT, H - 520);
 
-    // A black "Join by" tag, like the site's buttons.
-    ctx.font = 'bold 54px "Courier Prime", monospace';
+    // A black "Join by" tag, like the site's buttons (kept small, so the
+    // story has room for Instagram's Link sticker underneath).
+    ctx.font = 'bold 38px "Courier Prime", monospace';
     const join = "JOIN BY " + S.joinBy.toUpperCase();
-    const joinWidth = ctx.measureText(join).width + 70;
-    const joinTop = H - 330;
+    const joinWidth = ctx.measureText(join).width + 50;
+    const joinTop = H - 480;
     ctx.fillStyle = "#ffffff";
-    ctx.fillRect(LEFT + 8, joinTop + 8, joinWidth, 100);
+    ctx.fillRect(LEFT + 6, joinTop + 6, joinWidth, 70);
     ctx.fillStyle = "#1a1a1a";
-    ctx.fillRect(LEFT, joinTop, joinWidth, 100);
+    ctx.fillRect(LEFT, joinTop, joinWidth, 70);
     ctx.fillStyle = "#ffffff";
     ctx.textBaseline = "middle";
-    ctx.fillText(join, LEFT + 35, joinTop + 51);
+    ctx.fillText(join, LEFT + 25, joinTop + 36);
 
     // 6. Where to sign up. (No price on the story, the owner's request.)
     ctx.fillStyle = chosen.ink;
     ctx.textBaseline = "alphabetic";
-    ctx.font = 'bold 40px "Courier Prime", monospace';
-    ctx.fillText("searchcentralfl.com/mailclub", LEFT, H - 140);
+    ctx.font = 'bold 36px "Courier Prime", monospace';
+    ctx.fillText("patreon.com/SearchCentralFlorida", LEFT, H - 350);
 
     // Some borders add a finishing touch on top (like strips of tape).
     if (frame.over) frame.over(ctx);
@@ -416,7 +419,7 @@
       '<div class="story-panel">' +
         '<button type="button" class="story-close" aria-label="Close">&times;</button>' +
         '<h2 id="story-title">Share to your story</h2>' +
-        '<p class="story-note">A picture of ' + S.month + "'s mail club, the size of an Instagram story. Pick a colour, then save it or share it.</p>" +
+        '<p class="story-note">A picture of ' + S.month + "'s mail club, the size of an Instagram story. Pick a colour, then save it or share it. The empty space at the bottom is for Instagram\'s <strong>Link</strong> sticker, so people can tap through to Patreon.</p>" +
         '<div class="story-body">' +
           // The picture is drawn on a hidden canvas, then shown as a normal
           // image, so on phones you can also press and hold it to save it.
