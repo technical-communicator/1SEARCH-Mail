@@ -3496,11 +3496,9 @@ main > .disclaimer-small {
   transform: rotate(-10deg);
 }
 
-.this-month-art figcaption {
-  margin-top: 3rem;  /* room for the sticker hanging off the bottom */
-  color: var(--muted);
-  font-size: 0.85rem;
-  text-align: center;
+/* Room under the print for the sticker hanging off its bottom edge. */
+.this-month-frame {
+  margin-bottom: 3rem;
 }
 
 @media (min-width: 900px) {
@@ -3555,16 +3553,32 @@ main > .disclaimer-small {
   align-items: center;
 }
 
+/* The Share button: small and quiet, just the share icon and a word,
+   next to the big Join button. */
 .mcb-share {
-  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 2.75rem;      /* still easy to tap */
+  padding: 0 0.5rem;
+  background: none;
+  border: 0;
   color: #ffffff;
-  border: 2px solid #ffffff;
-  font-size: 1rem;
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: bold;
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
+  cursor: pointer;
 }
 
 .mcb-share:hover {
-  background: #ffffff;
-  color: var(--ink);
+  text-decoration-thickness: 2px;
+}
+
+.mcb-share:focus-visible {
+  outline: 3px solid #ffffff;
+  outline-offset: 2px;
 }
 
 .story-dialog {
@@ -3800,6 +3814,10 @@ main > .disclaimer-small {
   .mcb-buttons .button {
     flex: 1 1 12rem;
     text-align: center;
+  }
+
+  .mcb-buttons .mcb-share {
+    margin: 0 auto;
   }
 }
 

@@ -21,6 +21,85 @@
   ];
 
   const S = BANNER_SETTINGS;   // from banner.js
+
+  // The border styles. Each "under" draws the border and returns how far in
+  // (in pixels) the coloured part starts; "over" (optional) draws on top at
+  // the end. Pick one with storyFrame in BANNER_SETTINGS (banner.js).
+  const INK = "#1a1a1a", CREAM = "#f6f1e7";
+  const FRAMES = {
+    // A postage stamp: dark backdrop, cream paper with bitten edges.
+    stamp: {
+      under: function (ctx) {
+        const EDGE = 26, HOLE = 13;
+        ctx.fillStyle = INK;
+        ctx.fillRect(0, 0, W, H);
+        ctx.fillStyle = CREAM;
+        ctx.fillRect(EDGE, EDGE, W - 2 * EDGE, H - 2 * EDGE);
+        ctx.fillStyle = INK;
+        const w = W - 2 * EDGE, h = H - 2 * EDGE;
+        const across = Math.round(w / 44), down = Math.round(h / 44);
+        function bite(x, y) { ctx.beginPath(); ctx.arc(x, y, HOLE, 0, Math.PI * 2); ctx.fill(); }
+        for (let i = 0; i <= across; i++) { bite(EDGE + i * w / across, EDGE); bite(EDGE + i * w / across, H - EDGE); }
+        for (let i = 0; i <= down; i++) { bite(EDGE, EDGE + i * h / down); bite(W - EDGE, EDGE + i * h / down); }
+        return 60;
+      },
+    },
+    // An airmail envelope: red and blue diagonal stripes around the edge.
+    airmail: {
+      under: function (ctx) {
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, W, H);
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(0, 0, W, H);
+        ctx.rect(44, 44, W - 88, H - 88);
+        ctx.clip("evenodd");                       // only the outer band
+        const colours = ["#c8102e", "#ffffff", "#1f4e8c", "#ffffff"];
+        for (let i = -H, k = 0; i < W + H; i += 44, k++) {
+          ctx.fillStyle = colours[k % 4];
+          ctx.beginPath();
+          ctx.moveTo(i, 0); ctx.lineTo(i + 44, 0); ctx.lineTo(i + 44 - H, H); ctx.lineTo(i - H, H);
+          ctx.fill();
+        }
+        ctx.restore();
+        return 62;
+      },
+    },
+    // A clean white border, like the art prints themselves.
+    print: {
+      under: function (ctx) {
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, W, H);
+        return 56;
+      },
+    },
+    // Cream paper with strips of washi tape on the corners.
+    tape: {
+      under: function (ctx) {
+        ctx.fillStyle = CREAM;
+        ctx.fillRect(0, 0, W, H);
+        return 60;
+      },
+      over: function (ctx) {
+        function strip(x, y, turn, colour) {
+          ctx.save();
+          ctx.translate(x, y);
+          ctx.rotate(turn * Math.PI / 180);
+          ctx.fillStyle = colour;
+          ctx.fillRect(-170, -42, 340, 84);
+          ctx.restore();
+        }
+        strip(70, 70, -40, "rgba(243, 118, 155, 0.9)");      // pink
+        strip(W - 70, 70, 40, "rgba(135, 209, 255, 0.9)");   // blue
+        strip(70, H - 70, 40, "rgba(253, 217, 76, 0.92)");   // yellow
+        strip(W - 70, H - 70, -40, "rgba(243, 118, 155, 0.9)");
+      },
+    },
+    // No border: the colour goes right to the edge.
+    none: {
+      under: function () { return 0; },
+    },
+  };
   let dialog, canvas, chosen = BACKGROUNDS[0], root = "";
   const pictures = {};         // images, loaded once
 
@@ -86,31 +165,10 @@
       load(S.storySticker2), load("images/stamp-blue.webp"),
     ]);
 
-    // 1. The border: the picture looks like a postage stamp. A dark
-    //    backdrop, a cream stamp with perforated (bitten) edges, and the
-    //    chosen halftone colour inside it with a thin ink line around it.
-    const STAMP = 26;     // backdrop showing around the stamp
-    const PAPER = 34;     // cream paper between the perforations and the colour
-    const HOLE = 13;      // size of each perforation bite
-    ctx.fillStyle = "#1a1a1a";
-    ctx.fillRect(0, 0, W, H);
-    ctx.fillStyle = "#f6f1e7";
-    ctx.fillRect(STAMP, STAMP, W - 2 * STAMP, H - 2 * STAMP);
-    ctx.fillStyle = "#1a1a1a";
-    function bite(x, y) { ctx.beginPath(); ctx.arc(x, y, HOLE, 0, Math.PI * 2); ctx.fill(); }
-    const stampW = W - 2 * STAMP, stampH = H - 2 * STAMP;
-    const across = Math.round(stampW / 44), down = Math.round(stampH / 44);
-    for (let i = 0; i <= across; i++) {
-      bite(STAMP + i * stampW / across, STAMP);
-      bite(STAMP + i * stampW / across, H - STAMP);
-    }
-    for (let i = 0; i <= down; i++) {
-      bite(STAMP, STAMP + i * stampH / down);
-      bite(W - STAMP, STAMP + i * stampH / down);
-    }
-
-    // The halftone colour, repeated to fill the inside of the stamp.
-    const inset = STAMP + PAPER;
+    // 1. The border, then the halftone colour inside it. The border style
+    //    is BANNER_SETTINGS.storyFrame in banner.js (see FRAMES below).
+    const frame = FRAMES[S.storyFrame] || FRAMES.stamp;
+    const inset = frame.under(ctx);
     ctx.save();
     ctx.beginPath();
     ctx.rect(inset, inset, W - 2 * inset, H - 2 * inset);
@@ -121,9 +179,11 @@
       for (let x = 0; x < W; x += bg.width) ctx.drawImage(bg, x, y);
     }
     ctx.restore();
-    ctx.strokeStyle = "#1a1a1a";
-    ctx.lineWidth = 4;
-    ctx.strokeRect(inset, inset, W - 2 * inset, H - 2 * inset);
+    if (inset > 0) {
+      ctx.strokeStyle = "#1a1a1a";
+      ctx.lineWidth = 4;
+      ctx.strokeRect(inset, inset, W - 2 * inset, H - 2 * inset);
+    }
 
     const LEFT = 120;     // left edge for all the words
 
@@ -195,6 +255,9 @@
     ctx.textBaseline = "alphabetic";
     ctx.font = 'bold 40px "Courier Prime", monospace';
     ctx.fillText("searchcentralfl.com/mailclub", LEFT, H - 140);
+
+    // Some borders add a finishing touch on top (like strips of tape).
+    if (frame.over) frame.over(ctx);
   }
 
   // Draw, then show the result in the preview image.

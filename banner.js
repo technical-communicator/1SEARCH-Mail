@@ -48,6 +48,8 @@ const BANNER_SETTINGS = {
   storySticker: "images/mailer/jasmine-sticker-heart.webp",
   storySticker2: "images/mailer/jasmine-sticker-skeleton.webp",
   printWidthInches: 6,   // 6 for a landscape 6x4 print, 4 for a portrait 4x6
+  // The story picture's border: "stamp", "airmail", "print", "tape" or "none".
+  storyFrame: "stamp",
 };
 
 // THE LAYOUT SWITCH: a landscape (wide) print and a portrait (tall) print
@@ -111,7 +113,10 @@ function buildMailclubBanner(spot) {
             '<div class="mcb-buttons">' +
               '<a class="button mcb-button" href="' + root + 'mailclub.html#tiers">Join by ' + BANNER_SETTINGS.joinBy + "</a>" +
               // Opens the "share to your story" maker (story.js).
-              '<button type="button" class="button mcb-share" data-root="' + root + '">Share to your story</button>' +
+              // A small, quiet Share link with the usual share icon.
+              '<button type="button" class="mcb-share" data-root="' + root + '" aria-label="Share this month\'s mail club to your story">' +
+                '<svg class="mcb-share-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M12 3v12M7 8l5-5 5 5M5 13v7h14v-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Share</span>' +
+              "</button>" +
             "</div>" +
           "</div>" +
 
