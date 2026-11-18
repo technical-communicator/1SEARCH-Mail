@@ -95,6 +95,117 @@
         strip(W - 70, H - 70, -40, "rgba(243, 118, 155, 0.9)");
       },
     },
+    // A strip of 35mm film: black edges with sprocket holes down each side.
+    film: {
+      under: function (ctx) {
+        ctx.fillStyle = "#111111";
+        ctx.fillRect(0, 0, W, H);
+        ctx.fillStyle = CREAM;
+        for (let y = 24; y < H - 40; y += 70) {
+          ctx.beginPath();
+          ctx.roundRect(16, y, 34, 44, 6);
+          ctx.roundRect(W - 50, y, 34, 44, 6);
+          ctx.fill();
+        }
+        ctx.font = 'bold 22px "Courier Prime", monospace';
+        ctx.fillStyle = "#e8a33d";
+        ctx.fillText("SEARCH 400", 70, 42);
+        ctx.fillText("\u25B6 12A", W - 190, H - 22);
+        return 64;
+      },
+    },
+    // Torn paper: the colour sits on cream paper with a ripped edge.
+    torn: {
+      under: function (ctx) {
+        ctx.fillStyle = INK;
+        ctx.fillRect(0, 0, W, H);
+        // A jagged outline around the edge, the same every time.
+        let seed = 7;
+        function wobble() { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; }
+        ctx.fillStyle = CREAM;
+        ctx.beginPath();
+        const m = 30, step = 22;
+        ctx.moveTo(m, m);
+        for (let x = m; x <= W - m; x += step) ctx.lineTo(x, m + wobble() * 18 - 9);
+        for (let y = m; y <= H - m; y += step) ctx.lineTo(W - m + wobble() * 18 - 9, y);
+        for (let x = W - m; x >= m; x -= step) ctx.lineTo(x, H - m + wobble() * 18 - 9);
+        for (let y = H - m; y >= m; y -= step) ctx.lineTo(m + wobble() * 18 - 9, y);
+        ctx.closePath();
+        ctx.fill();
+        return 62;
+      },
+    },
+    // An event ticket: cream with notched corners and a perforated tear line.
+    ticket: {
+      under: function (ctx) {
+        ctx.fillStyle = INK;
+        ctx.fillRect(0, 0, W, H);
+        ctx.fillStyle = CREAM;
+        ctx.fillRect(20, 20, W - 40, H - 40);
+        ctx.fillStyle = INK;
+        [[20, 20], [W - 20, 20], [20, H - 20], [W - 20, H - 20]].forEach(function (c) {
+          ctx.beginPath(); ctx.arc(c[0], c[1], 46, 0, Math.PI * 2); ctx.fill();
+        });
+        return 60;
+      },
+      over: function (ctx) {
+        ctx.save();
+        ctx.setLineDash([14, 12]);
+        ctx.strokeStyle = INK;
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.moveTo(60, H - 210);
+        ctx.lineTo(W - 60, H - 210);
+        ctx.stroke();
+        ctx.restore();
+      },
+    },
+    // A kraft paper envelope with a stitched dashed line around it.
+    kraft: {
+      under: function (ctx) {
+        ctx.fillStyle = "#b98a5a";
+        ctx.fillRect(0, 0, W, H);
+        ctx.save();
+        ctx.setLineDash([22, 14]);
+        ctx.strokeStyle = CREAM;
+        ctx.lineWidth = 5;
+        ctx.strokeRect(26, 26, W - 52, H - 52);
+        ctx.restore();
+        return 60;
+      },
+    },
+    // A postcard: cream border with a round Orlando postmark and wavy
+    // cancellation lines in the top-right corner.
+    postcard: {
+      under: function (ctx) {
+        ctx.fillStyle = CREAM;
+        ctx.fillRect(0, 0, W, H);
+        return 56;
+      },
+      over: function (ctx) {
+        ctx.save();
+        ctx.strokeStyle = "rgba(26, 26, 26, 0.75)";
+        ctx.fillStyle = "rgba(26, 26, 26, 0.75)";
+        ctx.lineWidth = 5;
+        const cx = W - 140, cy = 96;
+        ctx.beginPath(); ctx.arc(cx, cy, 70, 0, Math.PI * 2); ctx.stroke();
+        ctx.beginPath(); ctx.arc(cx, cy, 52, 0, Math.PI * 2); ctx.stroke();
+        ctx.font = 'bold 20px "Courier Prime", monospace';
+        ctx.textAlign = "center";
+        ctx.fillText("ORLANDO", cx, cy - 4);
+        ctx.fillText("FL", cx, cy + 22);
+        ctx.textAlign = "left";
+        for (let i = 0; i < 4; i++) {           // the wavy lines
+          ctx.beginPath();
+          for (let x = cx - 300; x <= cx - 80; x += 6) {
+            const y = cy - 52 + i * 22 + Math.sin(x / 18) * 7;
+            if (x === cx - 300) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+          }
+          ctx.stroke();
+        }
+        ctx.restore();
+      },
+    },
     // No border: the colour goes right to the edge.
     none: {
       under: function () { return 0; },

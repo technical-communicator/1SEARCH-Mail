@@ -48,7 +48,8 @@ const BANNER_SETTINGS = {
   storySticker: "images/mailer/jasmine-sticker-heart.webp",
   storySticker2: "images/mailer/jasmine-sticker-skeleton.webp",
   printWidthInches: 6,   // 6 for a landscape 6x4 print, 4 for a portrait 4x6
-  // The story picture's border: "stamp", "airmail", "print", "tape" or "none".
+  // The story picture's border: "stamp", "airmail", "print", "tape", "film",
+  // "torn", "ticket", "kraft", "postcard" or "none" (see FRAMES in story.js).
   storyFrame: "stamp",
 };
 
