@@ -124,6 +124,9 @@ function buildMailclubBanner(spot) {
           '<div class="mcb-visual">' +
             '<span class="mcb-sparkle mcb-sparkle-1" aria-hidden="true">✦</span>' +
             '<span class="mcb-sparkle mcb-sparkle-2" aria-hidden="true">✦</span>' +
+            // The frame holds the print, with the stamp and stickers placed
+            // against the print itself (so they can't hang past its edges).
+            '<div class="mcb-frame">' +
             '<a href="' + root + BANNER_SETTINGS.artistPost + '" aria-label="' + BANNER_SETTINGS.month + "'s artist: " + BANNER_SETTINGS.artist + '">' +
               '<img loading="lazy" decoding="async" class="mcb-print" src="' + root + BANNER_SETTINGS.printImage + '" alt="" width="660" height="440">' +
             "</a>" +
@@ -131,6 +134,7 @@ function buildMailclubBanner(spot) {
             '<img loading="lazy" decoding="async" class="seal-stamp mcb-stamp" src="' + root + 'images/stamp-blue.webp" alt="" width="400" height="400">' +
             '<img loading="lazy" decoding="async" class="mcb-sticker" src="' + root + BANNER_SETTINGS.stickerImage + '" alt="" width="260" height="336">' +
             '<img loading="lazy" decoding="async" class="mcb-sticker mcb-sticker-2" src="' + root + BANNER_SETTINGS.sticker2Image + '" alt="" width="300" height="237">' +
+            "</div>" +
             // The small "this month's perk" card, like a product card on a shop banner.
             '<a class="mcb-card" href="' + perkLink + '"' + perkTarget + ">" +
               '<img loading="lazy" decoding="async" src="' + root + BANNER_SETTINGS.perkImage + '" alt="">' +

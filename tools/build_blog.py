@@ -239,7 +239,7 @@ def footer(prefix):
     </div>
 
     <div class="footer-bottom">
-      <p>&copy; 2026 Search Central Florida. Made in Orlando.</p>
+      <p>&copy; 2026 Search Central LLC. Made in Orlando.</p>
       <!-- For Search Central Florida's admins. The page asks for a login. -->
       <a href="{prefix}admin.html" class="footer-top">Admin login</a>
       <a href="#top" class="footer-top">Back to top &uarr;</a>

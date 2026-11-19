@@ -119,6 +119,7 @@ def organization():
         "@id": BASE_URL + "#organization",
         "name": org["name"],
         "alternateName": org["alternate_name"],
+        "legalName": org.get("legal_name", org["name"]),
         "url": BASE_URL,
         "logo": absolute(org["logo"]),
         "description": org["description"],

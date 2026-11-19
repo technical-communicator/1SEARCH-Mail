@@ -663,8 +663,8 @@ main {
 /* The sticker is to scale with the print: 2.1 in wide / 4 in = 53%. */
 .slide-mail .slide-sticker {
   position: absolute;
-  left: -4%;
-  bottom: -34%;
+  left: -10%;
+  bottom: 2%;   /* kept inside the print's bottom edge */
   width: 42%;  /* skeleton: 2.5 in / 6 in print */
   border: 0;
   box-shadow: none;
@@ -2363,7 +2363,7 @@ body:has(.event-dialog[open]) {
   /* Just the first sticker (the second one keeps its own spot). */
   .slide-mail .slide-sticker:not(.slide-sticker-2) {
     left: -16%;
-    bottom: -6%;
+    bottom: 2%;
   }
 
   .slide-button {
@@ -2604,10 +2604,16 @@ h1.mcb-title {
 .mcb-visual {
   position: relative;
   justify-self: center;
-  width: min(80vw, 22rem);
-  /* Room under the landscape print, so the perk card sits mostly below
-     it instead of covering the art. */
-  padding-bottom: 6rem;
+  width: min(80vw, 26rem);
+}
+
+/* The print and everything stuck on it. Sizes below are percentages of
+   the PRINT, so they're to scale: on a 6 in wide print, the 1.25 in stamp
+   is 21% and a 2.5 in sticker is 42% (landscape) or 32% (tall). */
+.mcb-frame {
+  position: relative;
+  width: 86%;
+  margin-left: auto;
 }
 
 /* SIZES TO SCALE: December's print is a 6x4 landscape, so it's wider here.
@@ -2615,8 +2621,7 @@ h1.mcb-title {
    width: stickers are 2.5 in on their long side, the stamp 1.25 in. */
 .mcb-print {
   display: block;
-  width: 86%;
-  margin-left: auto;
+  width: 100%;
   border: 4px solid #ffffff;   /* a slim print edge */
   box-shadow: var(--soft-shadow);
   transform: rotate(4deg);
@@ -2634,12 +2639,11 @@ h1.mcb-title {
   pointer-events: none;  /* clicks go through to whatever is underneath */
 }
 
-/* Sized to scale: a real 1.25 in stamp on the 6 in wide print is 21% of
-   the print's width. The print is 86% of this box wide, so 21% x 86% = 18%. */
+/* The stamp on the print's top-right corner (1.25 in = 21% of the print). */
 .mcb-stamp {
-  top: -8%;
-  right: -9%;   /* half over the print's corner, half on the pink */
-  width: 18%;
+  top: -10%;
+  right: -7%;
+  width: 21%;
   transform: rotate(-16deg);
 }
 
@@ -2647,9 +2651,11 @@ h1.mcb-title {
 .mcb-sticker {
   position: absolute;
   z-index: 1;
-  right: -4%;
-  top: 34%;
-  width: 28%;  /* heart: 1.9 in wide / 6 in print = 32% of the print (86%) */
+  /* Bottom-right, kept INSIDE the print's bottom edge (owner's request). */
+  right: -5%;
+  top: auto;
+  bottom: 4%;
+  width: 32%;  /* heart: 1.9 in wide / 6 in print */
   filter: drop-shadow(2px 3px 0 rgba(0, 0, 0, 0.3));
   transform: rotate(12deg);
 }
@@ -2657,9 +2663,10 @@ h1.mcb-title {
 /* The second sticker, stuck on the print's top-left corner. */
 .mcb-sticker-2 {
   right: auto;
-  left: 2%;
-  top: -10%;
-  width: 36%;  /* skeleton: 2.5 in wide / 6 in print = 42% of the print (86%) */
+  left: -12%;
+  top: -14%;
+  bottom: auto;
+  width: 42%;  /* skeleton: 2.5 in wide / 6 in print */
   transform: rotate(-14deg);
 }
 
@@ -2685,15 +2692,16 @@ h1.mcb-title {
   font-size: 1.75rem;
 }
 
-/* The "this month's artist" card, overlapping the print's corner. */
+/* This month's perk card, a neat row under the print (never on top of it):
+   the logo on the left, "december's perk" and the name stacked beside it. */
 .mcb-card {
-  position: absolute;
+  position: relative;
   z-index: 2;
-  left: 0;
-  bottom: -1.5rem;
-  display: flex;
-  flex-direction: column;
-  width: 10.5rem;
+  display: grid;
+  grid-template-columns: 5.5rem 1fr;
+  align-items: center;
+  column-gap: 0.75rem;
+  margin-top: 2rem;
   padding: 0.5rem 0.5rem 0.6rem;
   background: #ffffff;
   color: var(--ink);
@@ -2701,22 +2709,23 @@ h1.mcb-title {
   border-radius: 12px;
   box-shadow: 4px 4px 0 var(--ink);
   text-decoration: none;
-  transform: rotate(-3deg);
 }
 
 .mcb-card:hover {
   color: var(--ink);
-  transform: rotate(-3deg) translateY(-3px);
+  transform: translateY(-2px);
 }
 
 .mcb-card img {
+  grid-row: span 2;
+  width: 5.5rem;
   aspect-ratio: 16 / 10;
   object-fit: cover;
   border-radius: 6px;
 }
 
 .mcb-card-label {
-  margin-top: 0.4rem;
+  margin-top: 0;
   font-size: 0.75rem;
   font-weight: bold;
   text-transform: uppercase;
@@ -3424,7 +3433,7 @@ main > .disclaimer-small {
   position: absolute;
   width: 32%;  /* heart: 1.9 in wide / 6 in print */
   right: -6%;
-  bottom: -18%;
+  bottom: 4%;   /* kept inside the print's bottom edge */
   transform: rotate(10deg);
   filter: drop-shadow(2px 3px 0 rgba(0, 0, 0, 0.3));
 }
@@ -3438,9 +3447,8 @@ main > .disclaimer-small {
   transform: rotate(-10deg);
 }
 
-/* Room under the print for the sticker hanging off its bottom edge. */
 .this-month-frame {
-  margin-bottom: 3rem;
+  margin-bottom: 1.5rem;
 }
 
 @media (min-width: 900px) {
@@ -3715,7 +3723,11 @@ main > .disclaimer-small {
 @media (max-width: 47.99rem) {
   .mcb-visual {
     width: min(88vw, 24rem);
-    padding-bottom: 0;
+  }
+
+  .mcb-frame {
+    width: 80%;
+    margin-right: 8%;
   }
 
   .mcb-sparkle {
@@ -3724,33 +3736,6 @@ main > .disclaimer-small {
 
   .mcb-stamp {
     right: -3%;
-  }
-
-  /* Picture on the left, "december's perk" and the name stacked beside it. */
-  .mcb-card {
-    position: relative;
-    left: auto;
-    bottom: auto;
-    display: grid;
-    grid-template-columns: 5.5rem 1fr;
-    align-items: center;
-    column-gap: 0.75rem;
-    width: auto;
-    margin-top: 3.25rem;  /* room for the sticker hanging off the print */
-    transform: none;
-  }
-
-  .mcb-card:hover {
-    transform: translateY(-2px);
-  }
-
-  .mcb-card img {
-    grid-row: span 2;
-    width: 5.5rem;
-  }
-
-  .mcb-card-label {
-    margin-top: 0;
   }
 
   .mcb-buttons .button {
@@ -3793,35 +3778,33 @@ main > .disclaimer-small {
    the month's print is portrait (data-print="portrait"), these take over.
    To scale against a 4 in wide print: the 1.25 in stamp is 31% of the
    print's width, and a 2.5 in sticker is about 45-60% depending on shape. */
-[data-print="portrait"] .mcb-print {
+/* A tall print: a narrower frame; stamp and stickers as % of a 4 in print. */
+[data-print="portrait"] .mcb-frame {
   width: 62%;
   margin-right: 12%;
 }
 
-/* On phones a tall print gets narrower, so the banner isn't too long. */
 @media (max-width: 47.99rem) {
-  [data-print="portrait"] .mcb-print {
-    width: 52%;
+  [data-print="portrait"] .mcb-frame {
+    width: 54%;
     margin-right: 20%;
   }
 }
 
 [data-print="portrait"] .mcb-stamp {
-  top: -6%;
-  right: 4%;
-  width: 19%;      /* 31% of the print (62%) */
+  width: 31%;      /* 1.25 in / 4 in */
 }
 
 [data-print="portrait"] .mcb-sticker {
-  right: 0;
-  top: 46%;
-  width: 30%;
+  width: 46%;
+  right: -16%;
+  bottom: 4%;
 }
 
 [data-print="portrait"] .mcb-sticker-2 {
-  left: 0;
-  top: 4%;
-  width: 32%;
+  width: 52%;
+  left: -26%;
+  top: 6%;
 }
 
 [data-print="portrait"] .slide-mail {

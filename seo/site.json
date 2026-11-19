@@ -1,14 +1,11 @@
 {
   "_about": "Site-wide SEO settings. The build script (tools/build_site.py) reads this file. Change the address, name or default share image here, once, and every page picks it up on the next build.",
-
   "base_url": "https://www.searchcentralfl.com/",
   "site_name": "Search Central Florida",
   "title_suffix": " | Search Central Florida",
   "locale": "en_US",
-
   "default_og_image": "images/og/default.jpg",
   "default_og_image_alt": "Search Central Florida: Orlando arts, culture and events, with the SEARCH mascot",
-
   "organization": {
     "name": "Search Central Florida",
     "alternate_name": "SEARCH",
@@ -19,11 +16,10 @@
       "https://www.instagram.com/searchcentralfl/",
       "https://patreon.com/SearchCentralFlorida"
     ],
-    "area_served": "Orlando, Florida"
+    "area_served": "Orlando, Florida",
+    "legal_name": "Search Central LLC"
   },
-
   "indexnow_key": "20f459f27bca3f2f2c562ba6a89dad40",
-
   "limits": {
     "title_max": 60,
     "description_max": 155
