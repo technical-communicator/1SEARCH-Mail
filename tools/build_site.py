@@ -438,7 +438,7 @@ def update_events_list(events):
 def faq_json_ld(page):
     """FAQPage structured data, read from the <details> questions in the page."""
     questions = []
-    for question, answer in re.findall(r"<details>\s*<summary>(.*?)</summary>(.*?)</details>", page, re.S):
+    for question, answer in re.findall(r"<details[^>]*>\s*<summary>(.*?)</summary>(.*?)</details>", page, re.S):
         text = html.unescape(re.sub(r"<[^>]+>", "", answer))
         questions.append({
             "@type": "Question",

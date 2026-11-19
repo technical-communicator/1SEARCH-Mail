@@ -2075,78 +2075,31 @@ body:has(.event-dialog[open]) {
 /* =========================================================
    11. About page
    ========================================================= */
-.about-mission p {
-  font-size: 1.1rem;
-}
-
-/* The Instagram "profile card": a yellow halftone band with the round
-   mascot avatar, handle and name, then a short bio, a list and a Follow
-   button. The band is centred on phones; the avatar sits beside the handle when wider. */
-.ig-card {
-  background: var(--cream);
-  border: var(--border);
-}
-
-.ig-top {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem 1.5rem;
-  padding: 1.5rem 1.25rem;
-  background-color: var(--section);
-  background-image: radial-gradient(rgba(0, 0, 0, 0.12) 1.2px, transparent 1.6px);
-  background-size: 8px 8px;
-  border-bottom: var(--border);
-  text-align: center;
-}
-
-.ig-avatar {
+/* The page is the mission, a "Good to know" list of questions (it reuses
+   the mail club's .faq style) and a yellow "Follow along" band. */
+.about-follow {
   display: grid;
-  place-items: center;
-  flex: none;
-  width: 7.5rem;
-  aspect-ratio: 1;
-  background: #ffffff;
+  gap: 1rem;
+  margin-top: 2.5rem;
+  padding: 1.5rem;
   border: var(--border);
-  border-radius: 50%;
-  overflow: hidden;
+  background: var(--yellow) url("images/bg-yellow.webp") center / 600px;
 }
 
-.ig-avatar img {
-  width: 72%;
-  margin-top: 12%;
-}
-
-.ig-handle {
+.about-follow h2 {
   margin: 0;
-  font-family: "Anton", sans-serif;
-  font-size: clamp(2rem, 8vw, 3rem);
-  line-height: 1.05;
-  overflow-wrap: anywhere;
+  font-size: 2rem;
 }
 
-.ig-name {
+.about-follow p {
   margin: 0.25rem 0 0;
-  font-weight: bold;
 }
 
-.ig-body {
-  padding: 1.5rem 1.25rem;
-}
-
-.ig-body > p:first-child {
-  margin-top: 0;
-}
-
-.ig-list {
-  margin: 0 0 1.5rem;
-  padding-left: 1.25rem;
-}
-
-.ig-note {
-  margin-top: 1rem;
-  color: var(--muted);
+@media (min-width: 48rem) {
+  .about-follow {
+    grid-template-columns: 1fr auto;
+    align-items: center;
+  }
 }
 
 
@@ -2426,17 +2379,6 @@ body:has(.event-dialog[open]) {
 
   .lead-story .card-image {
     order: 0;
-  }
-
-  .ig-top,
-  .ig-body {
-    justify-content: flex-start;
-    padding-inline: 2rem;
-    text-align: left;
-  }
-
-  .ig-avatar {
-    width: 9rem;
   }
 
   .inside-grid {

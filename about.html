@@ -33,6 +33,56 @@
   <link rel="icon" type="image/png" sizes="96x96" href="/images/icons/icon-96.png">
   <link rel="icon" type="image/png" sizes="192x192" href="/images/icons/icon-192.png">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+  <!-- Structured data for search engines (schema.org). -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is Search Central Florida?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A hyperlocal guide to the arts, culture and small businesses of Orlando and Central Florida, run by Halley and Zach."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do you choose events?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "We curate what we think our community will love. Every event is checked by a real person before it's listed."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I add my event?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes! Submit it here. It's free and takes about two minutes."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What's the snail mail club?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A monthly package of art from a local artist, plus a perk from a local business. See the tiers."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How can I reach you?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "DM us on Instagram @searchcentralfl or email searchcentralflorida@gmail.com."
+        }
+      }
+    ]
+  }
+  </script>
   <!-- SEO:END -->
   <!-- Little mascot icon in the browser tab. -->
 
@@ -42,7 +92,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Yellowtail&display=swap">
 
-  <link rel="stylesheet" href="style.css?v=6e420abd">
+  <link rel="stylesheet" href="style.css?v=f18f176b">
 </head>
 <!-- "page-about" gives this page its section colour, yellow (see style.css). -->
 <body class="page-about">
@@ -68,64 +118,56 @@
     <header class="masthead">
       <p class="section-chip">About</p>
       <h1>Our mission</h1>
-      <p class="masthead-intro">Highlighting the amazing arts and culture happening every day across Central Florida.</p>
+      <p class="masthead-intro">The mission of Search Central Florida is to highlight the amazing arts and culture that is happening every day across Central Florida.</p>
     </header>
 
-    <!-- ===== THE MISSION ===== (the owners' words) -->
-    <section class="about-mission" aria-labelledby="mission-heading">
-      <h2 class="section-head" id="mission-heading">Why we do this</h2>
-      <div class="reading">
-        <p>The mission of Search Central Florida is to highlight the amazing arts and culture that is happening every day across Central Florida.</p>
-        <p>We started Search Central Florida on Instagram with the goal of curating some of the best events in Central Florida. This website is an extension of that mission: to keep spreading and sharing the amazing things that go on in Central Florida.</p>
-      </div>
-    </section>
+    <!-- The owners' words. -->
+    <div class="reading">
+      <p>We started Search Central Florida on Instagram with the goal of curating some of the best events in Central Florida. This website is an extension of that mission: to keep spreading and sharing the amazing things that go on in Central Florida.</p>
+    </div>
 
-    <!-- ===== INSTAGRAM =====
-         A "profile card" for our Instagram, in the site's own style.
-         Every link on it opens our Instagram in a new tab. -->
-    <section class="ig-section" aria-labelledby="ig-heading">
-      <h2 class="section-head" id="ig-heading">Find us on Instagram</h2>
-      <div class="ig-card">
-        <!-- Top: a yellow halftone band with the avatar, handle and name. -->
-        <div class="ig-top">
-          <a class="ig-avatar" href="https://www.instagram.com/searchcentralfl/" target="_blank" rel="noopener"
-             aria-label="@searchcentralfl on Instagram, opens in a new tab">
-            <img src="images/mascot-head-color-large.webp" alt="" width="391" height="440">
-          </a>
-          <div>
-            <p class="ig-handle">@searchcentralfl</p>
-            <p class="ig-name">Search Central Florida</p>
-          </div>
-        </div>
-        <!-- Bottom: what we post there, and the Follow button. -->
-        <div class="ig-body">
-          <p>Instagram is where it all started, and it's still the best place to keep up. We post hand-picked events every week, plus the local artists, small businesses and mail club news we love.</p>
-          <ul class="ig-list">
-            <li>Weekly "events this week" round-ups</li>
-            <li>Featured artists and local businesses</li>
-            <li>First look at each month's mail club package</li>
-          </ul>
-          <a class="button" href="https://www.instagram.com/searchcentralfl/" target="_blank" rel="noopener">Follow @searchcentralfl &#8599;</a>
-        </div>
-      </div>
-      <p class="ig-note">Have an event or a local spot we should know about? Send us a DM on Instagram, or <a href="submit.html">submit an event</a> here.</p>
-    </section>
+    <!-- ===== GOOD TO KNOW =====
+         Tap-to-open questions, the same style as the mail club FAQ.
+         The build also turns these into FAQ structured data for Google.
+         Copy one <details> block to add a question. -->
+    <h2 class="section-head">Good to know</h2>
+    <div class="faq reading">
+      <details open>
+        <summary>What is Search Central Florida?</summary>
+        <p>A hyperlocal guide to the arts, culture and small businesses of Orlando and Central Florida, run by Halley and Zach.</p>
+      </details>
+      <details>
+        <summary>How do you choose events?</summary>
+        <p>We curate what we think our community will love. Every event is checked by a real person before it's listed.</p>
+      </details>
+      <details>
+        <summary>Can I add my event?</summary>
+        <p>Yes! <a href="submit.html">Submit it here</a>. It's free and takes about two minutes.</p>
+      </details>
+      <details>
+        <summary>What's the snail mail club?</summary>
+        <p>A monthly package of art from a local artist, plus a perk from a local business. <a href="mailclub.html">See the tiers</a>.</p>
+      </details>
+      <details>
+        <summary>How can I reach you?</summary>
+        <p>DM us on Instagram <a href="https://www.instagram.com/searchcentralfl/" target="_blank" rel="noopener">@searchcentralfl</a> or email <a href="mailto:searchcentralflorida@gmail.com">searchcentralflorida@gmail.com</a>.</p>
+      </details>
+    </div>
 
-    <!-- ===== THE REST OF THE SITE ===== -->
-    <section aria-labelledby="explore-heading">
-      <h2 class="section-head" id="explore-heading">On this site</h2>
-      <div class="buttons">
-        <a class="button button-outline" href="events.html">This week's events</a>
-        <a class="button button-outline" href="mailclub.html">The snail mail club</a>
-        <a class="button button-outline" href="submit.html">Submit an event</a>
+    <!-- ===== FOLLOW ALONG ===== -->
+    <section class="about-follow" aria-labelledby="follow-heading">
+      <div>
+        <h2 id="follow-heading">Follow along</h2>
+        <p>New picks every week on Instagram.</p>
       </div>
+      <a class="button" href="https://www.instagram.com/searchcentralfl/" target="_blank" rel="noopener">Follow @searchcentralfl &#8599;</a>
     </section>
   </main>
 
   <!-- The full-width mail club banner. banner.js fills in this empty spot.
        To change the monthly artist, edit banner.js (one file for the whole site). -->
   <div data-mailclub-banner data-root=""></div>
-  <script src="banner.js?v=7f877a53"></script>
+  <script src="banner.js?v=fa43cac4"></script>
 
   <!-- The site footer. It's the same on every page: if you change it,
        change it in index.html, events.html, mailclub.html, about.html

@@ -1,12 +1,14 @@
 {
   "_about": "Titles, descriptions and robots settings for the hand-written pages. Each page supplies its own. Titles: 60 characters max, in the form 'Page Topic | Search Central Florida' (the build adds the ' | Search Central Florida' part). Descriptions: 155 characters max. Blog posts and event pages get theirs from their own data, not from this file.",
-
   "index.html": {
     "topic": "Orlando Arts, Events & Culture",
     "description": "Your guide to Orlando's best local art, music, markets and events, plus SEARCH, a snail mail club that sends local art to your mailbox every month.",
     "robots": "index, follow",
     "og_type": "website",
-    "schema": ["Organization", "WebSite"]
+    "schema": [
+      "Organization",
+      "WebSite"
+    ]
   },
   "events.html": {
     "topic": "Orlando Events This Week",
@@ -19,13 +21,18 @@
     "description": "A monthly snail mail club and Orlando art subscription box: prints and stickers from a local artist, plus perks from local businesses. From $6.99.",
     "robots": "index, follow",
     "og_type": "website",
-    "schema": ["FAQPage"]
+    "schema": [
+      "FAQPage"
+    ]
   },
   "about.html": {
     "topic": "About Us and Our Mission",
     "description": "Search Central Florida highlights the arts and culture happening every day across Central Florida. Follow along on Instagram @searchcentralfl.",
     "robots": "index, follow",
-    "og_type": "website"
+    "og_type": "website",
+    "schema": [
+      "FAQPage"
+    ]
   },
   "submit.html": {
     "topic": "Submit an Orlando Event",
